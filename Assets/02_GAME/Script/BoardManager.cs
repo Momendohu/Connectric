@@ -32,8 +32,6 @@ public class BoardManager : MonoBehaviour {
     };
 
     // 変数
-    //public static GameObject[] Boards = new GameObject[BOARD_ALL_NUM];
-    //public static PANEL_DATA[] Boardpieces = new PANEL_DATA[BOARD_ALL_NUM];
     public static GameObject[,] Boards = new GameObject[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
     public static PANEL_DATA[,] Boardpieces = new PANEL_DATA[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
 
@@ -41,6 +39,8 @@ public class BoardManager : MonoBehaviour {
     [SerializeField]private GameObject[] piece = new GameObject[(int)INSTRUMENT_TYPE.MAX];
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
     
+    // リンクテスト用
+
 
 
 
@@ -55,7 +55,6 @@ public class BoardManager : MonoBehaviour {
     // Update is called once per frame
     //===================================================
     void Update () {
-
         MoveMausePiece();
         
 	}
@@ -350,4 +349,9 @@ public class BoardManager : MonoBehaviour {
             }
         }
     }
+
+    //-------------------------------------------------------
+    // パズルのリンク
+    //-------------------------------------------------------
+
 }
