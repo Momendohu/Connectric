@@ -8,7 +8,7 @@ public class BoardManager : MonoBehaviour {
     public const int BOARD_ALL_NUM = 25;
     public const int BOARD_WIDTH_NUM = 5;
     public const int BOARD_HEIGHT_NUM = 5;
-    public const float between = 1.8f;
+    public const float between = 1.85f;
 
     // ピースタイプ
     public enum INSTRUMENT_TYPE
@@ -66,7 +66,7 @@ public class BoardManager : MonoBehaviour {
     private void CreateBoard()
     {
        
-        Vector3 vStartPos = new Vector3(-3.7f, 1.2f, 0.0f);
+        Vector3 vStartPos = new Vector3(-3.7f, 1.6f, 0.0f);
         for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
             for (int width = 0; width < BOARD_WIDTH_NUM; width++)
