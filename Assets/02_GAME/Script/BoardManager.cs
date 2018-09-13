@@ -5,35 +5,40 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour {
 
     // 定数
-    public const int BOARD_ALL_NUM = 12;
-    public const int BOARD_HEIGHT_NUM = 4;
-    public const int PIECE_KIND_NUM = 4;
+    public const int BOARD_ALL_NUM = 25;
+    public const int BOARD_WIDTH_NUM = 5;
+    public const int BOARD_HEIGHT_NUM = 5;
+    public const float between = 1.8f;
 
     // ピースタイプ
-    public enum TYPE
+    public enum INSTRUMENT_TYPE
     {
-        BLUE = 0,
-        GREEN,
-        RED,
-        YELLOW
+        GUITAR = 0,
+        DRUM,
+        VOCAL,
+        DJ,
+        MAX
     };
 
     // 構造体
     public struct PANEL_DATA
     {
-        public GameObject obj;  // 
-        public int arrayNum;    // 配列番号
-        public int typeNum;     // 属性
-        public bool mouseFlag;  // キャプチャーされているか
-        public bool moveFlag;   // 動かせるか
+        public GameObject obj;       // 
+        public int arrayWidthNum;    // 配列番号
+        public int arrayHeightNum;   // 配列番号
+        public int typeNum;          // 属性
+        public bool mouseFlag;       // キャプチャーされているか
+        public bool moveFlag;        // 動かせるか
     };
 
     // 変数
-    public static GameObject[] Boards = new GameObject[BOARD_ALL_NUM];
-    public static PANEL_DATA[] Boardpieces = new PANEL_DATA[BOARD_ALL_NUM];
-    
+    //public static GameObject[] Boards = new GameObject[BOARD_ALL_NUM];
+    //public static PANEL_DATA[] Boardpieces = new PANEL_DATA[BOARD_ALL_NUM];
+    public static GameObject[,] Boards = new GameObject[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
+    public static PANEL_DATA[,] Boardpieces = new PANEL_DATA[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
+
     [SerializeField]private GameObject board;
-    [SerializeField]private GameObject[] piece = new GameObject[PIECE_KIND_NUM];
+    [SerializeField]private GameObject[] piece = new GameObject[(int)INSTRUMENT_TYPE.MAX];
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
     
 
@@ -60,24 +65,28 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     private void CreateBoard()
     {
-        Vector3 vStartPos = new Vector3(-3.8f, -1.8f, 0.0f);
-        for (int i = 0; i < BOARD_ALL_NUM; i++)
+       
+        Vector3 vStartPos = new Vector3(-3.7f, 1.2f, 0.0f);
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
-            int obj_num =  UnityEngine.Random.Range(0, PIECE_KIND_NUM);
-            float between = 1.8f;
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
+            {
+                int obj_num = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX);
 
-            GameObject boardcopy = Instantiate(board, new Vector3(vStartPos.x + between * (i % BOARD_HEIGHT_NUM), vStartPos.y - between * (i / BOARD_HEIGHT_NUM), 0.0f), Quaternion.identity);
-            Boards[i] = boardcopy;
+                // ボード（あたり判定）
+                Boards[width,height] = Instantiate(board, new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
 
-            GameObject piececopy = Instantiate(piece[obj_num], new Vector3(vStartPos.x + between * (i % BOARD_HEIGHT_NUM), vStartPos.y - between * (i / BOARD_HEIGHT_NUM), 0.0f), Quaternion.identity);
-            Boardpieces[i].obj = piececopy;
-            Boardpieces[i].arrayNum = i;
-            Boardpieces[i].typeNum = obj_num;
-            Boardpieces[i].mouseFlag = false;
-            Boardpieces[i].moveFlag = false;
-
-            // デバッグ用
-            flag[i] = Boardpieces[i].moveFlag;
+                // ピース
+                Boardpieces[width, height].obj = Instantiate(piece[obj_num], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
+                Boardpieces[width, height].arrayWidthNum = width;
+                Boardpieces[width, height].arrayHeightNum = height;
+                Boardpieces[width, height].typeNum = obj_num;
+                Boardpieces[width, height].mouseFlag = false;
+                Boardpieces[width, height].moveFlag = false;
+                
+                // デバッグ用
+                flag[width + height * 5] = Boardpieces[width, height].moveFlag;
+            }
         }
 
        
@@ -88,115 +97,138 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     private void SetMovepiece()
     {
-        // 念のため初期化
-        for (int i = 0; i < BOARD_ALL_NUM; i++)
+        //念のため初期化
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
-            Boardpieces[i].moveFlag = false;
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
+            {
+                Boardpieces[width, height].moveFlag = false;
+            }
         }
 
-        for (int i = 0; i < BOARD_ALL_NUM; i++)
+        // 入れ替え
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
-            if (Boardpieces[i].mouseFlag)
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
             {
-                // 四か所できる
-                if (i == 5 || i == 6)
+                if (Boardpieces[width,height].mouseFlag)
                 {
-                    Boardpieces[i - 1].moveFlag = true;
-                    Boardpieces[i + 1].moveFlag = true;
-                    Boardpieces[i - BOARD_HEIGHT_NUM].moveFlag = true;
-                    Boardpieces[i + BOARD_HEIGHT_NUM].moveFlag = true;
+                    // 左上角
+                    if(width == 0 && height == 0)
+                    {
+                        Boardpieces[1, 0].moveFlag = true;
+                        Boardpieces[0, 1].moveFlag = true;
 
-                    // デバッグ用
-                    Boards[i - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i - BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i + BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        // デバッグ用
+                        Boards[1,0].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[0,1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                    }
+
+                    // 右上角
+                    else if(width == (BOARD_WIDTH_NUM - 1) && height == 0 )
+                    {
+                        Boardpieces[BOARD_WIDTH_NUM - 2, 0].moveFlag = true;
+                        Boardpieces[BOARD_WIDTH_NUM - 1, 1].moveFlag = true;
+
+                        // デバッグ用
+                        Boards[BOARD_WIDTH_NUM - 2, 0].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[BOARD_WIDTH_NUM - 1, 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                    }
+
+                    // 左下角
+                    else if (width == 0 && height == (BOARD_HEIGHT_NUM - 1))
+                    {
+                        Boardpieces[0, BOARD_HEIGHT_NUM - 2].moveFlag = true;
+                        Boardpieces[1, BOARD_HEIGHT_NUM - 1].moveFlag = true;
+
+                        // デバッグ用
+                        Boards[0, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[1, BOARD_HEIGHT_NUM - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                    }
+
+                    // 右下角
+                    else if (width == (BOARD_WIDTH_NUM - 1) && height == (BOARD_HEIGHT_NUM - 1))
+                    {
+                        Boardpieces[BOARD_WIDTH_NUM - 2, BOARD_HEIGHT_NUM -1].moveFlag = true;
+                        Boardpieces[BOARD_WIDTH_NUM - 1, BOARD_HEIGHT_NUM -2].moveFlag = true;
+
+                        // デバッグ用
+                        Boards[BOARD_WIDTH_NUM - 2, BOARD_HEIGHT_NUM -1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[BOARD_WIDTH_NUM - 1, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = Color.cyan;
+                    }
+
+                    // 上列
+                    else if( (width != 0 && height == 0) || (width != (BOARD_WIDTH_NUM - 1) && height == 0) )
+                    {
+                        Boardpieces[width - 1, height].moveFlag = true;
+                        Boardpieces[width + 1, height].moveFlag = true;
+                        Boardpieces[width, height + 1].moveFlag = true;
+
+                        // デバッグ用
+                        Boards[width - 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width + 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                    }
+
+                    // 下列
+                    else if( (width != 0 && height == (BOARD_HEIGHT_NUM - 1) ) || (width != (BOARD_WIDTH_NUM - 1) && height == (BOARD_HEIGHT_NUM - 1)) )
+                    {
+                        Boardpieces[width - 1, height].moveFlag = true;
+                        Boardpieces[width + 1, height].moveFlag = true;
+                        Boardpieces[width, height - 1].moveFlag = true;
+
+                        // デバッグ用
+                        Boards[width - 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width + 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                    }
+
+                    // 左列
+                    else if ((width == 0 && height != 0) || (width == 0 && height == (BOARD_HEIGHT_NUM - 1)))
+                    {
+                        Boardpieces[width, height - 1].moveFlag = true;
+                        Boardpieces[width, height + 1].moveFlag = true;
+                        Boardpieces[width + 1, height].moveFlag = true;
+
+                        // デバッグ用
+                        Boards[width, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width + 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+                    }
+
+                    // 右列
+                    else if ((width == (BOARD_WIDTH_NUM - 1) && height != 0) || (width == (BOARD_WIDTH_NUM - 1) && height == (BOARD_HEIGHT_NUM - 1)))
+                    {
+                        Boardpieces[width, height - 1].moveFlag = true;
+                        Boardpieces[width, height + 1].moveFlag = true;
+                        Boardpieces[width - 1, height].moveFlag = true;
+
+                        // デバッグ用
+                        Boards[width, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width - 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+                    }
+
+                    // 四か所できる
+                    else 
+                    {
+                        Boardpieces[width - 1, height].moveFlag = true;
+                        Boardpieces[width + 1, height].moveFlag = true;
+                        Boardpieces[width, height - 1].moveFlag = true;
+                        Boardpieces[width, height + 1].moveFlag = true;
+
+                        // デバッグ用
+                        Boards[width - 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width + 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                    }
+
+                    
+                    break;
                 }
-
-                // 三か所できる
-                if (i == 1 || i == 2)
-                {
-                    Boardpieces[i - 1].moveFlag = true;
-                    Boardpieces[i + 1].moveFlag = true;
-                    Boardpieces[i + BOARD_HEIGHT_NUM].moveFlag = true;
-
-                    // デバッグ用
-                    Boards[i - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i + BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                }
-                if (i == 9 || i == 10)
-                {
-                    Boardpieces[i - 1].moveFlag = true;
-                    Boardpieces[i + 1].moveFlag = true;
-                    Boardpieces[i - BOARD_HEIGHT_NUM].moveFlag = true;
-
-                    // デバッグ用
-                    Boards[i - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i - BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                }
-                if (i == 4)
-                {
-                    Boardpieces[i + 1].moveFlag = true;
-                    Boardpieces[i - BOARD_HEIGHT_NUM].moveFlag = true;
-                    Boardpieces[i + BOARD_HEIGHT_NUM].moveFlag = true;
-
-                    // デバッグ用
-                    Boards[i + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i - BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i + BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                }
-                if (i == 7)
-                {
-                    Boardpieces[i - 1].moveFlag = true;
-                    Boardpieces[i - BOARD_HEIGHT_NUM].moveFlag = true;
-                    Boardpieces[i + BOARD_HEIGHT_NUM].moveFlag = true;
-
-                    // デバッグ用
-                    Boards[i - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i - BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i + BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                }
-
-                // 二か所
-                if (i == 0)
-                {
-                    Boardpieces[i + 1].moveFlag = true;
-                    Boardpieces[i + BOARD_HEIGHT_NUM].moveFlag = true;
-
-                    // デバッグ用
-                    Boards[i + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i + BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                }
-                if (i == 3)
-                {
-                    Boardpieces[i - 1].moveFlag = true;
-                    Boardpieces[i + BOARD_HEIGHT_NUM].moveFlag = true;
-
-                    // デバッグ用
-                    Boards[i - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i + BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                }
-                if (i == 8)
-                {
-                    Boardpieces[i + 1].moveFlag = true;
-                    Boardpieces[i - BOARD_HEIGHT_NUM].moveFlag = true;
-
-                    // デバッグ用
-                    Boards[i + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i - BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                }
-                if (i == 11)
-                {
-                    Boardpieces[i - 1].moveFlag = true;
-                    Boardpieces[i - BOARD_HEIGHT_NUM].moveFlag = true;
-
-                    // デバッグ用
-                    Boards[i - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
-                    Boards[i - BOARD_HEIGHT_NUM].GetComponent<SpriteRenderer>().color = Color.cyan;
-                }
-                break;
             }
         }
     }
@@ -206,16 +238,21 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     private void MoveMausePiece()
     {
-        for (int i = 0; i < BOARD_ALL_NUM; i++)
+
+        for(int height = 0; height < BOARD_HEIGHT_NUM; height++ )
         {
-            if (Boardpieces[i].mouseFlag)
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
             {
-                Vector3 vPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.0f);
-                Vector3 vWorldPos = Camera.main.ScreenToWorldPoint(vPos);
-                Boardpieces[i].obj.GetComponent<Transform>().position = vWorldPos;
-                break;
+                if (Boardpieces[width,height].mouseFlag)
+                {
+                    Vector3 vPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.0f);
+                    Vector3 vWorldPos = Camera.main.ScreenToWorldPoint(vPos);
+                    Boardpieces[width,height].obj.GetComponent<Transform>().position = vWorldPos;
+                    break;
+                }
             }
         }
+      
     }
 
     //-------------------------------------------------------
@@ -223,31 +260,40 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     public void Change()
     {
-        for (int i = 0; i < BOARD_ALL_NUM; i++)
+
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
-            // マウスと当たったやつの検索
-            if (Boards[i].GetComponent<SpriteRenderer>().color == Color.black)
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
             {
-                if (Boardpieces[i].moveFlag)
+                //マウスと当たったやつの検索
+                if (Boards[width, height].GetComponent<SpriteRenderer>().color == Color.black)
                 {
-                    for (int j = 0; j < BOARD_ALL_NUM; j++)
+                    if (Boardpieces[width, height].moveFlag)
                     {
-                        if (Boardpieces[j].mouseFlag)
+                        for (int height2 = 0; height2 < BOARD_HEIGHT_NUM; height2++)
                         {
-                            // 
-                            PANEL_DATA save = Boardpieces[j];
-                            Boardpieces[j] = Boardpieces[i];
-                            Boardpieces[j].obj.GetComponent<Transform>().position = Boards[j].GetComponent<Transform>().position;
-                            Boardpieces[i] = save;
+                            for (int width2 = 0; width2 < BOARD_WIDTH_NUM; width2++)
+                            {
+                                if (Boardpieces[width2,height2].mouseFlag)
+                                {
 
-                            
-                            for (int k = 0; k < BOARD_ALL_NUM; k++)
-                            { 
-                                Boards[k].GetComponent<SpriteRenderer>().color = Color.magenta;
+                                    PANEL_DATA save = Boardpieces[width2,height2];
+                                    Boardpieces[width2, height2] = Boardpieces[width,height];
+                                    Boardpieces[width2, height2].obj.GetComponent<Transform>().position = Boards[width2, height2].GetComponent<Transform>().position;
+                                    Boardpieces[width,height] = save;
 
+
+                                    for (int height3 = 0; height3 < BOARD_HEIGHT_NUM; height3++)
+                                    {
+                                        for (int width3 = 0; width3 < BOARD_WIDTH_NUM; width3++)
+                                        {
+                                            Boards[width3,height3].GetComponent<SpriteRenderer>().color = Color.magenta;
+                                        }
+                                    }
+                                    SetMovepiece();
+                                    break;
+                                }
                             }
-                            SetMovepiece();
-                            break;
                         }
                     }
                 }
@@ -262,20 +308,23 @@ public class BoardManager : MonoBehaviour {
     {
         Color Gray = new Color(0.5f, 0.5f, 0.5f, 0.0f);
 
-        for (int i = 0; i < BOARD_ALL_NUM; i++)
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
-            if(Boards[i].GetComponent<SpriteRenderer>().color == Gray)
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
             {
-                Boardpieces[i].obj.GetComponent<Piece>().Big();
-                Boardpieces[i].obj.GetComponent<SpriteRenderer>().sortingOrder = 1;
-                Boardpieces[i].mouseFlag = true;
-                Boards[i].GetComponent<SpriteRenderer>().color = Color.magenta;
-                SetMovepiece();
-                break;
+                if (Boards[width,height].GetComponent<SpriteRenderer>().color == Gray)
+                {
+                    Boardpieces[width,height].obj.GetComponent<Piece>().Big();
+                    Boardpieces[width,height].obj.GetComponent<SpriteRenderer>().sortingOrder = 1;
+                    Boardpieces[width,height].mouseFlag = true;
+                    Boards[width,height].GetComponent<SpriteRenderer>().color = Color.magenta;
+                    SetMovepiece();
+                    break;
+                }
             }
-
         }
     }
+
 
     //-------------------------------------------------------
     // マウスが持っていたオブジェクトの解放
@@ -283,23 +332,22 @@ public class BoardManager : MonoBehaviour {
     public void ReleaseMouseObj()
     {
         // ボードカラー初期化
-        for (int i = 0; i < BOARD_ALL_NUM; i++)
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
-            Boards[i].GetComponent<SpriteRenderer>().color = Color.magenta;
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
+            {
+                Boards[width, height].GetComponent<SpriteRenderer>().color = Color.magenta;
+            }
         }
 
-        for (int i = 0; i < BOARD_ALL_NUM; i++)
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
-            if (Boardpieces[i].mouseFlag)
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
             {
-                Boardpieces[i].obj.GetComponent<Transform>().position = Boards[i].GetComponent<Transform>().position;
-                Boardpieces[i].obj.GetComponent<SpriteRenderer>().sortingOrder = 0;
-                Boardpieces[i].mouseFlag = false;
-                break;
+                Boardpieces[width, height].obj.GetComponent<Transform>().position = Boards[width, height].GetComponent<Transform>().position;
+                Boardpieces[width, height].obj.GetComponent<SpriteRenderer>().sortingOrder = 0;
+                Boardpieces[width, height].mouseFlag = false;
             }
-
         }
     }
-
-    
 }
