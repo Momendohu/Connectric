@@ -12,7 +12,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private SoundManager soundManager;
 
     //=============================================================
-    public float TstBGMBPM = 100f;
+    public float TstBGMBPM = 130f;
     public string TstBGMName = "bgm001";
 
     //=============================================================
