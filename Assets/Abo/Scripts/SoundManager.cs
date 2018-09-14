@@ -175,7 +175,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 
     //===============================================================================
     //BGMの現在の再生時間を取得する
-    public float GetBGMTime (int num) {
+    public float GetBGMTime (string name) {
 
         //すでに生成してあるオブジェクトと照合
         //あるならそれを停止
@@ -189,20 +189,17 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     }
 
     //===============================================================================
-    //オーディオの再生時間の長さを取得する
-    /*public float GetTimeLength (int num) {
-        return audioList[num].clip.length;
-    }
+    //BGMの再生時間の長さを取得する
+    public float GetTimeLength (string name) {
 
-    //===============================================================================
-    //再生しているかどうか
-    public bool IsPlaying (int num) {
-        return audioList[num].isPlaying;
+        //すでに生成してあるオブジェクトと照合
+        //あるならそれを停止
+        int bgmObjNum = CheckMatchNameInList(name,BGMObject);
+        if(bgmObjNum != -1) {
+            return BGMObject[bgmObjNum].GetComponent<AudioSource>().clip.length;
+        } else {
+            Debug.Log("指定したBGMが無いよ");
+            return -1;
+        }
     }
-
-    //===============================================================================
-    //データを参照して追加する
-    public void AddMusic (string name) {
-        audioList.Add(transform.Find(name).GetComponent<AudioSource>());
-    }*/
 }
