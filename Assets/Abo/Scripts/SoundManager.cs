@@ -146,14 +146,22 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     }
 
     //===============================================================================
-    //オーディオのピッチを変更する
-    /*public void SetPitch (float pitch,int num) {
-        audioList[num].pitch = pitch;
+    //BGMのピッチを変更する
+    public void SetBGMPitch (string name,float pitch) {
+
+        //すでに生成してあるオブジェクトと照合
+        //あるならそれを停止
+        int bgmObjNum = CheckMatchNameInList(name,BGMObject);
+        if(bgmObjNum != -1) {
+            BGMObject[bgmObjNum].GetComponent<AudioSource>().pitch = pitch;
+        } else {
+            Debug.Log("指定したBGMが無いよ");
+        }
     }
 
     //===============================================================================
     //オーディオのボリュームを変更する
-    public void SetVolume (float volume,int num) {
+    /*public void SetVolume (float volume,int num) {
         audioList[num].volume = volume;
     }
 
