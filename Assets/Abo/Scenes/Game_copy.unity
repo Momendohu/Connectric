@@ -963,22 +963,22 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 224673665373636490, guid: 0abc1bf6c8b6722448c683347344d491,
+    - target: {fileID: 224137350848181638, guid: 0abc1bf6c8b6722448c683347344d491,
         type: 2}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224673665373636490, guid: 0abc1bf6c8b6722448c683347344d491,
+    - target: {fileID: 224137350848181638, guid: 0abc1bf6c8b6722448c683347344d491,
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224137350848181638, guid: 0abc1bf6c8b6722448c683347344d491,
+    - target: {fileID: 224673665373636490, guid: 0abc1bf6c8b6722448c683347344d491,
         type: 2}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 224137350848181638, guid: 0abc1bf6c8b6722448c683347344d491,
+    - target: {fileID: 224673665373636490, guid: 0abc1bf6c8b6722448c683347344d491,
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 0
