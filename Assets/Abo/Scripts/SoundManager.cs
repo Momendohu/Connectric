@@ -25,18 +25,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     //===============================================================================
     private void Awake () {
         Init();
-
-        StartCoroutine(tst());
-    }
-
-    IEnumerator tst () {
-        while(true) {
-            TriggerBGM("nv_tt",false);
-            TriggerSE("ズドーン1");
-            yield return new WaitForSeconds(1);
-            StopBGM("nv_tt");
-            break;
-        }
     }
 
     //===============================================================================
@@ -190,7 +178,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 
     //===============================================================================
     //BGMの再生時間の長さを取得する
-    public float GetTimeLength (string name) {
+    public float GetBGMTimeLength (string name) {
 
         //すでに生成してあるオブジェクトと照合
         //あるならそれを停止
