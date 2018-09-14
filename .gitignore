@@ -36,7 +36,7 @@ sysinfo.txt
 *.unitypackage
 
 # External resources directory
-Assets/External/
+Assets/Abo/External/
 
 # Standard assets directory
 Assets/Standard Assets/
