@@ -34,12 +34,14 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
             TriggerBGM("nv_tt",false);
             TriggerSE("ズドーン1");
             yield return new WaitForSeconds(1);
+            StopBGM("nv_tt");
+            break;
         }
     }
 
     //===============================================================================
     //リスト内から特定の名前があるかどうか照合する
-    private int IsMatchNameInList (string name,List<GameObject> list) {
+    private int CheckMatchNameInList (string name,List<GameObject> list) {
         for(int i = 0;i < list.Count;i++) {
             if(list[i].name.Equals(name)) {
                 return i;
@@ -49,7 +51,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
         return -1;
     }
 
-    private int IsMatchNameInList (string name,AudioClip[] list) {
+    private int CheckMatchNameInList (string name,AudioClip[] list) {
         for(int i = 0;i < list.Length;i++) {
             if(list[i].name.Equals(name)) {
                 return i;
@@ -62,17 +64,20 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     //===============================================================================
     //オーディオを鳴らす
     public void TriggerBGM (string name,bool isUseLoop) {
+
         //SoundManagerにアタッチしてあるものと照合
         //指定したものがなければ再生しない
-        int bgmListNum = IsMatchNameInList(name,BGMList);
+        int bgmListNum = CheckMatchNameInList(name,BGMList);
         if(bgmListNum != -1) {
+
             //すでに生成してあるオブジェクトと照合
             //すでにあるならそれを再生
             //ないならオブジェクト生成して再生
-            int bgmObjNum = IsMatchNameInList(name,BGMObject);
+            int bgmObjNum = CheckMatchNameInList(name,BGMObject);
             if(bgmObjNum != -1) {
                 BGMObject[bgmObjNum].GetComponent<AudioSource>().Play();
             } else {
+
                 //オーディオ再生用の子オブジェクトを作成
                 GameObject obj = Instantiate(Resources.Load("Prefabs/SoundManagerAudio")) as GameObject;
                 obj.name = name;
@@ -94,18 +99,21 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     //===============================================================================
     //オーディオを鳴らす(独立して鳴らす)
     public void TriggerSE (string name) {
+
         //SoundManagerにアタッチしてあるものと照合
         //指定したものがなければ再生しない
-        int seListNum = IsMatchNameInList(name,SEList);
+        int seListNum = CheckMatchNameInList(name,SEList);
         if(seListNum != -1) {
+
             //すでに生成してあるオブジェクトと照合
             //すでにあるならそれを再生
             //ないならオブジェクト生成して再生
-            int seObjNum = IsMatchNameInList(name,SEObject);
+            int seObjNum = CheckMatchNameInList(name,SEObject);
             if(seObjNum != -1) {
                 AudioSource audioSource = SEObject[seObjNum].GetComponent<AudioSource>();
                 audioSource.PlayOneShot(audioSource.clip);
             } else {
+
                 //オーディオ再生用の子オブジェクトを作成
                 GameObject obj = Instantiate(Resources.Load("Prefabs/SoundManagerAudio")) as GameObject;
                 obj.name = name;
@@ -124,46 +132,52 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     }
 
     //===============================================================================
-    /* //オーディオを止める
-     public void StopMusic (int num) {
-         if(audioList[num].isPlaying && num < audioList.Count) {
-             audioList[num].Stop();
-         }
-     }
+    //BGMを止める
+    public void StopBGM (string name) {
 
-     //===============================================================================
-     //オーディオのピッチを変更する
-     public void SetPitch (float pitch,int num) {
-         audioList[num].pitch = pitch;
-     }
+        //すでに生成してあるオブジェクトと照合
+        //あるならそれを停止
+        int bgmObjNum = CheckMatchNameInList(name,BGMObject);
+        if(bgmObjNum != -1) {
+            BGMObject[bgmObjNum].GetComponent<AudioSource>().Stop();
+        } else {
+            Debug.Log("指定したBGMが無いよ");
+        }
+    }
 
-     //===============================================================================
-     //オーディオのボリュームを変更する
-     public void SetVolume (float volume,int num) {
-         audioList[num].volume = volume;
-     }
+    //===============================================================================
+    //オーディオのピッチを変更する
+    /*public void SetPitch (float pitch,int num) {
+        audioList[num].pitch = pitch;
+    }
 
-     //1===============================================================================
-     //オーディオの現在の再生時間を取得する
-     public float GetTime (int num) {
-         return audioList[num].time;
-     }
+    //===============================================================================
+    //オーディオのボリュームを変更する
+    public void SetVolume (float volume,int num) {
+        audioList[num].volume = volume;
+    }
 
-     //===============================================================================
-     //オーディオの再生時間の長さを取得する
-     public float GetTimeLength (int num) {
-         return audioList[num].clip.length;
-     }
+    //1===============================================================================
+    //オーディオの現在の再生時間を取得する
+    public float GetTime (int num) {
+        return audioList[num].time;
+    }
 
-     //===============================================================================
-     //再生しているかどうか
-     public bool IsPlaying (int num) {
-         return audioList[num].isPlaying;
-     }
+    //===============================================================================
+    //オーディオの再生時間の長さを取得する
+    public float GetTimeLength (int num) {
+        return audioList[num].clip.length;
+    }
 
-     //===============================================================================
-     //データを参照して追加する
-     public void AddMusic (string name) {
-         audioList.Add(transform.Find(name).GetComponent<AudioSource>());
-     }*/
+    //===============================================================================
+    //再生しているかどうか
+    public bool IsPlaying (int num) {
+        return audioList[num].isPlaying;
+    }
+
+    //===============================================================================
+    //データを参照して追加する
+    public void AddMusic (string name) {
+        audioList.Add(transform.Find(name).GetComponent<AudioSource>());
+    }*/
 }
