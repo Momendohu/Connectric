@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[DefaultExecutionOrder(-110)]
 /// <summary>
 /// BGM、SEを管理
 /// </summary>
@@ -52,7 +53,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     //===============================================================================
     //オーディオを鳴らす
     public void TriggerBGM (string name,bool isUseLoop) {
-
+        Debug.Log(name);
         //SoundManagerにアタッチしてあるものと照合
         //指定したものがなければ再生しない
         int bgmListNum = CheckMatchNameInList(name,BGMList);

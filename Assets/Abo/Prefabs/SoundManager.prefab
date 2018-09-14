@@ -52,6 +52,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BGMList:
-  - {fileID: 8300000, guid: 3056ce37c1863f543bbc29cd1b9cea57, type: 3}
-  SEList:
-  - {fileID: 8300000, guid: d0401b5619ae4e64c97b7b11eb3bca4a, type: 3}
+  - {fileID: 8300000, guid: 87dd208b500072948a18f71673441153, type: 3}
+  SEList: []

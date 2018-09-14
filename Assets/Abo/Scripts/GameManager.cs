@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 //using UnityEngine.UI;
 
+[DefaultExecutionOrder(-100)]
 /// <summary>
 /// ゲームマネージャー
 /// </summary>
 public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
+    private SoundManager soundManager;
 
+    //=============================================================
+    private float tstBGMBPM = 100f;
+    private string tstBGMName = "bgm001";
 
     //=============================================================
     private void Init () {
@@ -24,7 +29,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     private void CRef () {
-
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
     }
 
     //=============================================================
@@ -33,7 +38,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     private void Start () {
-
+        soundManager.TriggerBGM(tstBGMName,false);
     }
 
     private void Update () {

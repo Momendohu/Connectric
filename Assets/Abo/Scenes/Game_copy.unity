@@ -235,16 +235,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114304340753531586, guid: 14ac40d7c9c0de94080d60be113d2e11,
-        type: 2}
-      propertyPath: SEList.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114304340753531586, guid: 14ac40d7c9c0de94080d60be113d2e11,
-        type: 2}
-      propertyPath: BGMList.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -277,16 +267,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 114304340753531586, guid: 14ac40d7c9c0de94080d60be113d2e11,
-        type: 2}
-      propertyPath: BGMList.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 3056ce37c1863f543bbc29cd1b9cea57, type: 3}
-    - target: {fileID: 114304340753531586, guid: 14ac40d7c9c0de94080d60be113d2e11,
-        type: 2}
-      propertyPath: SEList.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: d0401b5619ae4e64c97b7b11eb3bca4a, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
   m_IsPrefabParent: 0
