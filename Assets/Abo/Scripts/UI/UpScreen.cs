@@ -1,35 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.UI;
+using UnityEngine.UI;
 
-[DefaultExecutionOrder(-100)]
-/// <summary>
-/// ゲームマネージャー
-/// </summary>
-public class GameManager : SingletonMonoBehaviour<GameManager> {
+public class UpScreen : MonoBehaviour {
     //=============================================================
+    private GameManager gameManager;
     private SoundManager soundManager;
 
-    //=============================================================
-    public float TstBGMBPM = 100f;
-    public string TstBGMName = "bgm001";
+    private GameObject seekBar;
 
     //=============================================================
     private void Init () {
-        if(this != Instance) {
-            Destroy(this);
-            return;
-        }
-
-        DontDestroyOnLoad(this.gameObject);
-
         CRef();
     }
 
     //=============================================================
     private void CRef () {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+
+        seekBar = transform.Find("SeekBar").gameObject;
     }
 
     //=============================================================
@@ -38,10 +29,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     private void Start () {
-        soundManager.TriggerBGM(TstBGMName,false);
+
     }
 
     private void Update () {
-
+        seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.TstBGMName) / soundManager.GetBGMTimeLength(gameManager.TstBGMName);
     }
 }
