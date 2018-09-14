@@ -161,13 +161,21 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 
     //===============================================================================
     //オーディオのボリュームを変更する
-    /*public void SetVolume (float volume,int num) {
-        audioList[num].volume = volume;
+    public void SetBGMVolume (float volume,int num) {
+
+        //すでに生成してあるオブジェクトと照合
+        //あるならそれを停止
+        int bgmObjNum = CheckMatchNameInList(name,BGMObject);
+        if(bgmObjNum != -1) {
+            BGMObject[bgmObjNum].GetComponent<AudioSource>().volume = volume;
+        } else {
+            Debug.Log("指定したBGMが無いよ");
+        }
     }
 
     //1===============================================================================
     //オーディオの現在の再生時間を取得する
-    public float GetTime (int num) {
+    /*public float GetTime (int num) {
         return audioList[num].time;
     }
 
