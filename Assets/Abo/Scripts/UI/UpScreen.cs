@@ -13,7 +13,7 @@ public class UpScreen : MonoBehaviour {
     private GameObject enemyCharacter;
 
     //=============================================================
-    private int notesWave4forTimingBar;
+    private int notesWaveForTimingBar;
 
     //=============================================================
     public AnimationCurve CharacterRhythmAnim;
@@ -46,7 +46,7 @@ public class UpScreen : MonoBehaviour {
         StartCoroutine(CharacterRhythm(enemyCharacter,gameManager.TstBGMBPM));
 
         //タイミングバー用のウェーブ指定
-        notesWave4forTimingBar = gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM);
+        notesWaveForTimingBar = gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM);
     }
 
     private void Update () {
@@ -54,8 +54,8 @@ public class UpScreen : MonoBehaviour {
         seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.TstBGMName) / soundManager.GetBGMTimeLength(gameManager.TstBGMName);
 
         //タイミングバー生成
-        if(notesWave4forTimingBar != gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM)) {
-            notesWave4forTimingBar = gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM);
+        if(notesWaveForTimingBar != gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM)) {
+            notesWaveForTimingBar = gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM);
 
             CreateTimingBar();
         }
