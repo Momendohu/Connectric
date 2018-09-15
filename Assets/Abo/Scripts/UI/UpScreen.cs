@@ -13,9 +13,6 @@ public class UpScreen : MonoBehaviour {
     private GameObject enemyCharacter;
 
     //=============================================================
-    private int notesWaveForTimingBar;
-
-    //=============================================================
     public AnimationCurve CharacterRhythmAnim;
 
     //=============================================================
@@ -44,21 +41,11 @@ public class UpScreen : MonoBehaviour {
 
         //エネミーがリズムに乗る
         StartCoroutine(CharacterRhythm(enemyCharacter,gameManager.TstBGMBPM));
-
-        //タイミングバー用のウェーブ指定
-        notesWaveForTimingBar = gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM);
     }
 
     private void Update () {
         //シークバー動作
         seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.TstBGMName) / soundManager.GetBGMTimeLength(gameManager.TstBGMName);
-
-        //タイミングバー生成
-        if(notesWaveForTimingBar != gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM)) {
-            notesWaveForTimingBar = gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM);
-
-            CreateTimingBar();
-        }
     }
 
     //=============================================================
@@ -75,12 +62,5 @@ public class UpScreen : MonoBehaviour {
             }
             yield return null;
         }
-    }
-
-    //=============================================================
-    //タイミングバーの作成
-    private void CreateTimingBar () {
-        GameObject obj = Instantiate(Resources.Load("Prefabs/UI/TimingBar")) as GameObject;
-        obj.transform.SetParent(this.transform,false);
     }
 }

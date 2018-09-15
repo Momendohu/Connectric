@@ -9,11 +9,30 @@ using UnityEngine;
 /// </summary>
 public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
+    // ピースタイプ
+    public enum INSTRUMENT_TYPE {
+        GUITAR = 0,
+        DRUM,
+        VOCAL,
+        DJ,
+        MAX
+    };
+
+    //=============================================================
     private SoundManager soundManager;
 
     //=============================================================
     public float TstBGMBPM = 130f;
     public string TstBGMName = "bgm001";
+
+    //ピースリンク
+    private INSTRUMENT_TYPE[,] pieceLink = new INSTRUMENT_TYPE[2,2];
+    public INSTRUMENT_TYPE[,] PieceLink {
+        get { return pieceLink; }
+    }
+
+    //=============================================================
+    private int notesWaveForTimingBar;
 
     //=============================================================
     private void Init () {
@@ -25,6 +44,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         DontDestroyOnLoad(this.gameObject);
 
         CRef();
+
+        //タイミングバー用のウェーブ指定
+        notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,TstBGMBPM);
     }
 
     //=============================================================
@@ -42,7 +64,19 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     private void Update () {
+        //タイミングバー生成
+        if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,TstBGMBPM)) {
+            notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,TstBGMBPM);
 
+            CreateTimingBar();
+        }
+    }
+
+    //=============================================================
+    //タイミングバーの作成
+    private void CreateTimingBar () {
+        GameObject obj = Instantiate(Resources.Load("Prefabs/UI/TimingBar")) as GameObject;
+        obj.transform.SetParent(GameObject.Find("Canvas/UpScreen").transform,false);
     }
 
     //=============================================================
