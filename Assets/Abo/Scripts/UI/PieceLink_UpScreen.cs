@@ -55,10 +55,26 @@ public class PieceLink_UpScreen : MonoBehaviour {
 
             case PIECE_LINK_TYPE.O:
             linkO.SetActive(true);
-            linkV.transform.Find("Piece_UpScreenLU").GetComponent<Image>().sprite = Image[PieceLink[0,0]];
-            linkV.transform.Find("Piece_UpScreenRU").GetComponent<Image>().sprite = Image[PieceLink[1,0]];
-            linkV.transform.Find("Piece_UpScreenLD").GetComponent<Image>().sprite = Image[PieceLink[0,1]];
-            linkV.transform.Find("Piece_UpScreenRD").GetComponent<Image>().sprite = Image[PieceLink[1,1]];
+            linkO.transform.Find("Piece_UpScreenLU").GetComponent<Image>().sprite = Image[PieceLink[0,0]];
+
+            if(PieceLink[1,0] != -1) {
+                linkO.transform.Find("Piece_UpScreenRU").GetComponent<Image>().sprite = Image[PieceLink[1,0]];
+            } else {
+                linkO.transform.Find("Piece_UpScreenRU").gameObject.SetActive(false);
+            }
+
+            if(PieceLink[0,1] != -1) {
+                linkO.transform.Find("Piece_UpScreenLD").GetComponent<Image>().sprite = Image[PieceLink[0,1]];
+            } else {
+                linkO.transform.Find("Piece_UpScreenLD").gameObject.SetActive(false);
+            }
+
+            if(PieceLink[1,1] != -1) {
+                linkO.transform.Find("Piece_UpScreenRD").GetComponent<Image>().sprite = Image[PieceLink[1,1]];
+            } else {
+                linkO.transform.Find("Piece_UpScreenRD").gameObject.SetActive(false);
+            }
+
             break;
 
             default:
@@ -91,14 +107,14 @@ public class PieceLink_UpScreen : MonoBehaviour {
     //=============================================================
     //ピースリンクのタイプの選択
     public void SelectPieceLinkType (int[,] pieceLink) {
-        //左下がないなら横長タイプ
-        if(pieceLink[0,1] == -1) {
+        //左下がなくてアクティブなピースリンクの数が2なら横長タイプ
+        if(pieceLink[0,1] == -1 && ActivePieceLinkNum() == 2) {
             pieceLinkType = PIECE_LINK_TYPE.H;
             return;
         }
 
-        //右上がないなら縦長タイプ
-        if(pieceLink[1,0] == -1) {
+        //右上がなくてアクティブなピースリンクの数が2なら縦長タイプ
+        if(pieceLink[1,0] == -1 && ActivePieceLinkNum() == 2) {
             pieceLinkType = PIECE_LINK_TYPE.V;
             return;
         }
@@ -120,8 +136,8 @@ public class PieceLink_UpScreen : MonoBehaviour {
         pieceLink[0,0] = Random.Range(0,4);
 
         int branch1 = Random.Range(0,2);
-        int branch2 = 0/*Random.Range(0,3)*/;
-        int branch3 = 0/*Random.Range(0,2)*/;
+        int branch2 = Random.Range(0,3);
+        int branch3 = Random.Range(0,2);
 
         if(branch1 == 0) {
             //右上
@@ -196,5 +212,20 @@ public class PieceLink_UpScreen : MonoBehaviour {
                 break;
             }
         }
+    }
+
+    //=============================================================
+    //アクティブなピースリンクの数を取得
+    private int ActivePieceLinkNum () {
+        int num = 0;
+        for(int i = 0;i < pieceLink.GetLength(0);i++) {
+            for(int j = 0;j < pieceLink.GetLength(1);j++) {
+                if(pieceLink[i,j] != -1) {
+                    num++;
+                }
+            }
+        }
+
+        return num;
     }
 }
