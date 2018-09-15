@@ -109,4 +109,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public float GetBeatWaveTiming (float time,int interval,float BPM) {
         return GetBeatWave(time,interval,BPM) - GetBeatWaveNum(time,interval,BPM);
     }
+
+    //=============================================================
+    //直近のピースリンクを取得
+    public int[,] GetLatestPieceLink () {
+        if(timingBars.Count != 0) {
+            return timingBars[0].GetComponent<TimingBar>().PieceLink;
+        } else {
+            Debug.Log("ピースリンクがうまく取得できてないよ");
+            return new int[2,2];
+        }
+    }
 }
