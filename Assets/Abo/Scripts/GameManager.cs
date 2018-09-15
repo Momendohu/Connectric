@@ -81,8 +81,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private GameObject CreateTimingBar () {
         GameObject obj = Instantiate(Resources.Load("Prefabs/UI/TimingBar")) as GameObject;
         obj.transform.SetParent(GameObject.Find("Canvas/UpScreen").transform,false);
-
-        Debug.Log("create");
         return obj;
     }
 
