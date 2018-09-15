@@ -10,20 +10,20 @@ public class TimingBar : MonoBehaviour {
     private Image image;
 
     //=============================================================
-    private Vector3 iniPos = new Vector3(-160,0,0);
-    private Vector3 goalPos = new Vector3(160,0,0);
+    private Vector3 iniPos = new Vector3(-240,0,0);
+    private Vector3 goalPos = new Vector3(240,0,0);
 
     private int destroyCountLength = 1;
 
     //=============================================================
     private bool destroyFlag;
 
-    private int notesWave4;
+    private int notesWave;
     private int destroyCount;
 
     private float BPM;
     private float bgmTime;
-
+    private int waveInterval;
 
     //=============================================================
     private void Init () {
@@ -31,8 +31,9 @@ public class TimingBar : MonoBehaviour {
 
         BPM = gameManager.TstBGMBPM;
         bgmTime = soundManager.GetBGMTime("bgm001");
+        waveInterval = 8;
 
-        notesWave4 = gameManager.GetBeatWaveNum(bgmTime,4,BPM);
+        notesWave = gameManager.GetBeatWaveNum(bgmTime,waveInterval,BPM);
     }
 
     //=============================================================
@@ -55,13 +56,13 @@ public class TimingBar : MonoBehaviour {
         GetComponent<RectTransform>().localPosition = Vector3.Lerp(
             iniPos - (goalPos - iniPos) * (destroyCountLength - destroyCount),
             goalPos - (goalPos - iniPos) * (destroyCountLength - destroyCount),
-            gameManager.GetBeatWaveTiming(bgmTime,4,BPM)
+            gameManager.GetBeatWaveTiming(bgmTime,waveInterval,BPM)
             );
 
         if(!destroyFlag) {
             //消滅までのカウントを進める
-            if(notesWave4 != gameManager.GetBeatWaveNum(bgmTime,4,BPM)) {
-                notesWave4 = gameManager.GetBeatWaveNum(bgmTime,4,BPM);
+            if(notesWave != gameManager.GetBeatWaveNum(bgmTime,waveInterval,BPM)) {
+                notesWave = gameManager.GetBeatWaveNum(bgmTime,waveInterval,BPM);
                 destroyCount++;
             }
 
