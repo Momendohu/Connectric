@@ -25,13 +25,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public float TstBGMBPM = 130f;
     public string TstBGMName = "bgm001";
 
-    //ピースリンク
-    private INSTRUMENT_TYPE[,] pieceLink = new INSTRUMENT_TYPE[2,2];
-    public INSTRUMENT_TYPE[,] PieceLink {
-        get { return pieceLink; }
-    }
-
     //=============================================================
+    private List<GameObject> timingBars = new List<GameObject>();
+
     private int notesWaveForTimingBar;
 
     //=============================================================
@@ -45,8 +41,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         CRef();
 
+        soundManager.TriggerBGM(TstBGMName,false);
+
         //タイミングバー用のウェーブ指定
-        notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,TstBGMBPM);
+        notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),8,TstBGMBPM);
     }
 
     //=============================================================
@@ -60,23 +58,32 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     private void Start () {
-        soundManager.TriggerBGM(TstBGMName,false);
     }
 
     private void Update () {
         //タイミングバー生成
-        if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,TstBGMBPM)) {
-            notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,TstBGMBPM);
+        if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),8,TstBGMBPM)) {
+            notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),8,TstBGMBPM);
 
-            CreateTimingBar();
+            timingBars.Add(CreateTimingBar());
+
+            //登録してあるtimingbarがnullになったら除外
+            for(int i = timingBars.Count - 1;i >= 0;i--) {
+                if(timingBars[i] == null) {
+                    timingBars.RemoveAt(i);
+                }
+            }
         }
     }
 
     //=============================================================
     //タイミングバーの作成
-    private void CreateTimingBar () {
+    private GameObject CreateTimingBar () {
         GameObject obj = Instantiate(Resources.Load("Prefabs/UI/TimingBar")) as GameObject;
         obj.transform.SetParent(GameObject.Find("Canvas/UpScreen").transform,false);
+
+        Debug.Log("create");
+        return obj;
     }
 
     //=============================================================

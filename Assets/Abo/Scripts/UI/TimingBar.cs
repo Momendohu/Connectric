@@ -9,6 +9,8 @@ public class TimingBar : MonoBehaviour {
     private SoundManager soundManager;
     private Image image;
 
+    private GameObject pieceLinkObj;
+
     //=============================================================
     private Vector3 iniPos = new Vector3(-240,0,0);
     private Vector3 goalPos = new Vector3(240,0,0);
@@ -25,6 +27,12 @@ public class TimingBar : MonoBehaviour {
     private float bgmTime;
     private int waveInterval;
 
+    //ピースリンク
+    private int[,] pieceLink = new int[2,2];
+    public int[,] PieceLink {
+        get { return pieceLink; }
+    }
+
     //=============================================================
     private void Init () {
         CRef();
@@ -34,6 +42,8 @@ public class TimingBar : MonoBehaviour {
         waveInterval = 8;
 
         notesWave = gameManager.GetBeatWaveNum(bgmTime,waveInterval,BPM);
+        DecidePieceLink(); //ピースリンクの情報の決定
+        pieceLinkObj.GetComponent<PieceLink_UpScreen>().SelectPieceLinkType(pieceLink); //ピースリンクのタイプの決定
     }
 
     //=============================================================
@@ -41,6 +51,8 @@ public class TimingBar : MonoBehaviour {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
         image = GetComponent<Image>();
+
+        pieceLinkObj = transform.Find("PieceLink_UpScreen").gameObject;
     }
 
     //=============================================================
@@ -92,5 +104,96 @@ public class TimingBar : MonoBehaviour {
         }
 
         Destroy(this.gameObject);
+    }
+
+    //=============================================================
+    //ピースリンクの決定
+    private void DecidePieceLink () {
+        //初期状態
+        for(int i = 0;i < pieceLink.GetLength(0);i++) {
+            for(int j = 0;j < pieceLink.GetLength(1);j++) {
+                pieceLink[i,j] = -1;
+            }
+        }
+        //左上
+        pieceLink[0,0] = Random.Range(0,4);
+
+        int branch1 = Random.Range(0,2);
+        int branch2 = 0/*Random.Range(0,3)*/;
+        int branch3 = 0/*Random.Range(0,2)*/;
+
+        if(branch1 == 0) {
+            //右上
+            pieceLink[1,0] = Random.Range(0,4);
+
+            switch(branch2) {
+                case 0:
+                //終了
+                return;
+
+                case 1:
+                //左下
+                pieceLink[0,1] = Random.Range(0,4);
+
+                if(branch3 == 0) {
+                    //終了
+                    return;
+                } else {
+                    //右下
+                    pieceLink[1,1] = Random.Range(0,4);
+                }
+
+                break;
+
+                case 2:
+                //右下
+                pieceLink[1,1] = Random.Range(0,4);
+
+                if(branch3 == 0) {
+                    //終了
+                    return;
+                } else {
+                    //左下
+                    pieceLink[0,1] = Random.Range(0,4);
+                }
+                break;
+            }
+        } else {
+            //左下
+            pieceLink[0,1] = Random.Range(0,4);
+
+            switch(branch2) {
+                case 0:
+                //終了
+                return;
+
+                case 1:
+                //右上
+                pieceLink[1,0] = Random.Range(0,4);
+
+                if(branch3 == 0) {
+                    //終了
+                    return;
+                } else {
+                    //右下
+                    pieceLink[1,1] = Random.Range(0,4);
+                }
+
+                break;
+
+                case 2:
+                //右下
+                pieceLink[1,1] = Random.Range(0,4);
+
+                if(branch3 == 0) {
+                    //終了
+                    return;
+                } else {
+                    //右上
+                    pieceLink[1,0] = Random.Range(0,4);
+                }
+                break;
+            }
+        }
     }
 }
