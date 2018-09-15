@@ -35,6 +35,7 @@ public class PieceLink_UpScreen : MonoBehaviour {
         DecidePieceLink(); //ピースリンクの情報の決定
         SelectPieceLinkType(pieceLink); //ピースリンクのタイプの選択
 
+        //リンクに応じて表示形式と色を変える
         linkV.SetActive(false);
         linkH.SetActive(false);
         linkO.SetActive(false);
