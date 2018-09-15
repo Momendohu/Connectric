@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.UI;
+using UnityEngine.UI;
 
 public class PieceLink_UpScreen : MonoBehaviour {
     //=============================================================
@@ -42,14 +42,22 @@ public class PieceLink_UpScreen : MonoBehaviour {
         switch(pieceLinkType) {
             case PIECE_LINK_TYPE.V:
             linkV.SetActive(true);
+            linkV.transform.Find("Piece_UpScreenU").GetComponent<Image>().sprite = Image[PieceLink[0,0]];
+            linkV.transform.Find("Piece_UpScreenD").GetComponent<Image>().sprite = Image[PieceLink[0,1]];
             break;
 
             case PIECE_LINK_TYPE.H:
             linkH.SetActive(true);
+            linkH.transform.Find("Piece_UpScreenL").GetComponent<Image>().sprite = Image[PieceLink[0,0]];
+            linkH.transform.Find("Piece_UpScreenR").GetComponent<Image>().sprite = Image[PieceLink[1,0]];
             break;
 
             case PIECE_LINK_TYPE.O:
             linkO.SetActive(true);
+            linkV.transform.Find("Piece_UpScreenLU").GetComponent<Image>().sprite = Image[PieceLink[0,0]];
+            linkV.transform.Find("Piece_UpScreenRU").GetComponent<Image>().sprite = Image[PieceLink[1,0]];
+            linkV.transform.Find("Piece_UpScreenLD").GetComponent<Image>().sprite = Image[PieceLink[0,1]];
+            linkV.transform.Find("Piece_UpScreenRD").GetComponent<Image>().sprite = Image[PieceLink[1,1]];
             break;
 
             default:

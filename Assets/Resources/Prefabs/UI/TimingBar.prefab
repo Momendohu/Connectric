@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 222785076793978768}
   - component: {fileID: 114901885390572854}
   m_Layer: 5
-  m_Name: Piece_UpScreen
+  m_Name: Piece_UpScreenLD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 222803079962929432}
   - component: {fileID: 114445750726742998}
   m_Layer: 5
-  m_Name: Piece_UpScreen
+  m_Name: Piece_UpScreenLU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 222693080412933708}
   - component: {fileID: 114848974613558972}
   m_Layer: 5
-  m_Name: Piece_UpScreen
+  m_Name: Piece_UpScreenD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 222452338359090600}
   - component: {fileID: 114239097432214860}
   m_Layer: 5
-  m_Name: Piece_UpScreen
+  m_Name: Piece_UpScreenRD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 222501799015587068}
   - component: {fileID: 114151478561695792}
   m_Layer: 5
-  m_Name: Piece_UpScreen
+  m_Name: Piece_UpScreenR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 222282554744211080}
   - component: {fileID: 114277951054806388}
   m_Layer: 5
-  m_Name: Piece_UpScreen
+  m_Name: Piece_UpScreenRU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 222998069796859868}
   - component: {fileID: 114459898407703228}
   m_Layer: 5
-  m_Name: Piece_UpScreen
+  m_Name: Piece_UpScreenU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 222216678299671870}
   - component: {fileID: 114483439027681620}
   m_Layer: 5
-  m_Name: Piece_UpScreen
+  m_Name: Piece_UpScreenL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
