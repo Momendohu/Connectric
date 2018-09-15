@@ -19,12 +19,21 @@ public class PieceLink_UpScreen : MonoBehaviour {
     //=============================================================
     private PIECE_LINK_TYPE pieceLinkType = PIECE_LINK_TYPE.V;
 
+    //ピースリンク
+    private int[,] pieceLink = new int[2,2];
+    public int[,] PieceLink {
+        get { return pieceLink; }
+    }
+
     //=============================================================
     public Sprite[] Image;
 
     //=============================================================
     private void Init () {
         CRef();
+
+        DecidePieceLink(); //ピースリンクの情報の決定
+        SelectPieceLinkType(pieceLink); //ピースリンクのタイプの選択
 
         linkV.SetActive(false);
         linkH.SetActive(false);
@@ -71,6 +80,7 @@ public class PieceLink_UpScreen : MonoBehaviour {
     }
 
     //=============================================================
+    //ピースリンクのタイプの選択
     public void SelectPieceLinkType (int[,] pieceLink) {
         //左下がないなら横長タイプ
         if(pieceLink[0,1] == -1) {
@@ -86,5 +96,96 @@ public class PieceLink_UpScreen : MonoBehaviour {
 
         //そのほかは四角タイプ(またはLタイプ)
         pieceLinkType = PIECE_LINK_TYPE.O;
+    }
+
+    //=============================================================
+    //ピースリンクの決定
+    private void DecidePieceLink () {
+        //初期状態
+        for(int i = 0;i < pieceLink.GetLength(0);i++) {
+            for(int j = 0;j < pieceLink.GetLength(1);j++) {
+                pieceLink[i,j] = -1;
+            }
+        }
+        //左上
+        pieceLink[0,0] = Random.Range(0,4);
+
+        int branch1 = Random.Range(0,2);
+        int branch2 = 0/*Random.Range(0,3)*/;
+        int branch3 = 0/*Random.Range(0,2)*/;
+
+        if(branch1 == 0) {
+            //右上
+            pieceLink[1,0] = Random.Range(0,4);
+
+            switch(branch2) {
+                case 0:
+                //終了
+                return;
+
+                case 1:
+                //左下
+                pieceLink[0,1] = Random.Range(0,4);
+
+                if(branch3 == 0) {
+                    //終了
+                    return;
+                } else {
+                    //右下
+                    pieceLink[1,1] = Random.Range(0,4);
+                }
+
+                break;
+
+                case 2:
+                //右下
+                pieceLink[1,1] = Random.Range(0,4);
+
+                if(branch3 == 0) {
+                    //終了
+                    return;
+                } else {
+                    //左下
+                    pieceLink[0,1] = Random.Range(0,4);
+                }
+                break;
+            }
+        } else {
+            //左下
+            pieceLink[0,1] = Random.Range(0,4);
+
+            switch(branch2) {
+                case 0:
+                //終了
+                return;
+
+                case 1:
+                //右上
+                pieceLink[1,0] = Random.Range(0,4);
+
+                if(branch3 == 0) {
+                    //終了
+                    return;
+                } else {
+                    //右下
+                    pieceLink[1,1] = Random.Range(0,4);
+                }
+
+                break;
+
+                case 2:
+                //右下
+                pieceLink[1,1] = Random.Range(0,4);
+
+                if(branch3 == 0) {
+                    //終了
+                    return;
+                } else {
+                    //右上
+                    pieceLink[1,0] = Random.Range(0,4);
+                }
+                break;
+            }
+        }
     }
 }

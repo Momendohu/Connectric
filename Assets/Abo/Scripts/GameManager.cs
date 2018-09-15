@@ -114,7 +114,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //直近のピースリンクを取得
     public int[,] GetLatestPieceLink () {
         if(timingBars.Count != 0) {
-            return timingBars[0].GetComponent<TimingBar>().PieceLink;
+            return timingBars[0].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
         } else {
             Debug.Log("ピースリンクがうまく取得できてないよ");
             return new int[2,2];
