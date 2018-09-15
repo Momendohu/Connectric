@@ -58,8 +58,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
-    //ビートウェイブのタイミングを取得
+    //ビートウェイブ(何Waveか)を取得
+    public int GetBeatWaveNum (float time,int interval,float BPM) {
+        return Mathf.FloorToInt(GetBeatWave(time,interval,BPM));
+    }
+
+    //=============================================================
+    //ビートウェイブのタイミングを取得(0-1)
     public float GetBeatWaveTiming (float time,int interval,float BPM) {
-        return GetBeatWave(time,interval,BPM) - Mathf.RoundToInt(GetBeatWave(time,interval,BPM));
+        return GetBeatWave(time,interval,BPM) - GetBeatWaveNum(time,interval,BPM);
     }
 }

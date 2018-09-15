@@ -13,6 +13,9 @@ public class UpScreen : MonoBehaviour {
     private GameObject enemyCharacter;
 
     //=============================================================
+    private int notesWave4forTimingBar;
+
+    //=============================================================
     public AnimationCurve CharacterRhythmAnim;
 
     //=============================================================
@@ -41,19 +44,29 @@ public class UpScreen : MonoBehaviour {
 
         //エネミーがリズムに乗る
         StartCoroutine(CharacterRhythm(enemyCharacter,gameManager.TstBGMBPM));
+
+        //タイミングバー用のウェーブ指定
+        notesWave4forTimingBar = gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM);
     }
 
     private void Update () {
         //シークバー動作
         seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.TstBGMName) / soundManager.GetBGMTimeLength(gameManager.TstBGMName);
+
+        //タイミングバー生成
+        if(notesWave4forTimingBar != gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM)) {
+            notesWave4forTimingBar = gameManager.GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),4,gameManager.TstBGMBPM);
+
+            CreateTimingBar();
+        }
     }
 
     //=============================================================
-    //プレイヤーがリズムに乗る
+    //キャラクターがリズムに乗る
     private IEnumerator CharacterRhythm (GameObject obj,float tempo) {
         float time = 0;
         while(true) {
-            time = gameManager.GetBeatWaveTiming(soundManager.GetBGMTime("bgm001"),1,tempo);
+            time = gameManager.GetBeatWaveTiming(soundManager.GetBGMTime("bgm001"),2,tempo);
             //time += Time.deltaTime * (tempo / 60f);
             obj.transform.localScale = new Vector3(1,CharacterRhythmAnim.Evaluate(time),1);
 
@@ -62,5 +75,12 @@ public class UpScreen : MonoBehaviour {
             }
             yield return null;
         }
+    }
+
+    //=============================================================
+    //タイミングバーの作成
+    private void CreateTimingBar () {
+        GameObject obj = Instantiate(Resources.Load("Prefabs/UI/TimingBar")) as GameObject;
+        obj.transform.SetParent(this.transform,false);
     }
 }
