@@ -53,7 +53,8 @@ public class UpScreen : MonoBehaviour {
     private IEnumerator CharacterRhythm (GameObject obj,float tempo) {
         float time = 0;
         while(true) {
-            time += Time.deltaTime * (tempo / 60f);
+            time = gameManager.GetBeatWaveTiming(soundManager.GetBGMTime("bgm001"),1,gameManager.TstBGMBPM);
+            //time += Time.deltaTime * (tempo / 60f);
             obj.transform.localScale = new Vector3(1,CharacterRhythmAnim.Evaluate(time),1);
 
             if(time >= 1) {

@@ -44,4 +44,22 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void Update () {
 
     }
+
+    //=============================================================
+    //1ビート毎の秒数を取得
+    public float GetTimePerBeats (float BPM) {
+        return 60 / BPM;
+    }
+
+    //=============================================================
+    //ビートウェイブを取得
+    public float GetBeatWave (float time,int interval,float BPM) {
+        return time / (GetTimePerBeats(BPM) * interval);
+    }
+
+    //=============================================================
+    //ビートウェイブのタイミングを取得
+    public float GetBeatWaveTiming (float time,int interval,float BPM) {
+        return GetBeatWave(time,interval,BPM) - Mathf.RoundToInt(GetBeatWave(time,interval,BPM));
+    }
 }

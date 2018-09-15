@@ -452,7 +452,7 @@ Prefab:
     - target: {fileID: 114974314547210062, guid: 0abc1bf6c8b6722448c683347344d491,
         type: 2}
       propertyPath: CharacterRhythmAnim.m_Curve.Array.data[1].value
-      value: 0.60086197
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 114974314547210062, guid: 0abc1bf6c8b6722448c683347344d491,
         type: 2}
@@ -462,7 +462,7 @@ Prefab:
     - target: {fileID: 114974314547210062, guid: 0abc1bf6c8b6722448c683347344d491,
         type: 2}
       propertyPath: CharacterRhythmAnim.m_Curve.Array.data[2].time
-      value: 0.3
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 114974314547210062, guid: 0abc1bf6c8b6722448c683347344d491,
         type: 2}
