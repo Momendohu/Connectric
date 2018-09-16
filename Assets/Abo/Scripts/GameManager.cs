@@ -97,7 +97,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //タイミングバーの作成
     private GameObject CreateTimingBar () {
         GameObject obj = Instantiate(Resources.Load("Prefabs/UI/TimingBar")) as GameObject;
-        obj.transform.SetParent(GameObject.Find("Canvas/UpScreen").transform,false);
+        obj.transform.SetParent(GameObject.Find("Canvas/UpScreen/MainImage").transform,false);
         return obj;
     }
 
