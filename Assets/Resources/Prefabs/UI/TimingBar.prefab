@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224724749004859306}
   m_Layer: 5
-  m_Name: PieceLinkH_UpScreen
+  m_Name: H
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 222785076793978768}
   - component: {fileID: 114901885390572854}
   m_Layer: 5
-  m_Name: Piece_UpScreenLD
+  m_Name: LD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224363741725488304}
   m_Layer: 5
-  m_Name: PieceLinkO_UpScreen
+  m_Name: O
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 222803079962929432}
   - component: {fileID: 114445750726742998}
   m_Layer: 5
-  m_Name: Piece_UpScreenLU
+  m_Name: LU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 222693080412933708}
   - component: {fileID: 114848974613558972}
   m_Layer: 5
-  m_Name: Piece_UpScreenD
+  m_Name: D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 222452338359090600}
   - component: {fileID: 114239097432214860}
   m_Layer: 5
-  m_Name: Piece_UpScreenRD
+  m_Name: RD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 222501799015587068}
   - component: {fileID: 114151478561695792}
   m_Layer: 5
-  m_Name: Piece_UpScreenR
+  m_Name: R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,7 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224263513263280400}
   m_Layer: 5
-  m_Name: PieceLinkV_UpScreen
+  m_Name: V
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 222282554744211080}
   - component: {fileID: 114277951054806388}
   m_Layer: 5
-  m_Name: Piece_UpScreenRU
+  m_Name: RU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 222998069796859868}
   - component: {fileID: 114459898407703228}
   m_Layer: 5
-  m_Name: Piece_UpScreenU
+  m_Name: U
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -255,7 +255,7 @@ GameObject:
   - component: {fileID: 222216678299671870}
   - component: {fileID: 114483439027681620}
   m_Layer: 5
-  m_Name: Piece_UpScreenL
+  m_Name: L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -288,11 +288,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181d1a1107683d643b692c0a40b3c6fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Image:
-  - {fileID: 21300000, guid: 68d66d70ad93de24695b840be37035ac, type: 3}
-  - {fileID: 21300000, guid: 9eea143193ab6a34f930dbb9004cdeb6, type: 3}
-  - {fileID: 21300000, guid: 9761c7eefce3ebb4a969269c2eb1c378, type: 3}
-  - {fileID: 21300000, guid: 01d0f6fb2fb396c41a7db162ffef371b, type: 3}
 --- !u!114 &114151478561695792
 MonoBehaviour:
   m_ObjectHideFlags: 1

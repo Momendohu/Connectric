@@ -139,7 +139,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         if(timingBars.Count >= 2) {
             return timingBars[1].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
         } else {
-            Debug.Log("ピースリンクが1個以下だよ");
+            //Debug.Log("ピースリンクが1個以下だよ");
             int[,] tmp = { { -1,-1 },{ -1,-1 } };
             return tmp;
         }
