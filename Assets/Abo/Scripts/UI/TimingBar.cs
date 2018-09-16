@@ -99,7 +99,7 @@ public class TimingBar : MonoBehaviour {
                 destroyFlag = true;
 
                 //リンクが成立したかどうかでアニメーションを変化させる
-                StartCoroutine(DestroyRoutine(destroyAnimationType));
+                StartCoroutine(DestroyRoutine(destroyAnimationType,2));
 
                 //リンクの状態を解除する
                 if(linkEstablished) {
@@ -112,7 +112,7 @@ public class TimingBar : MonoBehaviour {
 
     //=============================================================
     //オブジェクト破壊時の処理(アニメーション)
-    private IEnumerator DestroyRoutine (DestroyAnimationType type) {
+    private IEnumerator DestroyRoutine (DestroyAnimationType type,float speed) {
         switch(type) {
             case DestroyAnimationType.NotEstablished:
             List<Image> pieceLinkImages = pieceLinkObj.GetComponent<PieceLink_UpScreen>().GetPieceLinkImageComponent();
@@ -121,7 +121,7 @@ public class TimingBar : MonoBehaviour {
 
 
             while(true) {
-                time += Time.deltaTime;
+                time += Time.deltaTime * speed;
                 if(time >= 1) {
                     break;
                 }
