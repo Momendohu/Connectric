@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(-120)]
 public class TimingBar : MonoBehaviour {
     //=============================================================
     private GameManager gameManager;
@@ -19,6 +20,9 @@ public class TimingBar : MonoBehaviour {
 
     //=============================================================
     private bool destroyFlag;
+    public bool DestroyFlag {
+        get { return destroyFlag; }
+    }
 
     private int notesWave;
     private int destroyCount;

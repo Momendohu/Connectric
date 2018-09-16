@@ -80,11 +80,6 @@ public class NextFrame : PieceLinkUI {
             break;
 
             case GameManager.PIECE_LINK_TYPE.O:
-            Debug.Log("00"+ PieceLink[0,0]);
-            Debug.Log("10" + PieceLink[1,0]);
-            Debug.Log("01" + PieceLink[0,1]);
-            Debug.Log("11" + PieceLink[1,1]);
-
             linkO.SetActive(true);
 
             if(PieceLink[0,0] != -1) {

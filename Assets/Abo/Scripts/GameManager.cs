@@ -82,8 +82,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
             //登録してあるtimingbarがnullになったら除外
             for(int i = timingBars.Count - 1;i >= 0;i--) {
-                if(timingBars[i] == null) {
+                if(timingBars[i].GetComponent<TimingBar>().DestroyFlag) {
                     timingBars.RemoveAt(i);
+                    for(int j = 0;j < timingBars.Count;j++) {
+                    }
                 }
             }
         }
