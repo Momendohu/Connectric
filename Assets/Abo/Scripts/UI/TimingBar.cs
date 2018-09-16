@@ -19,9 +19,24 @@ public class TimingBar : MonoBehaviour {
     private int destroyCountLength = 1;
 
     //=============================================================
+    //アニメーションの種類
+    private enum DestroyAnimationType {
+        NotEstablished = 0,
+        Established = 1
+    }
+    private DestroyAnimationType destroyAnimationType = DestroyAnimationType.NotEstablished;
+
+    //=============================================================
+    //破壊フラグ
     private bool destroyFlag;
     public bool DestroyFlag {
         get { return destroyFlag; }
+    }
+
+    //リンクが成立したかどうかのフラグ
+    private bool linkEstablished;
+    public bool LinkEstablished {
+        set { linkEstablished = value; }
     }
 
     private int notesWave;
@@ -74,31 +89,57 @@ public class TimingBar : MonoBehaviour {
                 destroyCount++;
             }
 
+            //リンクが成立しているなら
+            if(linkEstablished) {
+                destroyAnimationType = DestroyAnimationType.Established;
+            }
+
             //カウントが進んだら消す
             if(destroyCount == destroyCountLength + 1) {
                 destroyFlag = true;
-                StartCoroutine(DestroyRoutine());
+
+                //リンクが成立したかどうかでアニメーションを変化させる
+                StartCoroutine(DestroyRoutine(destroyAnimationType));
+
+                //リンクの状態を解除する
+                if(linkEstablished) {
+                    linkEstablished = false;
+                    destroyAnimationType = DestroyAnimationType.NotEstablished;
+                }
             }
         }
     }
 
     //=============================================================
     //オブジェクト破壊時の処理(アニメーション)
-    private IEnumerator DestroyRoutine () {
-        Color iniColor = image.color;
-        float time = 0;
+    private IEnumerator DestroyRoutine (DestroyAnimationType type) {
+        switch(type) {
+            case DestroyAnimationType.NotEstablished:
+            Color iniColor = image.color;
+            float time = 0;
 
-        while(true) {
-            time += Time.deltaTime;
-            if(time >= 1) {
-                break;
+            while(true) {
+                time += Time.deltaTime;
+                if(time >= 1) {
+                    break;
+                }
+
+                image.color = new Color(iniColor.r,iniColor.g,iniColor.b,1 - time);
+
+                yield return null;
             }
 
-            image.color = new Color(iniColor.r,iniColor.g,iniColor.b,1 - time);
+            Destroy(this.gameObject);
+            break;
 
-            yield return null;
+            case DestroyAnimationType.Established:
+            break;
+
+            default:
+            Debug.Log("タイミングバーのアニメーション指定が変だよ");
+            break;
         }
 
-        Destroy(this.gameObject);
+        yield break;
     }
 }
