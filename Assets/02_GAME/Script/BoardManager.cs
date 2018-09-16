@@ -54,7 +54,7 @@ public class BoardManager : MonoBehaviour {
 
 
 
-    [SerializeField]private int TargetForm = 0;     // ターゲット    
+    [SerializeField]private int TargetForm = 1;     // ターゲット    
     [SerializeField]public int combo = 0;           // コンボ数
     [SerializeField]public bool deleteFrag = false;
     private int[,] Target = new int[2,2];           // リンクテスト
@@ -64,6 +64,8 @@ public class BoardManager : MonoBehaviour {
     // Use this for initialization
     //===================================================
     void Start () {
+        TargetForm = 1;
+
         CreateBoard();
 
         // テスト
@@ -83,7 +85,7 @@ public class BoardManager : MonoBehaviour {
         MoveMausePiece();
         LinkDo();
 
-        if (deleteFrag){ DeleteLink(); }
+        if (deleteFrag){ LinkDelete(); }
 
         Replenishment();    // 補充
 
@@ -111,7 +113,8 @@ public class BoardManager : MonoBehaviour {
                 Boardpieces[width, height].typeNum = obj_num;
                 Boardpieces[width, height].mouseFlag = false;
                 Boardpieces[width, height].moveFlag = false;
-                
+                Boardpieces[width, height].linkflag = false;
+
                 // デバッグ用
                 flag[width + height * 5] = Boardpieces[width, height].moveFlag;
             }
@@ -391,7 +394,7 @@ public class BoardManager : MonoBehaviour {
 
 
         // 念のため初期化
-        for (int height = 0; height < (BOARD_HEIGHT_NUM - 1); height++)
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
             for (int width = 0; width < BOARD_WIDTH_NUM; width++)
             {
@@ -458,6 +461,9 @@ public class BoardManager : MonoBehaviour {
                     if (Boardpieces[width + 1, height].typeNum == Target[1, 0])
                     {
                         linknum++;
+                        Boardpieces[width, height].linkflag = true;
+                        Boardpieces[width + 1, height].linkflag = true;
+                        continue;
                     }
                 }
             }
@@ -468,7 +474,7 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // リンク削除
     //-------------------------------------------------------
-    private void DeleteLink()
+    private void LinkDelete()
     {
         for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
@@ -483,14 +489,13 @@ public class BoardManager : MonoBehaviour {
                     Boardpieces[width, height].typeNum = (int)INSTRUMENT_TYPE.TIME;
                     Boardpieces[width, height].mouseFlag = false;
                     Boardpieces[width, height].moveFlag = false;
-
+                    Boardpieces[width, height].linkflag = false;
                 }
             }
         }
 
         deleteFrag = false;
     }
-
 
     //-------------------------------------------------------
     // 補充
@@ -516,6 +521,7 @@ public class BoardManager : MonoBehaviour {
                         Boardpieces[width, height].typeNum = obj_num;
                         Boardpieces[width, height].mouseFlag = false;
                         Boardpieces[width, height].moveFlag = false;
+                        Boardpieces[width, height].linkflag = false;
                     }
                 }
             }
