@@ -45,6 +45,45 @@ public class PieceLink_UpScreen : PieceLinkUI {
     }
 
     //=============================================================
+    //ピースリンクのイメージのコンポーネントを取得する
+    public List<Image> GetPieceLinkImageComponent () {
+        List<Image> objs = new List<Image>();
+        if(base.IsActivePieceLinkImage(linkV,"U")) {
+            objs.Add(base.RefPieceLinkImage(linkV,"U").GetComponent<Image>());
+        }
+
+        if(base.IsActivePieceLinkImage(linkV,"D")) {
+            objs.Add(base.RefPieceLinkImage(linkV,"D").GetComponent<Image>());
+        }
+
+        if(base.IsActivePieceLinkImage(linkH,"L")) {
+            objs.Add(base.RefPieceLinkImage(linkH,"L").GetComponent<Image>());
+        }
+
+        if(base.IsActivePieceLinkImage(linkH,"R")) {
+            objs.Add(base.RefPieceLinkImage(linkH,"R").GetComponent<Image>());
+        }
+
+        if(base.IsActivePieceLinkImage(linkO,"LU")) {
+            objs.Add(base.RefPieceLinkImage(linkO,"LU").GetComponent<Image>());
+        }
+
+        if(base.IsActivePieceLinkImage(linkO,"LD")) {
+            objs.Add(base.RefPieceLinkImage(linkO,"LD").GetComponent<Image>());
+        }
+
+        if(base.IsActivePieceLinkImage(linkO,"RU")) {
+            objs.Add(base.RefPieceLinkImage(linkO,"RU").GetComponent<Image>());
+        }
+
+        if(base.IsActivePieceLinkImage(linkO,"RD")) {
+            objs.Add(base.RefPieceLinkImage(linkO,"RD").GetComponent<Image>());
+        }
+
+        return objs;
+    }
+
+    //=============================================================
     //ピースリンクに画像を設定する
     private void SetPieceLinkImage (GameObject obj,string path,int x,int y) {
         obj.transform.Find(path).gameObject.SetActive(true);

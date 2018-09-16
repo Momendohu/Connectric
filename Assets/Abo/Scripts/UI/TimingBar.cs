@@ -50,8 +50,8 @@ public class TimingBar : MonoBehaviour {
     private void Init () {
         CRef();
 
-        BPM = gameManager.TstBGMBPM;
-        bgmTime = soundManager.GetBGMTime("bgm001");
+        BPM = gameManager.BGMBPM;
+        bgmTime = soundManager.GetBGMTime(gameManager.BGMName);
         waveInterval = 8;
 
         notesWave = gameManager.GetBeatWaveNum(bgmTime,waveInterval,BPM);
@@ -73,7 +73,7 @@ public class TimingBar : MonoBehaviour {
 
     private void Update () {
         //時間の取得
-        bgmTime = soundManager.GetBGMTime("bgm001");
+        bgmTime = soundManager.GetBGMTime(gameManager.BGMName);
 
         //位置の更新
         GetComponent<RectTransform>().localPosition = Vector3.Lerp(
@@ -115,8 +115,10 @@ public class TimingBar : MonoBehaviour {
     private IEnumerator DestroyRoutine (DestroyAnimationType type) {
         switch(type) {
             case DestroyAnimationType.NotEstablished:
+            List<Image> pieceLinkImages = pieceLinkObj.GetComponent<PieceLink_UpScreen>().GetPieceLinkImageComponent();
             Color iniColor = image.color;
             float time = 0;
+
 
             while(true) {
                 time += Time.deltaTime;
@@ -124,7 +126,11 @@ public class TimingBar : MonoBehaviour {
                     break;
                 }
 
-                image.color = new Color(iniColor.r,iniColor.g,iniColor.b,1 - time);
+                Color presentColor = new Color(iniColor.r,iniColor.g,iniColor.b,1 - time);
+                image.color = presentColor;
+                for(int i = 0;i < pieceLinkImages.Count;i++) {
+                    pieceLinkImages[i].color = presentColor;
+                }
 
                 yield return null;
             }

@@ -37,15 +37,15 @@ public class UpScreen : MonoBehaviour {
 
     private void Start () {
         //プレイヤーがリズムに乗る
-        StartCoroutine(CharacterRhythm(playerCharacter,gameManager.TstBGMBPM));
+        StartCoroutine(CharacterRhythm(playerCharacter,gameManager.BGMBPM));
 
         //エネミーがリズムに乗る
-        StartCoroutine(CharacterRhythm(enemyCharacter,gameManager.TstBGMBPM));
+        StartCoroutine(CharacterRhythm(enemyCharacter,gameManager.BGMBPM));
     }
 
     private void Update () {
         //シークバー動作
-        seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.TstBGMName) / soundManager.GetBGMTimeLength(gameManager.TstBGMName);
+        seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.BGMName) / soundManager.GetBGMTimeLength(gameManager.BGMName);
     }
 
     //=============================================================
@@ -53,7 +53,7 @@ public class UpScreen : MonoBehaviour {
     private IEnumerator CharacterRhythm (GameObject obj,float tempo) {
         float time = 0;
         while(true) {
-            time = gameManager.GetBeatWaveTiming(soundManager.GetBGMTime("bgm001"),2,tempo);
+            time = gameManager.GetBeatWaveTiming(soundManager.GetBGMTime(gameManager.BGMName),2,tempo);
             //time += Time.deltaTime * (tempo / 60f);
             obj.transform.localScale = new Vector3(1,CharacterRhythmAnim.Evaluate(time),1);
 

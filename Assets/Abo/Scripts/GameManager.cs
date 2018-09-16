@@ -34,9 +34,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     [System.NonSerialized]
-    public float TstBGMBPM = 130f;
+    public float BGMBPM = 171f; //130
     [System.NonSerialized]
-    public string TstBGMName = "bgm001";
+    public string BGMName = "tst001";
+    [System.NonSerialized]
+    public int BeatInterbal = 8;
 
     //=============================================================
     private List<GameObject> timingBars = new List<GameObject>();
@@ -54,10 +56,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         CRef();
 
-        soundManager.TriggerBGM(TstBGMName,false);
+        soundManager.TriggerBGM(BGMName,false);
 
         //タイミングバー用のウェーブ指定
-        notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),8,TstBGMBPM);
+        notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
     }
 
     //=============================================================
@@ -75,8 +77,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     private void Update () {
         //タイミングバー生成
-        if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),8,TstBGMBPM)) {
-            notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime("bgm001"),8,TstBGMBPM);
+        if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM)) {
+            notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
 
             timingBars.Add(CreateTimingBar());
 

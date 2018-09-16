@@ -6,7 +6,7 @@ using UnityEngine;
 public class PieceLinkUI : MonoBehaviour {
     //=============================================================
     //ピースリンクのタイプの選択
-    protected void SelectPieceLinkType (int[,] pieceLink,ref GameManager.PIECE_LINK_TYPE pieceLinkType) {
+    protected virtual void SelectPieceLinkType (int[,] pieceLink,ref GameManager.PIECE_LINK_TYPE pieceLinkType) {
         //左下がなくてアクティブなピースリンクの数が2なら横長タイプ
         if(pieceLink[0,1] == -1 && ActivePieceLinkNum(pieceLink) == 2) {
             pieceLinkType = GameManager.PIECE_LINK_TYPE.H;
@@ -25,7 +25,7 @@ public class PieceLinkUI : MonoBehaviour {
 
     //=============================================================
     //アクティブなピースリンクの数を取得
-    protected int ActivePieceLinkNum (int[,] pieceLink) {
+    protected virtual int ActivePieceLinkNum (int[,] pieceLink) {
         int num = 0;
         for(int i = 0;i < pieceLink.GetLength(0);i++) {
             for(int j = 0;j < pieceLink.GetLength(1);j++) {
@@ -39,8 +39,25 @@ public class PieceLinkUI : MonoBehaviour {
     }
 
     //=============================================================
+    //ピースリンクのイメージがアクティブかどうか
+    protected virtual bool IsActivePieceLinkImage (GameObject linkObj,string path) {
+        GameObject obj = RefPieceLinkImage(linkObj,path);
+        if(obj == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //=============================================================
+    //ピースリンクのイメージの参照を返す
+    protected virtual GameObject RefPieceLinkImage (GameObject linkObj,string path) {
+        return linkObj.transform.Find(path).gameObject;
+    }
+
+    //=============================================================
     //ピースリンクの決定
-    protected void DecidePieceLink (int[,] pieceLink) {
+    protected virtual void DecidePieceLink (int[,] pieceLink) {
         //初期状態
         for(int i = 0;i < pieceLink.GetLength(0);i++) {
             for(int j = 0;j < pieceLink.GetLength(1);j++) {
