@@ -126,7 +126,7 @@ public class TimingBar : MonoBehaviour {
                     break;
                 }
 
-                Color presentColor = new Color(iniColor.r,iniColor.g,iniColor.b,1 - time);
+                Color presentColor = new Color(iniColor.r,iniColor.g,iniColor.b,Mathf.Clamp01(iniColor.a - time));
                 image.color = presentColor;
                 for(int i = 0;i < pieceLinkImages.Count;i++) {
                     pieceLinkImages[i].color = presentColor;

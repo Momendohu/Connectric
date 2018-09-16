@@ -56,12 +56,20 @@ public class PieceLink_UpScreen : PieceLinkUI {
             objs.Add(base.RefPieceLinkImage(linkV,"D").GetComponent<Image>());
         }
 
+        if(base.IsActivePieceLinkImage(linkV,"Background")) {
+            objs.Add(base.RefPieceLinkImage(linkV,"Background").GetComponent<Image>());
+        }
+
         if(base.IsActivePieceLinkImage(linkH,"L")) {
             objs.Add(base.RefPieceLinkImage(linkH,"L").GetComponent<Image>());
         }
 
         if(base.IsActivePieceLinkImage(linkH,"R")) {
             objs.Add(base.RefPieceLinkImage(linkH,"R").GetComponent<Image>());
+        }
+
+        if(base.IsActivePieceLinkImage(linkH,"Background")) {
+            objs.Add(base.RefPieceLinkImage(linkH,"Background").GetComponent<Image>());
         }
 
         if(base.IsActivePieceLinkImage(linkO,"LU")) {
@@ -78,6 +86,10 @@ public class PieceLink_UpScreen : PieceLinkUI {
 
         if(base.IsActivePieceLinkImage(linkO,"RD")) {
             objs.Add(base.RefPieceLinkImage(linkO,"RD").GetComponent<Image>());
+        }
+
+        if(base.IsActivePieceLinkImage(linkO,"Background")) {
+            objs.Add(base.RefPieceLinkImage(linkO,"Background").GetComponent<Image>());
         }
 
         return objs;
