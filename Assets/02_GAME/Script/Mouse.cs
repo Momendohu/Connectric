@@ -82,4 +82,24 @@ public class Mouse : MonoBehaviour {
 
     }
 
+    //// 入力されたクリック(タップ)位置から最も近いピースの位置を返す
+    //public Piece GetNearestPiece(Vector3 input)
+    //{
+    //    var minDist = float.MaxValue;
+    //    Piece nearestPiece = null;
+
+    //    // 入力値と盤面のピース位置との距離を計算し、一番距離が短いピースを探す
+    //    foreach (var p in board)
+    //    {
+    //        var dist = Vector3.Distance(input, p.transform.position);
+    //        if (dist < minDist)
+    //        {
+    //            minDist = dist;
+    //            nearestPiece = p;
+    //        }
+    //    }
+
+    //    return nearestPiece;
+    //}
+
 }
