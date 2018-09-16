@@ -19,10 +19,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     };
 
     //=============================================================
+    //ピースリンクタイプ
+    public enum PIECE_LINK_TYPE {
+        V = 0,
+        H = 1,
+        O = 2,
+    }
+
+    //=============================================================
+    public Sprite[] PieceLinkImage;
+
+    //=============================================================
     private SoundManager soundManager;
 
     //=============================================================
+    [System.NonSerialized]
     public float TstBGMBPM = 130f;
+    [System.NonSerialized]
     public string TstBGMName = "bgm001";
 
     //=============================================================
@@ -115,7 +128,20 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             return timingBars[0].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
         } else {
             Debug.Log("ピースリンクがうまく取得できてないよ");
-            return new int[2,2];
+            int[,] tmp = { { -1,-1 },{ -1,-1 } };
+            return tmp;
+        }
+    }
+
+    //=============================================================
+    //2番目のピースリンクを取得
+    public int[,] GetNextPieceLink () {
+        if(timingBars.Count >= 2) {
+            return timingBars[1].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
+        } else {
+            Debug.Log("ピースリンクが1個以下だよ");
+            int[,] tmp = { { -1,-1 },{ -1,-1 } };
+            return tmp;
         }
     }
 }

@@ -51,5 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1ccdebbeab81d41996831a2fec0f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TstBGMBPM: 130
-  TstBGMName: bgm001
+  PieceLinkImage:
+  - {fileID: 21300000, guid: 68d66d70ad93de24695b840be37035ac, type: 3}
+  - {fileID: 21300000, guid: 9eea143193ab6a34f930dbb9004cdeb6, type: 3}
+  - {fileID: 21300000, guid: 9761c7eefce3ebb4a969269c2eb1c378, type: 3}
+  - {fileID: 21300000, guid: 01d0f6fb2fb396c41a7db162ffef371b, type: 3}
