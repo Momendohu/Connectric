@@ -34,9 +34,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     [System.NonSerialized]
-    public float BGMBPM = 171f; //130
+    public float BGMBPM = 146f; //tst001->171 bgm001->130 bgm002->128 bgm003->146
     [System.NonSerialized]
-    public string BGMName = "tst001";
+    public string BGMName = "bgm003";
     [System.NonSerialized]
     public int BeatInterbal = 8;
 
