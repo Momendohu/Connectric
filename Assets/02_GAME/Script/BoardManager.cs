@@ -153,6 +153,10 @@ public class BoardManager : MonoBehaviour {
                         // デバッグ用
                         Boards[1,0].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[0,1].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                        // 斜めも対応
+                        Boardpieces[1, 1].moveFlag = true;
+                        Boards[1, 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                     }
 
                     // 右上角
@@ -164,6 +168,10 @@ public class BoardManager : MonoBehaviour {
                         // デバッグ用
                         Boards[BOARD_WIDTH_NUM - 2, 0].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[BOARD_WIDTH_NUM - 1, 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                        // 斜めも対応
+                        Boardpieces[BOARD_WIDTH_NUM - 2, 1].moveFlag = true;
+                        Boards[BOARD_WIDTH_NUM - 2, 1].GetComponent<SpriteRenderer>().color = Color.cyan;
 
                     }
 
@@ -177,6 +185,10 @@ public class BoardManager : MonoBehaviour {
                         Boards[0, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[1, BOARD_HEIGHT_NUM - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
 
+                        // 斜めも対応
+                        Boardpieces[1, BOARD_HEIGHT_NUM - 2].moveFlag = true;
+                        Boards[1, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = Color.cyan;
+
                     }
 
                     // 右下角
@@ -188,6 +200,10 @@ public class BoardManager : MonoBehaviour {
                         // デバッグ用
                         Boards[BOARD_WIDTH_NUM - 2, BOARD_HEIGHT_NUM -1].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[BOARD_WIDTH_NUM - 1, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                        // 斜めも対応
+                        Boardpieces[BOARD_WIDTH_NUM - 2, BOARD_HEIGHT_NUM - 2].moveFlag = true;
+                        Boards[BOARD_WIDTH_NUM - 2, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = Color.cyan;
                     }
 
                     // 上列
@@ -201,6 +217,12 @@ public class BoardManager : MonoBehaviour {
                         Boards[width - 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width + 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                        // 斜めも対応
+                        Boardpieces[width - 1, height + 1].moveFlag = true;
+                        Boardpieces[width + 1, height + 1].moveFlag = true;
+                        Boards[width - 1, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width + 1, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                     }
 
                     // 下列
@@ -214,6 +236,12 @@ public class BoardManager : MonoBehaviour {
                         Boards[width - 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width + 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                        // 斜めも対応
+                        Boardpieces[width - 1, height - 1].moveFlag = true;
+                        Boardpieces[width + 1, height - 1].moveFlag = true;
+                        Boards[width - 1, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width + 1, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                     }
 
                     // 左列
@@ -227,6 +255,12 @@ public class BoardManager : MonoBehaviour {
                         Boards[width, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width + 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                        // 斜めも対応
+                        Boardpieces[width + 1, height - 1].moveFlag = true;
+                        Boardpieces[width + 1, height + 1].moveFlag = true;
+                        Boards[width + 1, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width + 1, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                     }
 
                     // 右列
@@ -240,6 +274,12 @@ public class BoardManager : MonoBehaviour {
                         Boards[width, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width - 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                        // 斜めも対応
+                        Boardpieces[width - 1, height - 1].moveFlag = true;
+                        Boardpieces[width - 1, height + 1].moveFlag = true;
+                        Boards[width - 1, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width - 1, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                     }
 
                     // 四か所できる
@@ -255,6 +295,16 @@ public class BoardManager : MonoBehaviour {
                         Boards[width + 1, height].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                         Boards[width, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+
+                        // 斜めの対応
+                        Boardpieces[width - 1, height - 1].moveFlag = true;
+                        Boardpieces[width + 1, height - 1].moveFlag = true;
+                        Boardpieces[width - 1, height + 1].moveFlag = true;
+                        Boardpieces[width + 1, height + 1].moveFlag = true;
+                        Boards[width - 1, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width + 1, height - 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width - 1, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
+                        Boards[width + 1, height + 1].GetComponent<SpriteRenderer>().color = Color.cyan;
                     }
                     
                 }
