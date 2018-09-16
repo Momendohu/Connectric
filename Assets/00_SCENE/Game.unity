@@ -255,13 +255,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b68aac85942f054ab15ac29429dd3cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vStartPos: {x: -3.7, y: 1.2, z: 0}
   board: {fileID: 1315383620117082, guid: dc57e6542e8e44741a4381f5c5a62ace, type: 2}
   piece:
   - {fileID: 1998649703565960, guid: c266c238e3c556c49b95c39ddea40273, type: 2}
   - {fileID: 1279610335876584, guid: 0013ed7aff3ec9942afda46b093e1195, type: 2}
   - {fileID: 1341024841400220, guid: 44d6784ac62dfd44f94912f2742147b6, type: 2}
   - {fileID: 1864698413617130, guid: 7df509ec403282448bea119bc40a3830, type: 2}
+  - {fileID: 1556854040206358, guid: 94e3788fece5c784aa7a285bdb64fe60, type: 2}
   flag: 00000000000000000000000000000000000000000000000000
+  TargetForm: 0
+  combo: 0
+  deleteFrag: 0
 --- !u!4 &527804183
 Transform:
   m_ObjectHideFlags: 0
