@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-200)]
 public class BoardManager : MonoBehaviour {
 
     // 定数
