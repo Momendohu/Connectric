@@ -455,6 +455,11 @@ public class BoardManager : MonoBehaviour {
         // ノーツリンクの取得
         Target = game_manager.GetComponent<GameManager>().GetLatestPieceLink();
 
+        Debug.Log(Target[0, 0]);
+        Debug.Log(Target[0, 1]);
+        Debug.Log(Target[1, 0]);
+        Debug.Log(Target[1, 1]);
+
 
         // 念のため初期化
         for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
