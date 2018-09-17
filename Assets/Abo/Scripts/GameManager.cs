@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 //using UnityEngine.UI;
 
 [DefaultExecutionOrder(-100)]
@@ -55,11 +56,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         DontDestroyOnLoad(this.gameObject);
 
         CRef();
-
-        soundManager.TriggerBGM(BGMName,false);
-
-        //タイミングバー用のウェーブ指定
-        notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
     }
 
     //=============================================================
@@ -70,12 +66,66 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     private void Awake () {
         Init();
+
+        switch(SceneManager.GetActiveScene().name) {
+            case "CharacterSelect":
+            break;
+
+            case "Game_copy":
+            InitGame();
+            break;
+
+            default:
+            Debug.Log("謎のシーンだよ");
+            break;
+        }
     }
 
     private void Start () {
+        switch(SceneManager.GetActiveScene().name) {
+            case "CharacterSelect":
+            break;
+
+            case "Game_copy":
+            break;
+
+            default:
+            Debug.Log("謎のシーンだよ");
+            break;
+        }
     }
 
     private void Update () {
+        switch(SceneManager.GetActiveScene().name) {
+            case "CharacterSelect":
+            break;
+
+            case "Game_copy":
+            RoutineGame();
+            break;
+
+            default:
+            Debug.Log("謎のシーンだよ");
+            break;
+        }
+    }
+
+    //==============================================================================================================================================
+    //CharacterSelectシーン
+    //==============================================================================================================================================
+
+    //==============================================================================================================================================
+    //Gameシーン
+    //==============================================================================================================================================
+    private void InitGame () {
+        soundManager.TriggerBGM(BGMName,false);
+
+        //タイミングバー用のウェーブ指定
+        notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
+    }
+
+    //=============================================================
+    private void RoutineGame () {
         //タイミングバー生成
         if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM)) {
             notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
