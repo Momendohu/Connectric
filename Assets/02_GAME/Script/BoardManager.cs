@@ -55,7 +55,7 @@ public class BoardManager : MonoBehaviour {
 
 
 
-    [SerializeField]private int TargetForm = 1;     // ターゲット    
+    //[SerializeField]private int TargetForm = 1;     // ターゲット    
     [SerializeField]public int combo = 0;           // コンボ数
     //[SerializeField]public bool deleteFrag = false;
     private int[,] Target = new int[2,2];           // リンクテスト
@@ -65,15 +65,15 @@ public class BoardManager : MonoBehaviour {
     // Use this for initialization
     //===================================================
     void Start () {
-        TargetForm = 1;
+        //TargetForm = 1;
 
         CreateBoard();
 
         // テスト
-        Target[0, 0] = (int)INSTRUMENT_TYPE.GUITAR;
-        Target[1, 0] = (int)INSTRUMENT_TYPE.DRUM;
-        Target[0, 1] = (int)INSTRUMENT_TYPE.VOCAL;
-        Target[1, 1] = (int)INSTRUMENT_TYPE.DJ;
+        //Target[0, 0] = (int)INSTRUMENT_TYPE.GUITAR;
+        //Target[1, 0] = (int)INSTRUMENT_TYPE.DRUM;
+        //Target[0, 1] = (int)INSTRUMENT_TYPE.VOCAL;
+        //Target[1, 1] = (int)INSTRUMENT_TYPE.DJ;
 
     }
 
@@ -454,7 +454,7 @@ public class BoardManager : MonoBehaviour {
     private void LinkDo()
     {
         // ノーツリンクの取得
-        //Target = GetLinkData();
+        Target = game_manager.GetComponent<GameManager>().GetLatestPieceLink();
 
 
         // 念のため初期化
@@ -465,70 +465,53 @@ public class BoardManager : MonoBehaviour {
                 Boardpieces[width, height].linkflag = false;
             }
         }
-
-        // タイプの分岐
-        switch (TargetForm)
-        {
-            case (int)TARGET_FORM.TATE:
-                {
-                    combo = LinkTate();
-                    break;
-                }
-            case (int)TARGET_FORM.YOKO:
-                {
-                    combo = LinkYoko();
-                    break;
-                }
-            default: { break; }
-        }
+        
+        Link();
     }
 
     //-------------------------------------------------------
     // リンクチェック(縦)
     //-------------------------------------------------------
-    private int LinkTate()
-    {
-        int linknum = 0;
-
-        for (int height = 0; height < (BOARD_HEIGHT_NUM - 1); height++)
-        {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
-            {
-                if (Boardpieces[width, height].typeNum == Target[0, 0])
-                {
-                    if(Boardpieces[width, height + 1].typeNum == Target[0, 1])
-                    {
-                        linknum++;
-                        Boardpieces[width, height].linkflag = true;
-                        Boardpieces[width, height + 1].linkflag = true;
-                        continue;
-                    }
-                }
-            }
-        }
-        return linknum;
-    }
-
-    //-------------------------------------------------------
-    // リンクチェック(横)
-    //-------------------------------------------------------
-    private int LinkYoko()
+    private int Link()
     {
         int linknum = 0;
 
         for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
-            for (int width = 0; width < (BOARD_WIDTH_NUM - 1); width++)
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
             {
+                // 左上の一致
                 if (Boardpieces[width, height].typeNum == Target[0, 0])
                 {
-                    if (Boardpieces[width + 1, height].typeNum == Target[1, 0])
+                    // 縦と判断
+                    if (Target[1, 0] == -1 && Target[1, 1] == -1)
                     {
-                        linknum++;
-                        Boardpieces[width, height].linkflag = true;
-                        Boardpieces[width + 1, height].linkflag = true;
-                        continue;
+                        if (height == (BOARD_HEIGHT_NUM - 1)) { continue; }
+                        if (Boardpieces[width, height + 1].typeNum == Target[0, 1])
+                        {
+                            linknum++;
+                            Boardpieces[width, height].linkflag = true;
+                            Boardpieces[width, height + 1].linkflag = true;
+                            continue;
+                        }
+                           
+                        
+
                     }
+                    // 横と判断
+                    else if (Target[0, 1] == -1 && Target[1, 1] == -1)
+                    {
+                        
+                        if(width == (BOARD_WIDTH_NUM - 1)) { continue; }
+                        if (Boardpieces[width + 1, height].typeNum == Target[1, 0])
+                        {
+                            linknum++;
+                            Boardpieces[width, height].linkflag = true;
+                            Boardpieces[width + 1, height].linkflag = true;
+                            continue;
+                        }
+                    }
+                    
                 }
             }
         }
