@@ -32,10 +32,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public Sprite[] CharacterImage; //キャラクターのイメージ
 
     //=============================================================
-    public string[,] CharacterInfomation = {
-        { "Kanade","Duplicate Reverb","Power Code"},
-        { "xxx","yyy","zzz"},
-        { "xxx","yyy","zzz"},
+    //キャラクターデータ
+    public struct CharacterData {
+        public int Id;
+        public string Name;
+        public string ActiveSkill;
+        public string PassiveSkill;
+        public INSTRUMENT_TYPE InstrumentType;
+    }
+
+    public CharacterData[] CharacterDatas = {
+        new CharacterData{Id=0, Name="kanade",ActiveSkill="Duplicate Reverb",PassiveSkill="Power Code",InstrumentType=INSTRUMENT_TYPE.GUITAR},
     };
 
     //=============================================================
@@ -197,7 +204,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         if(timingBars.Count != 0) {
             return timingBars[0].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
         } else {
-            Debug.Log("ピースリンクがうまく取得できてないよ");
+            //Debug.Log("ピースリンクがうまく取得できてないよ");
             int[,] tmp = { { -1,-1 },{ -1,-1 } };
             return tmp;
         }
