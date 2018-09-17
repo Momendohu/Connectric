@@ -7,7 +7,10 @@
   - Projection`Orthographic`
   - Size`9.216`
 - Tag設定
-  - `なし`
+  - `Board`
+  - `Piece`
+- SortingLayer設定
+  - `14 PostProcessingUI`
 - SortingLayer設定
   - `なし`
 - Canvas設定
