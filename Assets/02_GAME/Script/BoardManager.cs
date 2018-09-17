@@ -44,8 +44,6 @@ public class BoardManager : MonoBehaviour {
     };
 
     // 変数
-    //public static GameObject[] Boards = new GameObject[BOARD_ALL_NUM];
-    //public static PANEL_DATA[] Boardpieces = new PANEL_DATA[BOARD_ALL_NUM];
     public static GameObject[,] Boards = new GameObject[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
     public static PANEL_DATA[,] Boardpieces = new PANEL_DATA[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
 
@@ -54,27 +52,17 @@ public class BoardManager : MonoBehaviour {
     [SerializeField]private GameObject[] piece = new GameObject[(int)INSTRUMENT_TYPE.MAX];
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
 
-
-
-    //[SerializeField]private int TargetForm = 1;     // ターゲット    
-    [SerializeField]public int combo = 0;           // コンボ数
-    //[SerializeField]public bool deleteFrag = false;
-    [SerializeField]private int[,] Target = new int[2,2];           // リンクテスト
+   
+    [SerializeField]public int combo = 0;                       // コンボ数
+    [SerializeField]private int[,] Target = new int[2,2];       // リンクテスト
     
 
     //===================================================
     // Use this for initialization
     //===================================================
     void Start () {
-        //TargetForm = 1;
 
         CreateBoard();
-
-        // テスト
-        //Target[0, 0] = (int)INSTRUMENT_TYPE.GUITAR;
-        //Target[1, 0] = (int)INSTRUMENT_TYPE.DRUM;
-        //Target[0, 1] = (int)INSTRUMENT_TYPE.VOCAL;
-        //Target[1, 1] = (int)INSTRUMENT_TYPE.DJ;
 
     }
 
@@ -85,12 +73,14 @@ public class BoardManager : MonoBehaviour {
 
 
         MoveMausePiece();
-        LinkDo();
 
         if (game_manager.GetComponent<GameManager>().IsBeatChange)
         {
             LinkDelete();
         }
+
+        
+        LinkDo();
 
         Replenishment();    // 補充
 
