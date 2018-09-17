@@ -89,7 +89,7 @@ public class TimingBar : MonoBehaviour {
                 destroyCount++;
             }
 
-            //リンクが成立しているなら
+            //リンクが成立しているならリンク成立フラグon
             if(linkEstablished) {
                 destroyAnimationType = DestroyAnimationType.Established;
             }
