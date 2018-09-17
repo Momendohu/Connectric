@@ -13,11 +13,25 @@ public class PieceTime : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
+        if (!Mouse.ChaptureFlag)
+        {
+            this.GetComponent<Transform>().localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
+
+
+        if (this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
         {
             finAnimFrag = true;
         }
 
+    }
+
+    //-------------------------------------------
+    // キャプチャ中に大きくする
+    //-------------------------------------------
+    public void Big()
+    {
+        this.GetComponent<Transform>().localScale = new Vector3(0.6f, 0.6f, 0.6f);
     }
 
     //--------------------------------------------------------------

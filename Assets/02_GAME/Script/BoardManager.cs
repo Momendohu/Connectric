@@ -398,7 +398,16 @@ public class BoardManager : MonoBehaviour {
             {
                 if (Boards[width,height].GetComponent<SpriteRenderer>().color == Gray)
                 {
-                    Boardpieces[width,height].obj.GetComponent<Piece>().Big();
+                    if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.TIME)
+                    {
+                        Boardpieces[width, height].obj.GetComponent<PieceTime>().Big();
+                    }
+                    else
+                    {
+                        Boardpieces[width, height].obj.GetComponent<Piece>().Big();
+                    }
+                   
+
                     Boardpieces[width,height].obj.GetComponent<SpriteRenderer>().sortingOrder = 1;
                     Boardpieces[width,height].mouseFlag = true;
                     Boards[width,height].GetComponent<SpriteRenderer>().color = Color.magenta;
