@@ -42,8 +42,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public int BeatInterbal = 8;
 
     //=============================================================
-    private List<GameObject> timingBars = new List<GameObject>();
+    //ビートが変わったかどうか(タイミングバーが到達したかどうか)
+    private bool isBeatChange;
+    public bool IsBeatChange {
+        get { return isBeatChange; }
+        set { isBeatChange = value; }
+    }
 
+    //=============================================================
+    private List<GameObject> timingBars = new List<GameObject>();
     private int notesWaveForTimingBar;
 
     //=============================================================
@@ -135,6 +142,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             //登録してあるtimingbarがnullになったら除外
             for(int i = timingBars.Count - 1;i >= 0;i--) {
                 if(timingBars[i].GetComponent<TimingBar>().DestroyFlag) {
+                    IsBeatChange = true;
                     timingBars.RemoveAt(i);
                     for(int j = 0;j < timingBars.Count;j++) {
                     }
