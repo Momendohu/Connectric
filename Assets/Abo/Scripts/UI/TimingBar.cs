@@ -75,13 +75,6 @@ public class TimingBar : MonoBehaviour {
         //時間の取得
         bgmTime = soundManager.GetBGMTime(gameManager.BGMName);
 
-        //位置の更新
-        GetComponent<RectTransform>().localPosition = Vector3.Lerp(
-            iniPos - (goalPos - iniPos) * (destroyCountLength - destroyCount),
-            goalPos - (goalPos - iniPos) * (destroyCountLength - destroyCount),
-            gameManager.GetBeatWaveTiming(bgmTime,waveInterval,BPM)
-            );
-
         if(!destroyFlag) {
             //消滅までのカウントを進める
             if(notesWave != gameManager.GetBeatWaveNum(bgmTime,waveInterval,BPM)) {
@@ -108,6 +101,13 @@ public class TimingBar : MonoBehaviour {
                 }
             }
         }
+
+        //位置の更新
+        GetComponent<RectTransform>().localPosition = Vector3.Lerp(
+            iniPos - (goalPos - iniPos) * (destroyCountLength - destroyCount),
+            goalPos - (goalPos - iniPos) * (destroyCountLength - destroyCount),
+            gameManager.GetBeatWaveTiming(bgmTime,waveInterval,BPM)
+            );
     }
 
     //=============================================================
