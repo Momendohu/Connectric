@@ -48,6 +48,7 @@ public class BoardManager : MonoBehaviour {
     public static GameObject[,] Boards = new GameObject[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
     public static PANEL_DATA[,] Boardpieces = new PANEL_DATA[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
 
+    [SerializeField]private GameObject game_manager;
     [SerializeField]private GameObject board;
     [SerializeField]private GameObject[] piece = new GameObject[(int)INSTRUMENT_TYPE.MAX];
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
@@ -56,7 +57,7 @@ public class BoardManager : MonoBehaviour {
 
     [SerializeField]private int TargetForm = 1;     // ターゲット    
     [SerializeField]public int combo = 0;           // コンボ数
-    [SerializeField]public bool deleteFrag = false;
+    //[SerializeField]public bool deleteFrag = false;
     private int[,] Target = new int[2,2];           // リンクテスト
     
 
@@ -85,7 +86,11 @@ public class BoardManager : MonoBehaviour {
         MoveMausePiece();
         LinkDo();
 
-        if (deleteFrag){ LinkDelete(); }
+
+        if (game_manager.GetComponent<GameManager>().IsBeatChange)
+        {
+            LinkDelete();
+        }
 
         Replenishment();    // 補充
 
@@ -544,7 +549,7 @@ public class BoardManager : MonoBehaviour {
             }
         }
 
-        deleteFrag = false;
+        game_manager.GetComponent<GameManager>().IsBeatChange = false;
     }
 
     //-------------------------------------------------------
