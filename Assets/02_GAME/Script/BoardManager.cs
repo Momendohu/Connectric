@@ -58,7 +58,7 @@ public class BoardManager : MonoBehaviour {
     //[SerializeField]private int TargetForm = 1;     // ターゲット    
     [SerializeField]public int combo = 0;           // コンボ数
     //[SerializeField]public bool deleteFrag = false;
-    private int[,] Target = new int[2,2];           // リンクテスト
+    [SerializeField]private int[,] Target = new int[2,2];           // リンクテスト
     
 
     //===================================================
@@ -85,7 +85,6 @@ public class BoardManager : MonoBehaviour {
 
         MoveMausePiece();
         LinkDo();
-
 
         if (game_manager.GetComponent<GameManager>().IsBeatChange)
         {
@@ -494,8 +493,6 @@ public class BoardManager : MonoBehaviour {
                             Boardpieces[width, height + 1].linkflag = true;
                             continue;
                         }
-                           
-                        
 
                     }
                     // 横と判断
