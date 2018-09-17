@@ -68,8 +68,8 @@ public class PieceLinkUI : MonoBehaviour {
         pieceLink[0,0] = Random.Range(0,4);
 
         int branch1 = Random.Range(0,2);
-        int branch2 = Random.Range(0,3);
-        int branch3 = Random.Range(0,2);
+        int branch2 = 0/*Random.Range(0,3)*/;
+        int branch3 = 0/*Random.Range(0,2)*/;
 
         if(branch1 == 0) {
             //右上

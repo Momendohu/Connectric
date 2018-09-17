@@ -28,7 +28,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
-    public Sprite[] PieceLinkImage;
+    public Sprite[] PieceLinkImage; //ピースのイメージ
+    public Sprite[] CharacterImage; //キャラクターのイメージ
+
+    //=============================================================
+    public string[,] CharacterInfomation = {
+        { "Kanade","Duplicate Reverb","Power Code"},
+        { "xxx","yyy","zzz"},
+        { "xxx","yyy","zzz"},
+    };
 
     //=============================================================
     private SoundManager soundManager;
@@ -142,7 +150,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             //登録してあるtimingbarがnullになったら除外
             for(int i = timingBars.Count - 1;i >= 0;i--) {
                 if(timingBars[i].GetComponent<TimingBar>().DestroyFlag) {
-                    IsBeatChange = true;
+                    isBeatChange = true;
                     timingBars.RemoveAt(i);
                     for(int j = 0;j < timingBars.Count;j++) {
                     }

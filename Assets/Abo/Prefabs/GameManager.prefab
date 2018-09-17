@@ -56,3 +56,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e59f0683eb246ee43b9d6b8f414c6459, type: 3}
   - {fileID: 21300000, guid: e5449b73bcca21a47831e6acad5af534, type: 3}
   - {fileID: 21300000, guid: 931448d10b07d7e4491542d595a83095, type: 3}
+  CharacterImage:
+  - {fileID: 21300000, guid: 97f4deecb6b22f549b36f017c43fa1dc, type: 3}
+  - {fileID: 21300000, guid: 414358679157ac84d8eca751689aea9d, type: 3}
+  - {fileID: 21300000, guid: 864520fa6ede4764d90231114db71166, type: 3}
