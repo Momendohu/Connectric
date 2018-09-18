@@ -63,7 +63,7 @@ public class BoardManager : MonoBehaviour {
     void Start () {
 
         CreateBoard();
-        game_manager=GameObject.Find("GameManager");
+
     }
 
     //===================================================
@@ -74,7 +74,8 @@ public class BoardManager : MonoBehaviour {
 
         MoveMausePiece();
 
-        if (game_manager.GetComponent<GameManager>().IsBeatChange){
+        if (game_manager.GetComponent<GameManager>().IsBeatChange)
+        {
             LinkDelete();
         }
 
@@ -438,7 +439,7 @@ public class BoardManager : MonoBehaviour {
     }
 
     //-------------------------------------------------------
-    // リンクチェック
+    // リンクチェックの実行
     //-------------------------------------------------------
     private void LinkDo()
     {
@@ -464,7 +465,7 @@ public class BoardManager : MonoBehaviour {
     }
 
     //-------------------------------------------------------
-    // リンクチェック(縦)
+    // リンクチェック
     //-------------------------------------------------------
     private int Link()
     {
@@ -477,33 +478,37 @@ public class BoardManager : MonoBehaviour {
                 // 左上の一致
                 if (Boardpieces[width, height].typeNum == Target[0, 0])
                 {
-                    // 縦と判断
-                    if (Target[1, 0] == -1 && Target[1, 1] == -1)
+                    //if(!Boardpieces[width, height].mouseFlag)
                     {
-                        if (height == (BOARD_HEIGHT_NUM - 1)) { continue; }
-                        if (Boardpieces[width, height + 1].typeNum == Target[0, 1])
+                        // 縦と判断
+                        if (Target[1, 0] == -1 && Target[1, 1] == -1)
                         {
-                            linknum++;
-                            Boardpieces[width, height].linkflag = true;
-                            Boardpieces[width, height + 1].linkflag = true;
-                            continue;
-                        }
+                            if (height == (BOARD_HEIGHT_NUM - 1)) { continue; }
+                            if (Boardpieces[width, height + 1].typeNum == Target[0, 1])
+                            {
+                                //if(!Boardpieces[width, height + 1].mouseFlag) { continue; }
+                                linknum++;
+                                Boardpieces[width, height].linkflag = true;
+                                Boardpieces[width, height + 1].linkflag = true;
+                                continue;
+                            }
 
-                    }
-                    // 横と判断
-                    else if (Target[0, 1] == -1 && Target[1, 1] == -1)
-                    {
-                        
-                        if(width == (BOARD_WIDTH_NUM - 1)) { continue; }
-                        if (Boardpieces[width + 1, height].typeNum == Target[1, 0])
+                        }
+                        // 横と判断
+                        else if (Target[0, 1] == -1 && Target[1, 1] == -1)
                         {
-                            linknum++;
-                            Boardpieces[width, height].linkflag = true;
-                            Boardpieces[width + 1, height].linkflag = true;
-                            continue;
+
+                            if (width == (BOARD_WIDTH_NUM - 1)) { continue; }
+                            if (Boardpieces[width + 1, height].typeNum == Target[1, 0])
+                            {
+                                //if (!Boardpieces[width + 1, height].mouseFlag) { continue; }
+                                linknum++;
+                                Boardpieces[width, height].linkflag = true;
+                                Boardpieces[width + 1, height].linkflag = true;
+                                continue;
+                            }
                         }
                     }
-                    
                 }
             }
         }

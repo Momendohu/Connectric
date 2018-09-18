@@ -9,17 +9,17 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1081943396160096}
+  m_RootGameObject: {fileID: 1756954934787742}
   m_IsPrefabParent: 1
---- !u!1 &1081943396160096
+--- !u!1 &1756954934787742
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4850976305112064}
-  - component: {fileID: 114561650848939240}
+  - component: {fileID: 4588457356593862}
+  - component: {fileID: 114946863294564120}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -27,12 +27,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4850976305112064
+--- !u!4 &4588457356593862
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1081943396160096}
+  m_GameObject: {fileID: 1756954934787742}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.9, y: -1.9000001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,15 +40,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114561650848939240
+--- !u!114 &114946863294564120
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1081943396160096}
+  m_GameObject: {fileID: 1756954934787742}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b68aac85942f054ab15ac29429dd3cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a8c59fc33279424da5980c9f41646bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   vStartPos: {x: -3.7, y: 1.2, z: 0}
@@ -59,7 +59,6 @@ MonoBehaviour:
   - {fileID: 1279610335876584, guid: 0013ed7aff3ec9942afda46b093e1195, type: 2}
   - {fileID: 1341024841400220, guid: 44d6784ac62dfd44f94912f2742147b6, type: 2}
   - {fileID: 1864698413617130, guid: 7df509ec403282448bea119bc40a3830, type: 2}
-  - {fileID: 1556854040206358, guid: 94e3788fece5c784aa7a285bdb64fe60, type: 2}
+  - {fileID: 1240947227324976, guid: 3b64410289025514e9b2acccad373fd7, type: 2}
   flag: 00000000000000000000000000000000000000000000000000
-  TargetForm: 0
   combo: 0
