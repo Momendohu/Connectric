@@ -13,7 +13,7 @@ public class Piece : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!Mouse.ChaptureFlag)
+		if(!Mouse.CaptureFlag)
         {
             this.GetComponent<Transform>().localScale = new Vector3(0.15f, 0.15f, 0.15f);
         }
