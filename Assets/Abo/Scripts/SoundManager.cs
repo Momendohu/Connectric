@@ -14,18 +14,20 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     private List<GameObject> SEObject = new List<GameObject>();
 
     //===============================================================================
-    private void Init () {
+    private bool Init () {
         if(this != Instance) {
-            Destroy(this);
-            return;
+            Destroy(this.gameObject);
+            return false;
         }
 
         DontDestroyOnLoad(this.gameObject);
+
+        return true;
     }
 
     //===============================================================================
     private void Awake () {
-        Init();
+        if(!Init()) return;
     }
 
     //===============================================================================

@@ -53,14 +53,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public CharacterState[] CharacterStatus = {
         new CharacterState{Id=0,Level=-1,MaxHitPoint=-1,HitPoint=-1,AttackPower=-1},
         new CharacterState{Id=1,Level=-1,MaxHitPoint=-1,HitPoint=-1,AttackPower=-1},
-        new CharacterState{Id=1,Level=-1,MaxHitPoint=-1,HitPoint=-1,AttackPower=-1},
+        new CharacterState{Id=2,Level=-1,MaxHitPoint=-1,HitPoint=-1,AttackPower=-1},
     };
 
 
     public CharacterData[] CharacterDatas = {
         new CharacterData{Id=0, Name="kanade",ActiveSkill="Pitch Shift",PassiveSkill="Power Code",InstrumentType=INSTRUMENT_TYPE.GUITAR},
         new CharacterData{Id=1, Name="seira",ActiveSkill="Abandonne",PassiveSkill="Con Anima",InstrumentType=INSTRUMENT_TYPE.DJ}, //abandonne(感情のままに) con anima(魂をこめて)
-        new CharacterData{Id=1, Name="???",ActiveSkill="Poly Rhythm",PassiveSkill="Ghost Note",InstrumentType=INSTRUMENT_TYPE.DRUM},
+        new CharacterData{Id=2, Name="???",ActiveSkill="Poly Rhythm",PassiveSkill="Ghost Note",InstrumentType=INSTRUMENT_TYPE.DRUM},
     };
 
     //=============================================================
@@ -73,7 +73,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public string BGMName = "bgm003";
     [System.NonSerialized]
     public int BeatInterbal = 8;
-    
+
     [System.NonSerialized]
     public int FocusCharacter = 0; //フォーカスするキャラクター
 
@@ -90,15 +90,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private int notesWaveForTimingBar;
 
     //=============================================================
-    private void Init () {
+    private bool Init () {
         if(this != Instance) {
-            Destroy(this);
-            return;
+            Destroy(this.gameObject);
+            return false;
         }
 
         DontDestroyOnLoad(this.gameObject);
 
         CRef();
+
+        return true;
     }
 
     //=============================================================
@@ -108,7 +110,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     private void Awake () {
-        Init();
+        if(!Init()) return;
 
         switch(SceneManager.GetActiveScene().name) {
             case "CharacterSelect":
@@ -171,6 +173,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         return 5 * level;
     }
 
+    //=============================================================
     //ステータスの初期化
     private void InitCharacterStatus () {
         for(int i = 0;i < CharacterStatus.Length;i++) {
@@ -181,12 +184,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
     }
 
+    //=============================================================
+    //シーン遷移(キャラクターセレクトからゲーム)
+    public void JumpSceneCharacterSelectToGame () {
+        SceneManager.LoadScene("Game_copy");
+    }
+
     //==============================================================================================================================================
     //Gameシーン
     //==============================================================================================================================================
     private void InitGame () {
         soundManager.TriggerBGM(BGMName,false);
-
         //タイミングバー用のウェーブ指定
         notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
     }

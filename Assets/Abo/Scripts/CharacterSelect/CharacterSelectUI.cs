@@ -9,6 +9,7 @@ public class CharacterSelectUI : MonoBehaviour {
 
     //private Button leftButton; //左のボタン
     //private Button rightButton; //右のボタン
+    //private Button playButton; //プレイボタン
 
     private Image characterImage; //キャラクターの画像
     private Text nameAndLV; //名前とレベル
@@ -26,6 +27,7 @@ public class CharacterSelectUI : MonoBehaviour {
 
         //leftButton = transform.Find("LeftButton").GetComponent<Button>();
         //rightButton = transform.Find("RightButton").GetComponent<Button>();
+        //playButton = transform.Find("PlayButton").GetComponent<Button>();
 
         characterImage = transform.Find("Character").GetComponent<Image>();
         nameAndLV = transform.Find("Image/Text").GetComponent<Text>();
@@ -49,6 +51,12 @@ public class CharacterSelectUI : MonoBehaviour {
         nameAndLV.text = characterData.Name + " LV " + gameManager.CharacterStatus[gameManager.FocusCharacter].Level;
         skillDescription.text = "ActiveSkill - " + characterData.ActiveSkill + "\nPassiveSkill - " + characterData.PassiveSkill;
         instrumentTypeIcon.sprite = gameManager.PieceLinkImage[(int)characterData.InstrumentType];
+    }
+
+    //=============================================================
+    //プレイボタンを押したときの処理
+    public void PushPlayButton () {
+        gameManager.JumpSceneCharacterSelectToGame();
     }
 
     //=============================================================
