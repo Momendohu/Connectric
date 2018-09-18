@@ -141,7 +141,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     public void SetBGMPitch (string name,float pitch) {
 
         //すでに生成してあるオブジェクトと照合
-        //あるならそれを停止
         int bgmObjNum = CheckMatchNameInList(name,BGMObject);
         if(bgmObjNum != -1) {
             BGMObject[bgmObjNum].GetComponent<AudioSource>().pitch = pitch;
@@ -155,7 +154,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     public void SetBGMVolume (string name,float volume) {
 
         //すでに生成してあるオブジェクトと照合
-        //あるならそれを停止
         int bgmObjNum = CheckMatchNameInList(name,BGMObject);
         if(bgmObjNum != -1) {
             BGMObject[bgmObjNum].GetComponent<AudioSource>().volume = volume;
@@ -169,12 +167,11 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     public float GetBGMTime (string name) {
 
         //すでに生成してあるオブジェクトと照合
-        //あるならそれを停止
         int bgmObjNum = CheckMatchNameInList(name,BGMObject);
         if(bgmObjNum != -1) {
             return BGMObject[bgmObjNum].GetComponent<AudioSource>().time;
         } else {
-            Debug.Log("指定したBGMが無いよ");
+            Debug.Log("指定したBGMが無いよ:"+name);
             return -1;
         }
     }
@@ -184,7 +181,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     public float GetBGMTimeLength (string name) {
 
         //すでに生成してあるオブジェクトと照合
-        //あるならそれを停止
         int bgmObjNum = CheckMatchNameInList(name,BGMObject);
         if(bgmObjNum != -1) {
             return BGMObject[bgmObjNum].GetComponent<AudioSource>().clip.length;

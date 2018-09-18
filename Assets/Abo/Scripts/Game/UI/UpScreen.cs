@@ -32,10 +32,12 @@ public class UpScreen : MonoBehaviour {
 
     //=============================================================
     private void Awake () {
-        Init();
+        
     }
 
     private void Start () {
+        Init();
+
         //プレイヤーがリズムに乗る
         StartCoroutine(CharacterRhythm(playerCharacter,gameManager.BGMBPM));
 
