@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Abo/Scenes/Game_copy.unity
+    guid: df87e0c7912ea0a4484d28cac969b647
+  - enabled: 1
+    path: Assets/Abo/Scenes/CharacterSelect.unity
+    guid: 2865ed734ff542d4e8851bb06c38af8b
+  - enabled: 1
     path: Assets/00_SCENE/Title.unity
     guid: 236f4df6c357da04c8ba0f02ac7b8cf0
   - enabled: 1
@@ -17,9 +23,3 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/00_SCENE/Result.unity
     guid: 479d438e5d1e8a64d8d9fc6968f0b16a
-  - enabled: 1
-    path: Assets/Abo/Scenes/CharacterSelect.unity
-    guid: 2865ed734ff542d4e8851bb06c38af8b
-  - enabled: 1
-    path: Assets/Abo/Scenes/Game_copy.unity
-    guid: df87e0c7912ea0a4484d28cac969b647
