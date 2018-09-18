@@ -89,7 +89,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private List<GameObject> timingBars = new List<GameObject>();
     private int notesWaveForTimingBar;
 
-    private string beforeFrameScene; //前フレームのシーン
+    private string beforeFrameSceneName; //前フレームのシーン
     private bool sceneJumpFlag; //シーンジャンプしたフラグ
 
     //=============================================================
@@ -102,7 +102,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         DontDestroyOnLoad(this.gameObject);
 
         CRef();
-
         return true;
     }
 
@@ -115,6 +114,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void Awake () {
         if(!Init()) return;
 
+        beforeFrameSceneName = SceneManager.GetActiveScene().name; //シーン名前保存
         switch(SceneManager.GetActiveScene().name) {
             case "CharacterSelect":
             InitCharacterSelect();
@@ -133,10 +133,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void Update () {
 
         //シーンが変化したらもう一回Awakeを呼びだす
-        if(!SceneManager.GetActiveScene().name.Equals(beforeFrameScene)) {
+        if(!SceneManager.GetActiveScene().name.Equals(beforeFrameSceneName)) {
             sceneJumpFlag = true;
         }
-        beforeFrameScene = SceneManager.GetActiveScene().name;
 
         if(sceneJumpFlag) {
             Awake();

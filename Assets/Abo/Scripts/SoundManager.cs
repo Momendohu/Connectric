@@ -132,7 +132,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
         if(bgmObjNum != -1) {
             BGMObject[bgmObjNum].GetComponent<AudioSource>().Stop();
         } else {
-            Debug.Log("指定したBGMが無いよ");
+            Debug.Log("指定したBGMが無いよ:" + name);
         }
     }
 
@@ -145,7 +145,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
         if(bgmObjNum != -1) {
             BGMObject[bgmObjNum].GetComponent<AudioSource>().pitch = pitch;
         } else {
-            Debug.Log("指定したBGMが無いよ");
+            Debug.Log("指定したBGMが無いよ:" + name);
         }
     }
 
@@ -158,7 +158,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
         if(bgmObjNum != -1) {
             BGMObject[bgmObjNum].GetComponent<AudioSource>().volume = volume;
         } else {
-            Debug.Log("指定したBGMが無いよ");
+            Debug.Log("指定したBGMが無いよ:" + name);
         }
     }
 
@@ -171,7 +171,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
         if(bgmObjNum != -1) {
             return BGMObject[bgmObjNum].GetComponent<AudioSource>().time;
         } else {
-            Debug.Log("指定したBGMが無いよ:"+name);
+            Debug.Log("指定したBGMが無いよ:" + name);
             return -1;
         }
     }
@@ -185,7 +185,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
         if(bgmObjNum != -1) {
             return BGMObject[bgmObjNum].GetComponent<AudioSource>().clip.length;
         } else {
-            Debug.Log("指定したBGMが無いよ");
+            Debug.Log("指定したBGMが無いよ:" + name);
             return -1;
         }
     }
