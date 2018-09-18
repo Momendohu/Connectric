@@ -135,7 +135,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     private void Update () {
-
         //シーンが変化したらもう一回Awakeを呼びだす
         if(!SceneManager.GetActiveScene().name.Equals(beforeFrameSceneName)) {
             sceneJumpFlag = true;
