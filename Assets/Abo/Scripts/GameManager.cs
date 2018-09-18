@@ -41,6 +41,40 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         public INSTRUMENT_TYPE InstrumentType;
     }
 
+    //キャラクターのステータス
+    public struct CharacterState {
+        public int Id;
+        public int Level;
+        public int MaxHitPoint;
+        public int HitPoint;
+        public float AttackPower;
+    }
+
+    //体力を計算する
+    private int CalculateHitPoint (int level) {
+        return 30 + level * 3;
+    }
+
+    //攻撃力を計算する
+    private int CalculateAttackPoint (int level) {
+        return 5 * level;
+    }
+
+    //ステータスの初期化
+    private void InitializeCharacterStatus () {
+        for(int i=0;i<CharacterStatus.Length;i++) {
+            CharacterStatus[i].Level = 1;            
+            CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);            
+            CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;            
+            CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);            
+        }
+    }
+
+    public CharacterState[] CharacterStatus = {
+        new CharacterState{Id=0,Level=-1,MaxHitPoint=-1,HitPoint=-1,AttackPower=-1},
+    };
+
+
     public CharacterData[] CharacterDatas = {
         new CharacterData{Id=0, Name="kanade",ActiveSkill="Duplicate Reverb",PassiveSkill="Power Code",InstrumentType=INSTRUMENT_TYPE.GUITAR},
     };
