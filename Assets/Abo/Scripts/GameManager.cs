@@ -120,6 +120,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             InitCharacterSelect();
             break;
 
+            case "Game":
+            InitGame();
+            break;
+
             case "Game_copy":
             InitGame();
             break;
@@ -144,6 +148,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         switch(SceneManager.GetActiveScene().name) {
             case "CharacterSelect":
+            break;
+
+            case "Game":
+            RoutineGame();
             break;
 
             case "Game_copy":
