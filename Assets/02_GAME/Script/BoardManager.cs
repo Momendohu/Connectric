@@ -51,7 +51,12 @@ public class BoardManager : MonoBehaviour {
     private GameObject game_manager;
 
 
-    [SerializeField] public int combo = 0;                       // コンボ数
+    [SerializeField] private int combo = 0;                       // コンボ数
+    public int Combo
+    {
+        get { return combo; }
+        set { combo = value; }
+    }
     [SerializeField] private int[,] Target = new int[2,2];       // リンクテスト
 
 
@@ -410,7 +415,7 @@ public class BoardManager : MonoBehaviour {
             }
         }
 
-        Link();
+        combo = Link();
     }
 
     //-------------------------------------------------------
