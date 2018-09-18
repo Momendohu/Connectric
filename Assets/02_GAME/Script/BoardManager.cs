@@ -63,7 +63,7 @@ public class BoardManager : MonoBehaviour {
     void Start () {
 
         CreateBoard();
-
+        game_manager=GameObject.Find("GameManager");
     }
 
     //===================================================
@@ -74,8 +74,7 @@ public class BoardManager : MonoBehaviour {
 
         MoveMausePiece();
 
-        if (game_manager.GetComponent<GameManager>().IsBeatChange)
-        {
+        if (game_manager.GetComponent<GameManager>().IsBeatChange){
             LinkDelete();
         }
 

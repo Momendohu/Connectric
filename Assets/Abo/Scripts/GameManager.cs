@@ -89,6 +89,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private List<GameObject> timingBars = new List<GameObject>();
     private int notesWaveForTimingBar;
 
+    private string beforeFrameScene; //前フレームのシーン
+    private bool sceneJumpFlag; //シーンジャンプしたフラグ
+
     //=============================================================
     private bool Init () {
         if(this != Instance) {
@@ -127,21 +130,19 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
     }
 
-    private void Start () {
-        switch(SceneManager.GetActiveScene().name) {
-            case "CharacterSelect":
-            break;
-
-            case "Game_copy":
-            break;
-
-            default:
-            Debug.Log("謎のシーンだよ");
-            break;
-        }
-    }
-
     private void Update () {
+
+        //シーンが変化したらもう一回Awakeを呼びだす
+        if(!SceneManager.GetActiveScene().name.Equals(beforeFrameScene)) {
+            sceneJumpFlag = true;
+        }
+        beforeFrameScene = SceneManager.GetActiveScene().name;
+
+        if(sceneJumpFlag) {
+            Awake();
+            sceneJumpFlag = false;
+        }
+
         switch(SceneManager.GetActiveScene().name) {
             case "CharacterSelect":
             break;
