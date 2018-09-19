@@ -57,7 +57,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         new CharacterState{Id=2},
     };
 
-    //エネミーのステータスs
+    //エネミーのステータス
     public CharacterState[] EnemyStatus = {
         new CharacterState{Id=1000,}
     };
@@ -79,10 +79,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public string BGMName = "bgm003";
     [System.NonSerialized]
     public int BeatInterbal = 8;
-
     [System.NonSerialized]
     public int FocusCharacter = 0; //フォーカスするキャラクター
-
     [System.NonSerialized]
     public int FocusEnemy = 0; //フォーカスするエネミー
 
@@ -92,6 +90,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public bool IsPause {
         get { return isPause; }
         set { isPause = value; }
+    }
+
+    //=============================================================
+    //ゲームオーバー状態かどうか
+    private bool isGameOver;
+    public bool IsGameOver {
+        get { return isGameOver; }
+        set { isGameOver = value; }
     }
 
     //=============================================================
@@ -140,6 +146,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void InitCharacterStatus () {
         for(int i = 0;i < CharacterStatus.Length;i++) {
             CharacterStatus[i].Level = 1;
+            //CharacterStatus[i].MaxHitPoint = 1;
             CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
@@ -236,6 +243,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     private void InitGame () {
+        Debug.Log("Let's get started");
         CRefGame();
 
         soundManager.TriggerBGM(BGMName,false);
@@ -245,6 +253,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     private void RoutineGame () {
+        //ゲームオーバーなら処理をスキップ
+        if(isGameOver) {
+            return;
+        }
+
         //ポーズ状態でないなら
         if(!isPause) {
             //BGMのポーズ状態を解除する
@@ -272,6 +285,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                     }
                 }
             }
+
+            CheckGameOver();
+
         } else { //ポーズ状態なら
             //BGMをポーズ状態にする
             if(!onceFlagGamePause) {
@@ -285,6 +301,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //体力値に数値を適用する
     private void ApplyToHitPoint (int id,float num) {
         CharacterStatus[id].HitPoint += num;
+    }
+
+    //=============================================================
+    //ゲームオーバーかどうかを判別する
+    private void CheckGameOver () {
+        //キャラクターのHPが0以下だったらゲームオーバー
+        if(CharacterStatus[FocusCharacter].HitPoint <= 0) {
+            isGameOver = true;
+        }
     }
 
     //=============================================================
@@ -341,5 +366,19 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             int[,] tmp = { { -1,-1 },{ -1,-1 } };
             return tmp;
         }
+    }
+
+    //=============================================================
+    //シーン遷移(ゲームからゲームへ)
+    public void JumpSceneGameToGame () {
+        InitCharacterStatus(); //キャラクターステータスの初期化
+        InitEnemyStatus(); //エネミーステータスの初期化
+        isGameOver = false; //ゲームオーバーフラグの初期化
+        isPause = false; //ポーズフラグの初期化
+        timingBars.Clear(); //タイミングバーの参照の初期化
+        sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
+
+        soundManager.StopBGM(BGMName);
+        SceneManager.LoadScene("Game_copy");
     }
 }

@@ -33,6 +33,6 @@ public class PlayerLP_Voltage : MonoBehaviour {
     private void Update () {
         //LPゲージにデータ適用
         GameManager.CharacterState status = gameManager.CharacterStatus[gameManager.FocusCharacter];
-        lp.value = status.HitPoint / status.MaxHitPoint;
+        lp.value = status.HitPoint / (status.MaxHitPoint != 0 ? status.MaxHitPoint : 1);
     }
 }
