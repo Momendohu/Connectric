@@ -125,13 +125,48 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //体力を計算する
+    private int CalculateHitPoint (int level) {
+        return 25 + (level - 1) * 5;
+    }
+
+    //攻撃力を計算する
+    private int CalculateAttackPoint (int level) {
+        return 5 * level;
+    }
+
+    //=============================================================
+    //キャラクターステータスの初期化
+    private void InitCharacterStatus () {
+        for(int i = 0;i < CharacterStatus.Length;i++) {
+            CharacterStatus[i].Level = 1;
+            CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
+            CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
+        }
+    }
+
+    //=============================================================
+    //エネミーステータスの初期化
+    private void InitEnemyStatus () {
+        for(int i = 0;i < EnemyStatus.Length;i++) {
+            EnemyStatus[i].Level = 1;
+            EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            EnemyStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
+            EnemyStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
+        }
+    }
+
+    //=============================================================
     private void Awake () {
         if(!Init()) return;
 
         beforeFrameSceneName = SceneManager.GetActiveScene().name; //シーン名前保存
+        InitCharacterStatus(); //キャラクターステータスの初期化
+        InitEnemyStatus(); //エネミーステータスの初期化
+
         switch(SceneManager.GetActiveScene().name) {
             case "CharacterSelect":
-            InitCharacterSelect();
             break;
 
             case "Game":
@@ -180,44 +215,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //CharacterSelectシーン
     //==============================================================================================================================================
-    private void InitCharacterSelect () {
-        InitCharacterStatus();
-        InitEnemyStatus();
-    }
-
-    //体力を計算する
-    private int CalculateHitPoint (int level) {
-        return 25 + (level - 1) * 5;
-    }
-
-    //攻撃力を計算する
-    private int CalculateAttackPoint (int level) {
-        return 5 * level;
-    }
-
-    //=============================================================
-    //キャラクターステータスの初期化
-    private void InitCharacterStatus () {
-        for(int i = 0;i < CharacterStatus.Length;i++) {
-            CharacterStatus[i].Level = 1;
-            CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
-            CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
-            CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
-        }
-    }
-
-    //=============================================================
-    //エネミーステータスの初期化
-    private void InitEnemyStatus () {
-        for(int i = 0;i < EnemyStatus.Length;i++) {
-            EnemyStatus[i].Level = 1;
-            EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
-            EnemyStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
-            EnemyStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
-        }
-    }
-
-    //=============================================================
     //シーン遷移(キャラクターセレクトからゲーム)
     public void JumpSceneCharacterSelectToGame () {
         SceneManager.LoadScene("Game_copy");
