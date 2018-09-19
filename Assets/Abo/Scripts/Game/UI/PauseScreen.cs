@@ -35,4 +35,16 @@ public class PauseScreen : MonoBehaviour {
             waitVail.SetActive(false);
         }
     }
+
+    //=============================================================
+    //ゲームに戻るボタン
+    public void OnClickToGame () {
+        gameManager.IsPause = false;
+    }
+
+    //=============================================================
+    //曲選択に戻るボタン
+    public void OnClickToSelect () {
+
+    }
 }
