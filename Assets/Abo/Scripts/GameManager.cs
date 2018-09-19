@@ -32,7 +32,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public Sprite[] CharacterImage; //キャラクターのイメージ
 
     //=============================================================
-    //キャラクターデータ
+    //キャラクターデータ(構造体)
     public struct CharacterData {
         public int Id;
         public string Name;
@@ -41,7 +41,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         public INSTRUMENT_TYPE InstrumentType;
     }
 
-    //キャラクターのステータス
+    //キャラクターのステータス(構造体)
     public struct CharacterState {
         public int Id;
         public int Level;
@@ -50,10 +50,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         public float AttackPower;
     }
 
+    //キャラクターのステータス
     public CharacterState[] CharacterStatus = {
-        new CharacterState{Id=0,Level=-1,MaxHitPoint=-1,HitPoint=-1,AttackPower=-1},
-        new CharacterState{Id=1,Level=-1,MaxHitPoint=-1,HitPoint=-1,AttackPower=-1},
-        new CharacterState{Id=2,Level=-1,MaxHitPoint=-1,HitPoint=-1,AttackPower=-1},
+        new CharacterState{Id=0},
+        new CharacterState{Id=1},
+        new CharacterState{Id=2},
+    };
+
+    //エネミーのステータスs
+    public CharacterState[] EnemyStatus = {
+        new CharacterState{Id=1000,}
     };
 
 
@@ -173,6 +179,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     private void InitCharacterSelect () {
         InitCharacterStatus();
+        InitEnemyStatus();
     }
 
     //体力を計算する
@@ -186,13 +193,24 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
-    //ステータスの初期化
+    //キャラクターステータスの初期化
     private void InitCharacterStatus () {
         for(int i = 0;i < CharacterStatus.Length;i++) {
             CharacterStatus[i].Level = 1;
             CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
+        }
+    }
+
+    //=============================================================
+    //エネミーステータスの初期化
+    private void InitEnemyStatus () {
+        for(int i = 0;i < EnemyStatus.Length;i++) {
+            EnemyStatus[i].Level = 1;
+            EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            EnemyStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
+            EnemyStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
         }
     }
 
