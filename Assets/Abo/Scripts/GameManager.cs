@@ -45,8 +45,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public struct CharacterState {
         public int Id;
         public int Level;
-        public int MaxHitPoint;
-        public int HitPoint;
+        public float MaxHitPoint;
+        public float HitPoint;
         public float AttackPower;
     }
 
@@ -82,6 +82,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     [System.NonSerialized]
     public int FocusCharacter = 0; //フォーカスするキャラクター
+
+    [System.NonSerialized]
+    public int FocusEnemy = 0; //フォーカスするエネミー
 
     //=============================================================
     //一時停止しているかどうか
@@ -184,7 +187,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //体力を計算する
     private int CalculateHitPoint (int level) {
-        return 30 + level * 3;
+        return 25 + (level - 1) * 5;
     }
 
     //攻撃力を計算する
@@ -227,8 +230,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private int notesWaveForTimingBar;
     private bool onceFlagGamePause; //ゲームポーズ時に一回だけ使いたい処理を挟むときのためのフラグ
 
+    private BoardManager boardManager; //ボードマネージャー
+
+    //=============================================================
+    private void CRefGame () {
+        boardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
+    }
+
     //=============================================================
     private void InitGame () {
+        CRefGame();
+
         soundManager.TriggerBGM(BGMName,false);
         //タイミングバー用のウェーブ指定
         notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
@@ -255,18 +267,27 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                     if(timingBars[i].GetComponent<TimingBar>().DestroyFlag) {
                         isBeatChange = true;
                         timingBars.RemoveAt(i);
-                        for(int j = 0;j < timingBars.Count;j++) {
+
+                        //コンボ数が0だったらダメージ
+                        if(boardManager.Combo == 0) {
+                            ApplyToHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
                         }
                     }
                 }
             }
-        } else {
+        } else { //ポーズ状態なら
             //BGMをポーズ状態にする
             if(!onceFlagGamePause) {
                 soundManager.PauseBGM(BGMName);
                 onceFlagGamePause = true;
             }
         }
+    }
+
+    //=============================================================
+    //体力値に数値を適用する
+    private void ApplyToHitPoint (int id,float num) {
+        CharacterStatus[id].HitPoint += num;
     }
 
     //=============================================================
