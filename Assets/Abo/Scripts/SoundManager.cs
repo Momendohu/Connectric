@@ -123,6 +123,32 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     }
 
     //===============================================================================
+    //BGMを一時停止する
+    public void PauseBGM (string name) {
+
+        //すでに生成してあるオブジェクトと照合
+        int bgmObjNum = CheckMatchNameInList(name,BGMObject);
+        if(bgmObjNum != -1) {
+            BGMObject[bgmObjNum].GetComponent<AudioSource>().Pause();
+        } else {
+            Debug.Log("指定したBGMが無いよ:" + name);
+        }
+    }
+
+    //===============================================================================
+    //BGMの一時停止を解除する
+    public void UnPauseBGM (string name) {
+
+        //すでに生成してあるオブジェクトと照合
+        int bgmObjNum = CheckMatchNameInList(name,BGMObject);
+        if(bgmObjNum != -1) {
+            BGMObject[bgmObjNum].GetComponent<AudioSource>().UnPause();
+        } else {
+            Debug.Log("指定したBGMが無いよ:" + name);
+        }
+    }
+
+    //===============================================================================
     //BGMを止める
     public void StopBGM (string name) {
 

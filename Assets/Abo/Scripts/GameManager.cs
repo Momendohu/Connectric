@@ -78,6 +78,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public int FocusCharacter = 0; //フォーカスするキャラクター
 
     //=============================================================
+    //一時停止しているかどうか
+    private bool isPause;
+    public bool IsPause {
+        get { return isPause; }
+        set { isPause = value; }
+    }
+
+    //=============================================================
     //ビートが変わったかどうか(タイミングバーが到達したかどうか)
     private bool isBeatChange;
     public bool IsBeatChange {
@@ -86,9 +94,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
-    private List<GameObject> timingBars = new List<GameObject>();
-    private int notesWaveForTimingBar;
-
     private string beforeFrameSceneName; //前フレームのシーン
     private bool sceneJumpFlag; //シーンジャンプしたフラグ
 
@@ -200,6 +205,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //Gameシーン
     //==============================================================================================================================================
+    private List<GameObject> timingBars = new List<GameObject>();
+    private int notesWaveForTimingBar;
+    private bool onceFlagGamePause; //ゲームポーズ時に一回だけ使いたい処理を挟むときのためのフラグ
+
+    //=============================================================
     private void InitGame () {
         soundManager.TriggerBGM(BGMName,false);
         //タイミングバー用のウェーブ指定
@@ -208,20 +218,35 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     private void RoutineGame () {
-        //タイミングバー生成
-        if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM)) {
-            notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
+        //ポーズ状態でないなら
+        if(!isPause) {
+            //BGMのポーズ状態を解除する
+            if(onceFlagGamePause) {
+                soundManager.UnPauseBGM(BGMName);
+                onceFlagGamePause = false;
+            }
 
-            timingBars.Add(CreateTimingBar());
+            //タイミングバー生成
+            if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM)) {
+                notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
 
-            //登録してあるtimingbarがnullになったら除外
-            for(int i = timingBars.Count - 1;i >= 0;i--) {
-                if(timingBars[i].GetComponent<TimingBar>().DestroyFlag) {
-                    isBeatChange = true;
-                    timingBars.RemoveAt(i);
-                    for(int j = 0;j < timingBars.Count;j++) {
+                timingBars.Add(CreateTimingBar());
+
+                //登録してあるtimingbarがnullになったら除外
+                for(int i = timingBars.Count - 1;i >= 0;i--) {
+                    if(timingBars[i].GetComponent<TimingBar>().DestroyFlag) {
+                        isBeatChange = true;
+                        timingBars.RemoveAt(i);
+                        for(int j = 0;j < timingBars.Count;j++) {
+                        }
                     }
                 }
+            }
+        } else {
+            //BGMをポーズ状態にする
+            if(!onceFlagGamePause) {
+                soundManager.PauseBGM(BGMName);
+                onceFlagGamePause = true;
             }
         }
     }

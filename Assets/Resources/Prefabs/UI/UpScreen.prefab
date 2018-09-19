@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 222197502642211532}
   - component: {fileID: 114312420757523858}
   - component: {fileID: 114039549019795858}
+  - component: {fileID: 114135466210108452}
   m_Layer: 5
   m_Name: PauseButton
   m_TagString: Untagged
@@ -327,7 +328,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114312420757523858}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114135466210108452}
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114061795651896540
@@ -384,6 +396,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114135466210108452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1023183325610048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71c452f5fdb0d9047bc08f2530491170, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114190602864710888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -477,14 +500,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.47322518, b: 0.2794118, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8865b5c4ecd528f4b863c1849e9cfb06, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a5da2de9d0fcabe4b9d1f85f68556a56, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -828,7 +851,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 380, y: 180}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 88.575, y: 97.425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224073815333498652
 RectTransform:
