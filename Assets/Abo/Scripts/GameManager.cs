@@ -150,8 +150,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void InitCharacterStatus () {
         for(int i = 0;i < CharacterStatus.Length;i++) {
             CharacterStatus[i].Level = 1;
-            CharacterStatus[i].MaxHitPoint = 1;
-            //CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            //CharacterStatus[i].MaxHitPoint = 1;
+            CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
         }
@@ -391,7 +391,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //2番目のピースリンクを取得
     public int[,] GetNextPieceLink () {
         if(timingBars.Count >= 2) {
-            return timingBars[1].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
+            if(timingBars[1] != null) {
+                return timingBars[1].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
+            } else {
+                //Debug.Log("ピースリンクがうまく取得できてないよ");
+                int[,] tmp = { { -1,-1 },{ -1,-1 } };
+                return tmp;
+            }
         } else {
             //Debug.Log("ピースリンクが1個以下だよ");
             int[,] tmp = { { -1,-1 },{ -1,-1 } };

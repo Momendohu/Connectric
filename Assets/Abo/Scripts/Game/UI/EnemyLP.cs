@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerLP_Voltage : MonoBehaviour {
+public class EnemyLP : MonoBehaviour {
     //=============================================================
     private GameManager gameManager;
     private Slider lp;
-    private Slider voltage;
+
 
     //=============================================================
     private void Init () {
@@ -17,8 +17,7 @@ public class PlayerLP_Voltage : MonoBehaviour {
     //=============================================================
     private void CRef () {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        lp = transform.Find("LP").GetComponent<Slider>();
-        voltage = transform.Find("Voltage").GetComponent<Slider>();
+        lp = GetComponent<Slider>();
     }
 
     //=============================================================
@@ -28,7 +27,7 @@ public class PlayerLP_Voltage : MonoBehaviour {
 
     private void Update () {
         //LPゲージにデータ適用
-        GameManager.CharacterState status = gameManager.CharacterStatus[gameManager.FocusCharacter];
+        GameManager.CharacterState status = gameManager.EnemyStatus[gameManager.FocusEnemy];
         lp.value = status.HitPoint / (status.MaxHitPoint != 0 ? status.MaxHitPoint : 1);
     }
 }
