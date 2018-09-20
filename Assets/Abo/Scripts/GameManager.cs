@@ -74,9 +74,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     [System.NonSerialized]
-    public float BGMBPM = 146f; //tst001->171 bgm001->130 bgm002->128 bgm003->146
+    public float BGMBPM = 128f; //tst001->171 bgm001->130 bgm002->128 bgm003->146
     [System.NonSerialized]
-    public string BGMName = "bgm003";
+    public string BGMName = "bgm002";
     [System.NonSerialized]
     public int BeatInterbal = 8;
     [System.NonSerialized]
@@ -146,8 +146,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void InitCharacterStatus () {
         for(int i = 0;i < CharacterStatus.Length;i++) {
             CharacterStatus[i].Level = 1;
-            //CharacterStatus[i].MaxHitPoint = 1;
-            CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            CharacterStatus[i].MaxHitPoint = 1;
+            //CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
         }
@@ -235,6 +235,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private bool onceFlagGamePause; //ゲームポーズ時に一回だけ使いたい処理を挟むときのためのフラグ
 
     private BoardManager boardManager; //ボードマネージャー
+    private int beforeCombo; //コンボ数
 
     //=============================================================
     private void CRefGame () {
@@ -243,7 +244,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     private void InitGame () {
-        Debug.Log("Let's get started");
         CRefGame();
 
         soundManager.TriggerBGM(BGMName,false);
@@ -253,6 +253,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     private void RoutineGame () {
+        //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        //なんでか参照が切れるからこの処理をいれた(時間があったら探したい)
+        if(boardManager==null) {
+            boardManager= GameObject.Find("BoardManager").GetComponent<BoardManager>();
+        }
+        //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
         //ゲームオーバーなら処理をスキップ
         if(isGameOver) {
             return;
@@ -265,6 +272,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                 soundManager.UnPauseBGM(BGMName);
                 onceFlagGamePause = false;
             }
+
+            //Debug.Log("ボードマネージャー:"+boardManager);
+            //Debug.Log(boardManager.Combo);
 
             //タイミングバー生成
             if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM)) {
@@ -279,7 +289,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                         timingBars.RemoveAt(i);
 
                         //コンボ数が0だったらダメージ
-                        if(boardManager.Combo == 0) {
+                        if(beforeCombo == 0) {
+                            Debug.LogError("ダメージ:" + beforeCombo + ":" + boardManager.Combo);
                             ApplyToHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
                         }
                     }
@@ -287,6 +298,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             }
 
             CheckGameOver();
+            beforeCombo = boardManager.Combo; //コンボ数を保存
 
         } else { //ポーズ状態なら
             //BGMをポーズ状態にする
@@ -348,7 +360,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //直近のピースリンクを取得
     public int[,] GetLatestPieceLink () {
         if(timingBars.Count != 0) {
-            return timingBars[0].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
+            if(timingBars[0] != null) {
+                return timingBars[0].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
+            } else {
+                //Debug.Log("ピースリンクがうまく取得できてないよ");
+                int[,] tmp = { { -1,-1 },{ -1,-1 } };
+                return tmp;
+            }
         } else {
             //Debug.Log("ピースリンクがうまく取得できてないよ");
             int[,] tmp = { { -1,-1 },{ -1,-1 } };
