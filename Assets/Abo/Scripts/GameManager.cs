@@ -59,7 +59,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //エネミーのステータス
     public CharacterState[] EnemyStatus = {
-        new CharacterState{Id=1000,}
+        new CharacterState{Id=0,}
     };
 
 
@@ -67,6 +67,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         new CharacterData{Id=0, Name="kanade",ActiveSkill="Pitch Shift",PassiveSkill="Power Code",InstrumentType=INSTRUMENT_TYPE.GUITAR},
         new CharacterData{Id=1, Name="seira",ActiveSkill="Abandonne",PassiveSkill="Con Anima",InstrumentType=INSTRUMENT_TYPE.DJ}, //abandonne(感情のままに) con anima(魂をこめて)
         new CharacterData{Id=2, Name="???",ActiveSkill="Poly Rhythm",PassiveSkill="Ghost Note",InstrumentType=INSTRUMENT_TYPE.DRUM},
+    };
+
+    public CharacterData[] EnemyDatas = {
+        new CharacterData{Id=0, Name="enemy"},
     };
 
     //=============================================================
@@ -235,7 +239,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private bool onceFlagGamePause; //ゲームポーズ時に一回だけ使いたい処理を挟むときのためのフラグ
 
     private BoardManager boardManager; //ボードマネージャー
-    private int beforeCombo; //コンボ数
+    private int beforeCombo; //前フレームのコンボ数(タイミングバー消滅感知から消すまでの流れで1Fかかる可能性を考慮)
 
     //=============================================================
     private void CRefGame () {
@@ -254,9 +258,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     private void RoutineGame () {
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        //なんでか参照が切れるからこの処理をいれた(時間があったら探したい)
-        if(boardManager==null) {
-            boardManager= GameObject.Find("BoardManager").GetComponent<BoardManager>();
+        //ゲームシーンリロード時になんでか参照が2フレーム以降に切れるからこの処理をいれた(時間があったら原因探したい)
+        if(boardManager == null) {
+            boardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
         }
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -282,16 +286,19 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
                 timingBars.Add(CreateTimingBar());
 
-                //登録してあるtimingbarがnullになったら除外
+                //登録してあるtimingbarのDestroyフラグがたったら除外
                 for(int i = timingBars.Count - 1;i >= 0;i--) {
                     if(timingBars[i].GetComponent<TimingBar>().DestroyFlag) {
                         isBeatChange = true;
                         timingBars.RemoveAt(i);
 
-                        //コンボ数が0だったらダメージ
+                        //コンボ数が0だったらダメージを受ける
                         if(beforeCombo == 0) {
-                            Debug.LogError("ダメージ:" + beforeCombo + ":" + boardManager.Combo);
-                            ApplyToHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
+                            Debug.Log(EnemyDatas[FocusEnemy].Name + "の攻撃! " + CharacterDatas[FocusCharacter].Name + "に" + EnemyStatus[FocusEnemy].AttackPower + "のダメージ!");
+                            ApplyToCharacterHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
+                        } else { //コンボ数が1以上なら敵にダメージを与える
+                            Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
+                            ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
                         }
                     }
                 }
@@ -310,9 +317,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
-    //体力値に数値を適用する
-    private void ApplyToHitPoint (int id,float num) {
+    //プレイヤー体力値に数値を適用する
+    private void ApplyToCharacterHitPoint (int id,float num) {
         CharacterStatus[id].HitPoint += num;
+    }
+
+    //=============================================================
+    //エネミー体力値に数値を適用する
+    private void ApplyToEnemyHitPoint (int id,float num) {
+        EnemyStatus[id].HitPoint += num;
     }
 
     //=============================================================
