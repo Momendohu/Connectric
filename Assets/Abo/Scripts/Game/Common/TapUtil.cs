@@ -6,10 +6,19 @@ using UnityEngine;
 public static class TapUtil {
     private static Vector3 TouchPosition = Vector3.zero; //座標
 
-    /// <summary>
-    /// タッチ情報を取得(エディタと実機を考慮)
-    /// </summary>
-    /// <returns>タッチ情報。タッチされていない場合は null</returns>
+    //=============================================================
+    //タッチ情報
+    public enum TouchInfo {
+        None = 99, //タッチなし
+        Began = 0, //移動
+        Moved = 1, //移動
+        Stationary = 2, //静止
+        Ended = 3, //終了
+        Canceled = 4, //キャンセル
+    }
+
+    //=============================================================
+    //タッチの情報を取得する
     public static TouchInfo GetTouch () {
         if(Application.isEditor) {
             if(Input.GetMouseButtonDown(0)) { return TouchInfo.Began; }
@@ -23,10 +32,8 @@ public static class TapUtil {
         return TouchInfo.None;
     }
 
-    /// <summary>
-    /// タッチポジションを取得(エディタと実機を考慮)
-    /// </summary>
-    /// <returns>タッチポジション。タッチされていない場合は (0, 0, 0)</returns>
+    //=============================================================
+    //タッチの位置を取得する
     public static Vector3 GetTouchPosition () {
         if(Application.isEditor) {
             TouchInfo touch = TapUtil.GetTouch();
@@ -42,44 +49,9 @@ public static class TapUtil {
         return Vector3.zero;
     }
 
-    /// <summary>
-    /// タッチワールドポジションを取得(エディタと実機を考慮)
-    /// </summary>
-    /// <param name='camera'>カメラ</param>
-    /// <returns>タッチワールドポジション。タッチされていない場合は (0, 0, 0)</returns>
+    //=============================================================
+    //タッチの位置を取得する(ワールド座標)
     public static Vector3 GetTouchWorldPosition (Camera camera) {
         return camera.ScreenToWorldPoint(GetTouchPosition());
     }
-}
-
-/// <summary>
-/// タッチ情報。UnityEngine.TouchPhase に None の情報を追加拡張。
-/// </summary>
-public enum TouchInfo {
-    /// <summary>
-    /// タッチなし
-    /// </summary>
-    None = 99,
-
-    // 以下は UnityEngine.TouchPhase の値に対応
-    /// <summary>
-    /// タッチ開始
-    /// </summary>
-    Began = 0,
-    /// <summary>
-    /// タッチ移動
-    /// </summary>
-    Moved = 1,
-    /// <summary>
-    /// タッチ静止
-    /// </summary>
-    Stationary = 2,
-    /// <summary>
-    /// タッチ終了
-    /// </summary>
-    Ended = 3,
-    /// <summary>
-    /// タッチキャンセル
-    /// </summary>
-    Canceled = 4,
 }
