@@ -7,14 +7,18 @@ public class CharacterSelectUI : MonoBehaviour {
     //=============================================================
     private GameManager gameManager;
 
-    //private Button leftButton; //左のボタン
-    //private Button rightButton; //右のボタン
+    private GameObject leftButton; //左のボタン
+    private GameObject rightButton; //右のボタン
     //private Button playButton; //プレイボタン
 
     private Image characterImage; //キャラクターの画像
     private Text nameAndLV; //名前とレベル
     private Text skillDescription; //スキル説明
     private Image instrumentTypeIcon; //楽器タイプ
+
+    //=============================================================
+    private bool isTouched; //画面がタッチされているかどうか
+    private Vector3 beforeFrameTouchPosition; //前フレームのタッチポジション
 
     //=============================================================
     private void Init () {
@@ -25,8 +29,8 @@ public class CharacterSelectUI : MonoBehaviour {
     private void CRef () {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        //leftButton = transform.Find("LeftButton").GetComponent<Button>();
-        //rightButton = transform.Find("RightButton").GetComponent<Button>();
+        leftButton = transform.Find("LeftButton").gameObject;
+        rightButton = transform.Find("RightButton").gameObject;
         //playButton = transform.Find("PlayButton").GetComponent<Button>();
 
         characterImage = transform.Find("Character").GetComponent<Image>();
@@ -51,6 +55,29 @@ public class CharacterSelectUI : MonoBehaviour {
         nameAndLV.text = characterData.Name + " LV " + gameManager.CharacterStatus[gameManager.FocusCharacter].Level;
         skillDescription.text = "ActiveSkill - " + characterData.ActiveSkill + "\nPassiveSkill - " + characterData.PassiveSkill;
         instrumentTypeIcon.sprite = gameManager.PieceLinkImage[(int)characterData.InstrumentType];
+
+        //画面タッチ状態ならフラグをon
+        if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Moved) {
+            isTouched = true;
+        } else {
+            isTouched = false;
+        }
+
+        //画面タッチの状態に応じてボタンのアクティブを変更する
+        if(isTouched) {
+            //前フレームとタッチした場所の座標が違うなら
+            if(beforeFrameTouchPosition != TouchUtil.GetTouchWorldPosition(GameObject.Find("CameraUI").GetComponent<Camera>())) {
+                leftButton.SetActive(false);
+                rightButton.SetActive(false);
+            }
+
+        } else {
+            leftButton.SetActive(true);
+            rightButton.SetActive(true);
+        }
+
+        beforeFrameTouchPosition = TouchUtil.GetTouchWorldPosition(GameObject.Find("CameraUI").GetComponent<Camera>());
+
     }
 
     //=============================================================

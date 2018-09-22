@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 //using UnityEngine.UI;
 
-public static class TapUtil {
+public static class TouchUtil {
     private static Vector3 TouchPosition = Vector3.zero; //座標
 
     //=============================================================
@@ -36,7 +36,7 @@ public static class TapUtil {
     //タッチの位置を取得する
     public static Vector3 GetTouchPosition () {
         if(Application.isEditor) {
-            TouchInfo touch = TapUtil.GetTouch();
+            TouchInfo touch = TouchUtil.GetTouch();
             if(touch != TouchInfo.None) { return Input.mousePosition; }
         } else {
             if(Input.touchCount > 0) {
