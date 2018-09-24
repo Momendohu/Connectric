@@ -105,6 +105,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //ゲームクリア状態かどうか
+    private bool isGameClear;
+    public bool IsGameClear {
+        get { return isGameClear; }
+        set { isGameClear = value; }
+    }
+
+    //=============================================================
     //ビートが変わったかどうか(タイミングバーが到達したかどうか)
     private bool isBeatChange;
     public bool IsBeatChange {
@@ -264,8 +272,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-        //ゲームオーバーなら処理をスキップ
-        if(isGameOver) {
+        //ゲームオーバー、ゲームクリアなら処理をスキップ
+        if(isGameOver || isGameClear) {
             return;
         }
 
@@ -305,6 +313,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             }
 
             CheckGameOver();
+            CheckGameClear();
             beforeCombo = boardManager.Combo; //コンボ数を保存
 
         } else { //ポーズ状態なら
@@ -334,6 +343,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         //キャラクターのHPが0以下だったらゲームオーバー
         if(CharacterStatus[FocusCharacter].HitPoint <= 0) {
             isGameOver = true;
+        }
+    }
+
+    //=============================================================
+    //ゲームクリアかどうかを判別する
+    private void CheckGameClear () {
+        //●●だったらゲームクリア
+        if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began) {
+            soundManager.StopBGM(BGMName); //曲を停止
+            isGameClear = true;
         }
     }
 
@@ -411,11 +430,27 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         InitCharacterStatus(); //キャラクターステータスの初期化
         InitEnemyStatus(); //エネミーステータスの初期化
         isGameOver = false; //ゲームオーバーフラグの初期化
+        isGameClear = false; //ゲームクリアフラグの初期化
         isPause = false; //ポーズフラグの初期化
         timingBars.Clear(); //タイミングバーの参照の初期化
         sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
 
         soundManager.StopBGM(BGMName);
         SceneManager.LoadScene("Game_copy");
+    }
+
+    //=============================================================
+    //シーン遷移(ゲームからリザルトへ)
+    public void JumpSceneGameToResult () {
+        InitCharacterStatus(); //キャラクターステータスの初期化
+        InitEnemyStatus(); //エネミーステータスの初期化
+        isGameOver = false; //ゲームオーバーフラグの初期化
+        isGameClear = false; //ゲームクリアフラグの初期化
+        isPause = false; //ポーズフラグの初期化
+        timingBars.Clear(); //タイミングバーの参照の初期化
+        sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
+
+        soundManager.StopBGM(BGMName);
+        SceneManager.LoadScene("CharacterSelect");
     }
 }
