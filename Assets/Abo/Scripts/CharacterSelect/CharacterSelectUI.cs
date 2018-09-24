@@ -223,10 +223,30 @@ public class CharacterSelectUI : MonoBehaviour {
     }
 
     //=============================================================
-    //キャラクターセレクトのボタンが押された時の処理
+    //キャラクターフォーカスを変更する
     //progressNum -> どれだけ参照を進めるか
-    public void ShiftFocusCharacter (int progressNum) {
+    private void ShiftFocusCharacter (int progressNum) {
         gameManager.FocusCharacter = GetFocusCharacterNum(gameManager.FocusCharacter + progressNum);
+    }
+
+    //=============================================================
+    //シフトする方向
+    private enum ShiftDirection {
+        LEFT = -1,
+        RIGHT = 1
+    }
+
+    //キャラクターセレクトのボタンが押された時の処理
+    public void OnClick (int shiftDirection) {
+        switch(shiftDirection) {
+            case (int)ShiftDirection.LEFT:
+            characterShiftFlagL = true;
+            break;
+
+            case (int)ShiftDirection.RIGHT:
+            characterShiftFlagR = true;
+            break;
+        }
     }
 
     //=============================================================
