@@ -64,8 +64,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
 
     public CharacterData[] CharacterDatas = {
-        new CharacterData{Id=0, Name="kanade",ActiveSkill="Pitch Shift",PassiveSkill="Power Code",InstrumentType=INSTRUMENT_TYPE.GUITAR},
-        new CharacterData{Id=1, Name="seira",ActiveSkill="Abandonne",PassiveSkill="Con Anima",InstrumentType=INSTRUMENT_TYPE.DJ}, //abandonne(感情のままに) con anima(魂をこめて)
+        new CharacterData{Id=0, Name="カナデ",ActiveSkill="Pitch Shift",PassiveSkill="Power Code",InstrumentType=INSTRUMENT_TYPE.GUITAR},
+        new CharacterData{Id=1, Name="セイラ",ActiveSkill="Abandonne",PassiveSkill="Con Anima",InstrumentType=INSTRUMENT_TYPE.DJ}, //abandonne(感情のままに) con anima(魂をこめて)
         new CharacterData{Id=2, Name="???",ActiveSkill="Poly Rhythm",PassiveSkill="Ghost Note",InstrumentType=INSTRUMENT_TYPE.DRUM},
     };
 

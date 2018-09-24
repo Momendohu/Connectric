@@ -48,8 +48,8 @@ public class CharacterSelectUI : MonoBehaviour {
         characterImageR = CreateCharacterImage("R",iniPos[2]);
 
         nameAndLV = transform.Find("Image/Text").GetComponent<Text>();
-        skillDescription = transform.Find("Image2/Text").GetComponent<Text>();
-        instrumentTypeIcon = transform.Find("Type/Icon").GetComponent<Image>();
+        skillDescription = transform.Find("Image/Image2/Text").GetComponent<Text>();
+        instrumentTypeIcon = transform.Find("Image/Type/Icon").GetComponent<Image>();
     }
 
     //=============================================================
