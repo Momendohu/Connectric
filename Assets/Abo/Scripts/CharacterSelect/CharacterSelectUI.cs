@@ -11,9 +11,9 @@ public class CharacterSelectUI : MonoBehaviour {
     private GameObject leftButton; //左のボタン
     private GameObject rightButton; //右のボタン
 
-    private Image characterImageL; //キャラクターの画像(左)
-    private Image characterImageC; //キャラクターの画像(中心)
-    private Image characterImageR; //キャラクターの画像(右)
+    private GameObject characterImageL; //キャラクターの画像(左)
+    private GameObject characterImageC; //キャラクターの画像(中心)
+    private GameObject characterImageR; //キャラクターの画像(右)
 
     private Text nameAndLV; //名前とレベル
     private Text skillDescription; //スキル説明
@@ -25,7 +25,8 @@ public class CharacterSelectUI : MonoBehaviour {
     private float easingTime = 0; //イージング処理用時間
     [SerializeField]
     private Vector3[] iniPos = { new Vector3(-800,-50,0),new Vector3(0,-50,0),new Vector3(800,-50,0) }; //初期位置(左、中心、右)
-    private bool characterShiftFlag; //キャラクターのシフトフラグ
+    private bool characterShiftFlagL; //キャラクターのシフトフラグ
+    private bool characterShiftFlagR; //キャラクターのシフトフラグ
 
     //=============================================================
     private void Init () {
@@ -42,9 +43,9 @@ public class CharacterSelectUI : MonoBehaviour {
         rightButton = transform.Find("RightButton").gameObject;
 
         //オブジェクト生成を行う
-        characterImageL = CreateCharacterImage("L",iniPos[0]).GetComponent<Image>();
-        characterImageC = CreateCharacterImage("C",iniPos[1]).GetComponent<Image>();
-        characterImageR = CreateCharacterImage("R",iniPos[2]).GetComponent<Image>();
+        characterImageL = CreateCharacterImage("L",iniPos[0]);
+        characterImageC = CreateCharacterImage("C",iniPos[1]);
+        characterImageR = CreateCharacterImage("R",iniPos[2]);
 
         nameAndLV = transform.Find("Image/Text").GetComponent<Text>();
         skillDescription = transform.Find("Image2/Text").GetComponent<Text>();
@@ -61,16 +62,6 @@ public class CharacterSelectUI : MonoBehaviour {
     }
 
     private void Update () {
-        GameManager.CharacterData characterData = gameManager.CharacterDatas[gameManager.FocusCharacter];
-
-        characterImageL.sprite = gameManager.CharacterImage[GetFocusCharacterNum(gameManager.FocusCharacter - 1)];
-        characterImageC.sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
-        characterImageR.sprite = gameManager.CharacterImage[GetFocusCharacterNum(gameManager.FocusCharacter + 1)];
-
-        nameAndLV.text = characterData.Name + " LV " + gameManager.CharacterStatus[gameManager.FocusCharacter].Level;
-        skillDescription.text = "ActiveSkill - " + characterData.ActiveSkill + "\nPassiveSkill - " + characterData.PassiveSkill;
-        instrumentTypeIcon.sprite = gameManager.PieceLinkImage[(int)characterData.InstrumentType];
-
         //画面タッチ状態ならフラグをon
         if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Moved) {
             isTouched = true;
@@ -93,44 +84,78 @@ public class CharacterSelectUI : MonoBehaviour {
 
             easingTime = 0;
         } else {
-            //Debug.Log("1:" + characterImageC.GetComponent<RectTransform>().position.x);
-            //Debug.Log("2:" + _camera.orthographicSize / 3);
+            easingTime += Time.deltaTime * 4;
 
-            if(characterImageC.GetComponent<RectTransform>().position.x >= _camera.orthographicSize / 3) {
-                //ShiftFocusCharacter(1);
-                characterShiftFlag = true;
+            //左に移動させるかどうかの判定
+            if(!characterShiftFlagL) {
+                if(characterImageC.GetComponent<RectTransform>().position.x <= -_camera.orthographicSize / 4) {
+                    characterShiftFlagL = true;
+                }
             }
 
-            //キャラクターのシフトフラグがたったら
-            if(characterShiftFlag) {
-                //元の場所に戻す
-                easingTime += Time.deltaTime;
-
-                characterImageL.GetComponent<RectTransform>().localPosition = Vector3.Lerp(
-                    characterImageL.GetComponent<RectTransform>().localPosition,
-                    iniPos[0],
-                    easingTime
-                    );
-
+            //左に移動させたときの動作
+            if(characterShiftFlagL) {
                 characterImageC.GetComponent<RectTransform>().localPosition = Vector3.Lerp(
-                    characterImageC.GetComponent<RectTransform>().localPosition,
-                    iniPos[1],
-                    easingTime
-                    );
+                   characterImageC.GetComponent<RectTransform>().localPosition,
+                   iniPos[0],
+                   easingTime
+                   );
 
                 characterImageR.GetComponent<RectTransform>().localPosition = Vector3.Lerp(
-                    characterImageR.GetComponent<RectTransform>().localPosition,
-                    iniPos[2],
-                    easingTime
-                    );
+                   characterImageR.GetComponent<RectTransform>().localPosition,
+                   iniPos[1],
+                   easingTime
+                   );
 
-                //ボタンのアクティブ化
-                leftButton.SetActive(true);
-                rightButton.SetActive(true);
-            } else {
-                //元の場所に戻す
-                easingTime += Time.deltaTime;
+                //一定時間が経過したら
+                if(easingTime >= 1) {
+                    characterShiftFlagL = false;
 
+                    //フォーカスするキャラクターのシフト
+                    ShiftFocusCharacter(1);
+                    //位置の初期化
+                    characterImageL.GetComponent<RectTransform>().localPosition = iniPos[0];
+                    characterImageC.GetComponent<RectTransform>().localPosition = iniPos[1];
+                    characterImageR.GetComponent<RectTransform>().localPosition = iniPos[2];
+                }
+            }
+
+            //右に移動させるかどうかの判定
+            if(!characterShiftFlagR) {
+                if(characterImageC.GetComponent<RectTransform>().position.x >= _camera.orthographicSize / 4) {
+                    characterShiftFlagR = true;
+                }
+            }
+
+            //右に移動させたときの動作
+            if(characterShiftFlagR) {
+                characterImageC.GetComponent<RectTransform>().localPosition = Vector3.Lerp(
+                   characterImageC.GetComponent<RectTransform>().localPosition,
+                   iniPos[2],
+                   easingTime
+                   );
+
+                characterImageL.GetComponent<RectTransform>().localPosition = Vector3.Lerp(
+                   characterImageL.GetComponent<RectTransform>().localPosition,
+                   iniPos[1],
+                   easingTime
+                   );
+
+                //一定時間が経過したら
+                if(easingTime >= 1) {
+                    characterShiftFlagR = false;
+
+                    //フォーカスするキャラクターのシフト
+                    ShiftFocusCharacter(-1);
+                    //位置の初期化
+                    characterImageL.GetComponent<RectTransform>().localPosition = iniPos[0];
+                    characterImageC.GetComponent<RectTransform>().localPosition = iniPos[1];
+                    characterImageR.GetComponent<RectTransform>().localPosition = iniPos[2];
+                }
+            }
+
+            //通常動作
+            if(!(characterShiftFlagL || characterShiftFlagR)) {
                 characterImageL.GetComponent<RectTransform>().localPosition = Vector3.Lerp(
                     characterImageL.GetComponent<RectTransform>().localPosition,
                     iniPos[0],
@@ -156,6 +181,19 @@ public class CharacterSelectUI : MonoBehaviour {
         }
 
         beforeFrameTouchPosition = GetTouchPosition();
+    }
+
+    private void LateUpdate () {
+        //キャラクターデータの適用
+        GameManager.CharacterData characterData = gameManager.CharacterDatas[gameManager.FocusCharacter];
+        nameAndLV.text = characterData.Name + " LV " + gameManager.CharacterStatus[gameManager.FocusCharacter].Level;
+        skillDescription.text = "ActiveSkill - " + characterData.ActiveSkill + "\nPassiveSkill - " + characterData.PassiveSkill;
+        instrumentTypeIcon.sprite = gameManager.PieceLinkImage[(int)characterData.InstrumentType];
+
+        //イメージを適用
+        characterImageL.GetComponent<Image>().sprite = gameManager.CharacterImage[GetFocusCharacterNum(gameManager.FocusCharacter - 1)];
+        characterImageC.GetComponent<Image>().sprite = gameManager.CharacterImage[GetFocusCharacterNum(gameManager.FocusCharacter)];
+        characterImageR.GetComponent<Image>().sprite = gameManager.CharacterImage[GetFocusCharacterNum(gameManager.FocusCharacter + 1)];
     }
 
     //=============================================================
