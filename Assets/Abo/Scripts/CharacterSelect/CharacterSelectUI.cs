@@ -23,7 +23,6 @@ public class CharacterSelectUI : MonoBehaviour {
     private bool isTouched; //画面がタッチされているかどうか
     private Vector3 beforeFrameTouchPosition; //前フレームのタッチポジション
     private float easingTime = 0; //イージング処理用時間
-    [SerializeField]
     private Vector3[] iniPos = { new Vector3(-800,-50,0),new Vector3(0,-50,0),new Vector3(800,-50,0) }; //初期位置(左、中心、右)
     private bool characterShiftFlagL; //キャラクターのシフトフラグ
     private bool characterShiftFlagR; //キャラクターのシフトフラグ
@@ -109,6 +108,7 @@ public class CharacterSelectUI : MonoBehaviour {
 
                 //一定時間が経過したら
                 if(easingTime >= 1) {
+                    easingTime=0;
                     characterShiftFlagL = false;
 
                     //フォーカスするキャラクターのシフト
@@ -143,6 +143,7 @@ public class CharacterSelectUI : MonoBehaviour {
 
                 //一定時間が経過したら
                 if(easingTime >= 1) {
+                    easingTime = 0;
                     characterShiftFlagR = false;
 
                     //フォーカスするキャラクターのシフト
