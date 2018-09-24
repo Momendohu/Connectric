@@ -185,6 +185,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         InitEnemyStatus(); //エネミーステータスの初期化
 
         switch(SceneManager.GetActiveScene().name) {
+            case "Title":
+            break;
+
             case "CharacterSelect":
             break;
 
@@ -214,6 +217,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
 
         switch(SceneManager.GetActiveScene().name) {
+            case "Title":
+            break;
+
             case "CharacterSelect":
             break;
 
@@ -230,6 +236,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             break;
         }
     }
+
+    //==============================================================================================================================================
+    //Titleシーン
+    //==============================================================================================================================================
+
 
     //==============================================================================================================================================
     //CharacterSelectシーン
@@ -350,8 +361,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //ゲームクリアかどうかを判別する
     private void CheckGameClear () {
         //●●だったらゲームクリア
-        if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began) {
-            soundManager.StopBGM(BGMName); //曲を停止
+        if(/*TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began*/false) {
             isGameClear = true;
         }
     }
@@ -442,6 +452,21 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //シーン遷移(ゲームからリザルトへ)
     public void JumpSceneGameToResult () {
+        InitCharacterStatus(); //キャラクターステータスの初期化
+        InitEnemyStatus(); //エネミーステータスの初期化
+        isGameOver = false; //ゲームオーバーフラグの初期化
+        isGameClear = false; //ゲームクリアフラグの初期化
+        isPause = false; //ポーズフラグの初期化
+        timingBars.Clear(); //タイミングバーの参照の初期化
+        sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
+
+        soundManager.StopBGM(BGMName);
+        SceneManager.LoadScene("CharacterSelect");
+    }
+
+    //=============================================================
+    //シーン遷移(ゲームから曲セレクトへ)
+    public void JumpSceneGameToMusicSelect () {
         InitCharacterStatus(); //キャラクターステータスの初期化
         InitEnemyStatus(); //エネミーステータスの初期化
         isGameOver = false; //ゲームオーバーフラグの初期化

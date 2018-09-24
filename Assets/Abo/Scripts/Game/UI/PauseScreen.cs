@@ -45,6 +45,6 @@ public class PauseScreen : MonoBehaviour {
     //=============================================================
     //曲選択に戻るボタン
     public void OnClickToSelect () {
-
+        gameManager.JumpSceneGameToMusicSelect();
     }
 }
