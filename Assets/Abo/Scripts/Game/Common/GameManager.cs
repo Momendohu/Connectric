@@ -206,6 +206,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     private void Update () {
+        TapEffect();
+
         //シーンが変化したらもう一回Awakeを呼びだす
         if(!SceneManager.GetActiveScene().name.Equals(beforeFrameSceneName)) {
             sceneJumpFlag = true;
@@ -218,6 +220,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         switch(SceneManager.GetActiveScene().name) {
             case "Title":
+            RoutineTitle();
             break;
 
             case "CharacterSelect":
@@ -240,7 +243,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //Titleシーン
     //==============================================================================================================================================
+    //=============================================================
+    private void RoutineTitle () {
+        if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began) {
 
+        }
+    }
 
     //==============================================================================================================================================
     //CharacterSelectシーン
@@ -257,12 +265,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private int notesWaveForTimingBar;
     private bool onceFlagGamePause; //ゲームポーズ時に一回だけ使いたい処理を挟むときのためのフラグ
 
-    private BoardManager boardManager; //ボードマネージャー
+    //private BoardManager boardManager; //ボードマネージャー
+    private BoardManager_copy boardManager_copy; //ボードマネージャー
     private int beforeCombo; //前フレームのコンボ数(タイミングバー消滅感知から消すまでの流れで1Fかかる可能性を考慮)
 
     //=============================================================
     private void CRefGame () {
-        boardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
+        boardManager_copy = GameObject.Find("BoardManager_copy").GetComponent<BoardManager_copy>();
+        //boardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
     }
 
     //=============================================================
@@ -278,8 +288,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void RoutineGame () {
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         //ゲームシーンリロード時になんでか参照が2フレーム以降に切れるからこの処理をいれた(時間があったら原因探したい)
-        if(boardManager == null) {
+        /*if(boardManager == null) {
             boardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
+        }*/
+
+        if(boardManager_copy == null) {
+            boardManager_copy = GameObject.Find("BoardManager_copy").GetComponent<BoardManager_copy>();
         }
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -325,7 +339,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
             CheckGameOver();
             CheckGameClear();
-            beforeCombo = boardManager.Combo; //コンボ数を保存
+            //beforeCombo = boardManager.Combo; //コンボ数を保存
+            beforeCombo = boardManager_copy.Combo; //コンボ数を保存
 
         } else { //ポーズ状態なら
             //BGMをポーズ状態にする
@@ -434,9 +449,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
     }
 
-    //=============================================================
-    //シーン遷移(ゲームからゲームへ)
-    public void JumpSceneGameToGame () {
+    //==============================================================================================================================================
+    //シーン遷移周り
+    //==============================================================================================================================================
+    //ゲームプレイ系のステータス初期化
+    private void InitializeGameStatus () {
         InitCharacterStatus(); //キャラクターステータスの初期化
         InitEnemyStatus(); //エネミーステータスの初期化
         isGameOver = false; //ゲームオーバーフラグの初期化
@@ -444,6 +461,21 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         isPause = false; //ポーズフラグの初期化
         timingBars.Clear(); //タイミングバーの参照の初期化
         sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
+    }
+
+    //=============================================================
+    //シーン遷移(タイトルからホームへ)
+    public void JumpSceneTitleToHome () {
+        InitializeGameStatus();
+
+        soundManager.StopBGM(BGMName);
+        SceneManager.LoadScene("CharacterSelect");
+    }
+
+    //=============================================================
+    //シーン遷移(ゲームからゲームへ)
+    public void JumpSceneGameToGame () {
+        InitializeGameStatus();
 
         soundManager.StopBGM(BGMName);
         SceneManager.LoadScene("Game_copy");
@@ -452,13 +484,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //シーン遷移(ゲームからリザルトへ)
     public void JumpSceneGameToResult () {
-        InitCharacterStatus(); //キャラクターステータスの初期化
-        InitEnemyStatus(); //エネミーステータスの初期化
-        isGameOver = false; //ゲームオーバーフラグの初期化
-        isGameClear = false; //ゲームクリアフラグの初期化
-        isPause = false; //ポーズフラグの初期化
-        timingBars.Clear(); //タイミングバーの参照の初期化
-        sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
+        InitializeGameStatus();
 
         soundManager.StopBGM(BGMName);
         SceneManager.LoadScene("CharacterSelect");
@@ -467,15 +493,18 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //シーン遷移(ゲームから曲セレクトへ)
     public void JumpSceneGameToMusicSelect () {
-        InitCharacterStatus(); //キャラクターステータスの初期化
-        InitEnemyStatus(); //エネミーステータスの初期化
-        isGameOver = false; //ゲームオーバーフラグの初期化
-        isGameClear = false; //ゲームクリアフラグの初期化
-        isPause = false; //ポーズフラグの初期化
-        timingBars.Clear(); //タイミングバーの参照の初期化
-        sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
+        InitializeGameStatus();
 
         soundManager.StopBGM(BGMName);
         SceneManager.LoadScene("CharacterSelect");
+    }
+
+    //==============================================================================================================================================
+    //タップエフェクト
+    //==============================================================================================================================================
+    public void TapEffect () {
+        if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began) {
+
+        }
     }
 }
