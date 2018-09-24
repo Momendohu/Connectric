@@ -49,6 +49,7 @@ public class BoardManager : MonoBehaviour {
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
 
     private GameObject game_manager;
+    private GameObject mouse;
 
 
     [SerializeField] private int combo = 0;                       // コンボ数
@@ -67,6 +68,7 @@ public class BoardManager : MonoBehaviour {
 
         CreateBoard();
         game_manager = GameObject.Find("GameManager");
+        mouse = GameObject.Find("Mouse");
     }
 
     //===================================================
@@ -299,9 +301,7 @@ public class BoardManager : MonoBehaviour {
         for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
                 if(Boardpieces[width,height].mouseFlag) {
-                    Vector3 vPos = new Vector3(Input.mousePosition.x,Input.mousePosition.y,10.0f);
-                    Vector3 vWorldPos = Camera.main.ScreenToWorldPoint(vPos);
-                    Boardpieces[width,height].obj.GetComponent<Transform>().position = vWorldPos;
+                    Boardpieces[width,height].obj.GetComponent<Transform>().position = mouse.GetComponent<Mouse>().CursolWorldPos;
                     break;
                 }
             }

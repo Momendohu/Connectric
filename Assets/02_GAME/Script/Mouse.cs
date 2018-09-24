@@ -9,9 +9,13 @@ public class Mouse : MonoBehaviour {
     private const float RIMIT_LEFT = -4.8f;
     private const float RIMIT_RIGHT = 4.8f;
 
+    [SerializeField] private Vector3 cursol_world_pos;
+    public Vector3 CursolWorldPos
+    {
+        get { return cursol_world_pos; }
+        set { cursol_world_pos = value; }
+    }
 
-    [SerializeField] private float cursol_X;
-    [SerializeField] private float cursol_Y;
     [SerializeField] private bool tapFlag;
     [SerializeField] private bool oldTapFlag;
     [SerializeField] private bool is_TriggerTapFlag;
@@ -24,15 +28,37 @@ public class Mouse : MonoBehaviour {
         oldTapFlag = false;
         tapFlag = false;
         CaptureFlag = false;
-        MouseInfo();
+
+        // 実機で操作するか否か
+        if (Application.isEditor)
+        {
+            MouseInfo();
+            Debug.Log("mause");
+        }
+        else
+        {
+            TouchInfo();
+            Debug.Log("実機");
+        }
     }
 
     // Update is called once per frame
     void FixedUpdate () {
 
-        MouseInfo();
+        // 実機で操作するか否か
+        if(Application.isEditor)
+        {
+            MouseInfo();
+            Debug.Log("mause");
+        }
+        else
+        {
+            TouchInfo();
+            Debug.Log("実機");
+        }
+        
 
-        if(cursol_X < RIMIT_LEFT || cursol_X > RIMIT_RIGHT || cursol_Y < RIMIT_BOTTOM || cursol_Y > RIMIT_TOP || is_ReleaseTapFlag) {
+        if( !PlayScreenCheck() || is_ReleaseTapFlag) {
             CaptureFlag = false;
         }
         Debug.Log(CaptureFlag);
@@ -44,16 +70,57 @@ public class Mouse : MonoBehaviour {
     //---------------------------------------------------------
     private void MouseInfo () {
 
-        Vector3 vPos = new Vector3(Input.mousePosition.x,Input.mousePosition.y,0.0f);
-        Vector3 vWorldPos = Camera.main.ScreenToWorldPoint(vPos);
-        cursol_X = vWorldPos.x;
-        cursol_Y = vWorldPos.y;
+        Vector3 vPos = new Vector3(Input.mousePosition.x,Input.mousePosition.y,10.0f);
+        cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
 
         tapFlag = Input.GetMouseButton(0);          // 左ボタンクリック
         is_TriggerTapFlag = !oldTapFlag && tapFlag; // トリガー
         is_ReleaseTapFlag = oldTapFlag && !tapFlag; // リリース 
         oldTapFlag = tapFlag;                       // 過去のクリック
-        this.transform.position = new Vector3(cursol_X,cursol_Y,vWorldPos.z);
+        this.transform.position = new Vector3(cursol_world_pos.x, cursol_world_pos.y, cursol_world_pos.z);
+    }
+
+    //---------------------------------------------------------
+    // タッチ座標やクリックの管理
+    //---------------------------------------------------------
+    private void TouchInfo()
+    {
+
+        Vector3 vPos = new Vector3(0.0f, 0.0f, 10.0f);
+        cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
+        tapFlag = false;
+        is_TriggerTapFlag = false; // トリガー
+        is_ReleaseTapFlag = false; // リリース 
+
+        // タッチしているかチェック
+        if (Input.touchCount > 0)
+        {
+            tapFlag = true;
+
+            // タッチ情報の取得
+            Touch touch = Input.GetTouch(0);
+            vPos = new Vector3(touch.position.x, touch.position.y, 10.0f);
+            cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                Debug.Log("タッチトリガー");
+                is_TriggerTapFlag = true;
+            } 
+
+            if(touch.phase == TouchPhase.Ended)
+            {
+                Debug.Log("タッチリリース");
+                is_ReleaseTapFlag = true;
+            }
+
+            if(touch.phase == TouchPhase.Moved)
+            {
+                Debug.Log("タッチ押しっぱなし");
+            }
+        }
+        
+        this.transform.position = new Vector3(cursol_world_pos.x, cursol_world_pos.y, cursol_world_pos.z);
     }
 
     //--------------------------------------------------------
@@ -64,7 +131,7 @@ public class Mouse : MonoBehaviour {
         if(is_TriggerTapFlag) {
             // ボードのキャプチャー
             if(other.tag == "Board") {
-                if(cursol_X > RIMIT_LEFT && cursol_X < RIMIT_RIGHT && cursol_Y > RIMIT_BOTTOM & cursol_Y < RIMIT_TOP) {
+                if( PlayScreenCheck() ) {
                     CaptureFlag = true;
                 }
                 other.GetComponent<SpriteRenderer>().color = new Color(0.5f,0.5f,0.5f,0.0f);
@@ -85,6 +152,15 @@ public class Mouse : MonoBehaviour {
             board.GetComponent<BoardManager>().ReleaseMouseObj();
         }
 
+    }
+
+    //--------------------------------------------------------
+    // 画面操作範囲外チェック
+    //--------------------------------------------------------
+    public bool PlayScreenCheck()
+    {
+        return ( cursol_world_pos.x > RIMIT_LEFT && cursol_world_pos.x < RIMIT_RIGHT && 
+                 cursol_world_pos.y > RIMIT_BOTTOM && cursol_world_pos.y < RIMIT_TOP );
     }
 
 }
