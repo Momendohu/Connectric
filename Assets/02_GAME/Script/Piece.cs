@@ -15,7 +15,7 @@ public class Piece : MonoBehaviour {
 	void Update () {
 		if(!Mouse.CaptureFlag)
         {
-            this.GetComponent<Transform>().localScale = new Vector3(0.15f, 0.15f, 0.15f);
+            this.GetComponent<Transform>().localScale = new Vector3(0.2f, 0.2f, 0.2f);
         }
     }
 
@@ -24,6 +24,6 @@ public class Piece : MonoBehaviour {
     //-------------------------------------------
     public void Big()
     {
-        this.GetComponent<Transform>().localScale = new Vector3(0.2f, 0.2f, 0.2f);
+        this.GetComponent<Transform>().localScale = new Vector3(0.22f, 0.22f, 0.22f);
     }
 }

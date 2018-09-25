@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Mouse : MonoBehaviour {
 
-    private const float RIMIT_TOP = 2.5f;
-    private const float RIMIT_BOTTOM = -7.0f;
-    private const float RIMIT_LEFT = -4.8f;
-    private const float RIMIT_RIGHT = 4.8f;
+    private const float RIMIT_TOP = 0.8f;
+    private const float RIMIT_BOTTOM = -8.8f;
+    private const float RIMIT_LEFT = -5.0f;
+    private const float RIMIT_RIGHT = 5.0f;
 
     [SerializeField] private Vector3 cursol_world_pos;
     public Vector3 CursolWorldPos
@@ -56,12 +56,15 @@ public class Mouse : MonoBehaviour {
             TouchInfo();
             Debug.Log("実機");
         }
-        
 
-        if( !PlayScreenCheck() || is_ReleaseTapFlag) {
+
+        if (!PlayScreenCheck() || is_ReleaseTapFlag)
+        {
+            board.GetComponent<BoardManager_copy>().ReleaseMouseObj();
+            oldTapFlag = false;
+            tapFlag = false;
             CaptureFlag = false;
         }
-        Debug.Log(CaptureFlag);
 
     }
 
@@ -102,30 +105,59 @@ public class Mouse : MonoBehaviour {
             vPos = new Vector3(touch.position.x, touch.position.y, 10.0f);
             cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
 
-            if (touch.phase == TouchPhase.Began)
+            if (!oldTapFlag)
             {
-                Debug.Log("タッチトリガー");
-                is_TriggerTapFlag = true;
-            } 
-
-            if(touch.phase == TouchPhase.Ended)
-            {
-                Debug.Log("タッチリリース");
-                is_ReleaseTapFlag = true;
+                if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                {
+                    is_TriggerTapFlag = true;
+                }
             }
-
-            if(touch.phase == TouchPhase.Moved)
+            if (oldTapFlag)
             {
-                Debug.Log("タッチ押しっぱなし");
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    is_ReleaseTapFlag = true;
+                }
             }
         }
-        
+
         this.transform.position = new Vector3(cursol_world_pos.x, cursol_world_pos.y, cursol_world_pos.z);
+        oldTapFlag = tapFlag;
     }
 
     //--------------------------------------------------------
     // 侵入検知(領域に入っているとき)
     //--------------------------------------------------------
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // クリック時一度のみ
+        if (is_TriggerTapFlag)
+        {
+            // ボードのキャプチャー
+            if (other.tag == "Board")
+            {
+                if (PlayScreenCheck())
+                {
+                    CaptureFlag = true;
+                }
+                other.GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f, 0.0f);
+                board.GetComponent<BoardManager_copy>().SetMouseObj();
+
+            }
+        }
+
+        // クリックしている間
+        if (tapFlag && !is_TriggerTapFlag)
+        {
+            if (other.tag == "Board")
+            {
+                other.GetComponent<SpriteRenderer>().color = Color.black;
+                board.GetComponent<BoardManager_copy>().Change();
+            }
+        }
+    }
+
+
     void OnTriggerStay2D (Collider2D other) {
         // クリック時一度のみ
         if(is_TriggerTapFlag) {
@@ -142,14 +174,9 @@ public class Mouse : MonoBehaviour {
         // クリックしている間
         if(tapFlag && !is_TriggerTapFlag) {
             if(other.tag == "Board") {
-                other.GetComponent<SpriteRenderer>().color = Color.black;
+                other.GetComponent<SpriteRenderer>().color = new Color(0.0f,0.0f,0.0f,0.0f);
                 board.GetComponent<BoardManager>().Change();
             }
-        }
-
-        // リリースした時
-        if(/*is_ReleaseTapFlag && */!CaptureFlag) {
-            board.GetComponent<BoardManager>().ReleaseMouseObj();
         }
 
     }
