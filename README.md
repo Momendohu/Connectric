@@ -12,7 +12,7 @@
 - SortingLayer設定
   - `14 PostProcessingUI`
 - SortingLayer設定
-  - `なし`
+  - `Effect`
 - Canvas設定
   - ReferenceResolution`900x1600`
 - DefaultExecutionOrder設定(スクリプトの実行順)
