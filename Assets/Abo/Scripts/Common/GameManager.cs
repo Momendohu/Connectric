@@ -279,14 +279,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private int notesWaveForTimingBar;
     private bool onceFlagGamePause; //ゲームポーズ時に一回だけ使いたい処理を挟むときのためのフラグ
 
-    //private BoardManager boardManager; //ボードマネージャー
-    private BoardManager_copy boardManager_copy; //ボードマネージャー
+    private BoardManager boardManager; //ボードマネージャー
+    //private BoardManager_copy boardManager_copy; //ボードマネージャー
     private int beforeCombo; //前フレームのコンボ数(タイミングバー消滅感知から消すまでの流れで1Fかかる可能性を考慮)
 
     //=============================================================
     private void CRefGame () {
-        boardManager_copy = GameObject.Find("BoardManager_copy").GetComponent<BoardManager_copy>();
-        //boardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
+        //boardManager_copy = GameObject.Find("BoardManager_copy").GetComponent<BoardManager_copy>();
+        boardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
     }
 
     //=============================================================
@@ -302,13 +302,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void RoutineGame () {
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         //ゲームシーンリロード時になんでか参照が2フレーム以降に切れるからこの処理をいれた(時間があったら原因探したい)
-        /*if(boardManager == null) {
+        if(boardManager == null) {
             boardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
-        }*/
-
-        if(boardManager_copy == null) {
-            boardManager_copy = GameObject.Find("BoardManager_copy").GetComponent<BoardManager_copy>();
         }
+
+        /*if(boardManager_copy == null) {
+            boardManager_copy = GameObject.Find("BoardManager_copy").GetComponent<BoardManager_copy>();
+        }*/
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
         //ゲームオーバー、ゲームクリアなら処理をスキップ
@@ -353,8 +353,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
             CheckGameOver();
             CheckGameClear();
-            //beforeCombo = boardManager.Combo; //コンボ数を保存
-            beforeCombo = boardManager_copy.Combo; //コンボ数を保存
+            beforeCombo = boardManager.Combo; //コンボ数を保存
+            //beforeCombo = boardManager_copy.Combo; //コンボ数を保存
 
         } else { //ポーズ状態なら
             //BGMをポーズ状態にする
