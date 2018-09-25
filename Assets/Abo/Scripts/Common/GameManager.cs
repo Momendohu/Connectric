@@ -199,6 +199,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             InitGame();
             break;
 
+            case "Game_copy2":
+            InitGame();
+            break;
+
             default:
             Debug.Log("謎のシーンだよ");
             break;
@@ -234,6 +238,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             RoutineGame();
             break;
 
+            case "Game_copy2":
+            RoutineGame();
+            break;
+
             default:
             Debug.Log("謎のシーンだよ");
             break;
@@ -246,7 +254,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     private void RoutineTitle () {
         if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began) {
-            JumpSceneTitleToHome();
+            //JumpSceneTitleToHome();
         }
     }
 
