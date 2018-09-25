@@ -26,6 +26,7 @@ public class CharacterSelectUI : MonoBehaviour {
     private Vector3[] iniPos = { new Vector3(-800,-50,0),new Vector3(0,-50,0),new Vector3(800,-50,0) }; //初期位置(左、中心、右)
     private bool characterShiftFlagL; //キャラクターのシフトフラグ
     private bool characterShiftFlagR; //キャラクターのシフトフラグ
+    private float shiftLerpSpeed = 4; //シフト移動のスピード
 
     //=============================================================
     private void Init () {
@@ -83,7 +84,7 @@ public class CharacterSelectUI : MonoBehaviour {
 
             easingTime = 0;
         } else {
-            easingTime += Time.deltaTime * 4;
+            easingTime += Time.deltaTime * shiftLerpSpeed;
 
             //左に移動させるかどうかの判定
             if(!characterShiftFlagL) {
@@ -108,7 +109,7 @@ public class CharacterSelectUI : MonoBehaviour {
 
                 //一定時間が経過したら
                 if(easingTime >= 1) {
-                    easingTime=0;
+                    easingTime = 0;
                     characterShiftFlagL = false;
 
                     //フォーカスするキャラクターのシフト

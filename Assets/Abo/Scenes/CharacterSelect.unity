@@ -281,7 +281,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &37269556
@@ -1523,10 +1523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2ccd219cf4df3942a959c86be44ce95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iniPos:
-  - {x: -800, y: -50, z: 0}
-  - {x: 0, y: -50, z: 0}
-  - {x: 800, y: -50, z: 0}
 --- !u!1 &1935766342
 GameObject:
   m_ObjectHideFlags: 0

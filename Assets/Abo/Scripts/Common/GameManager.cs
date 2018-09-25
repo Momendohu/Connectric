@@ -220,7 +220,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         switch(SceneManager.GetActiveScene().name) {
             case "Title":
-            RoutineTitle();
+            //RoutineTitle();
             break;
 
             case "CharacterSelect":
@@ -246,8 +246,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     private void RoutineTitle () {
         if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began) {
-
+            JumpSceneTitleToHome();
         }
+    }
+
+    //=============================================================
+    //シーン遷移(タイトルからホームへ)
+    private void JumpSceneTitleToHome () {
+        SceneManager.LoadScene("CharacterSelect");
     }
 
     //==============================================================================================================================================
@@ -449,9 +455,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
     }
 
-    //==============================================================================================================================================
-    //シーン遷移周り
-    //==============================================================================================================================================
+    //=============================================================
     //ゲームプレイ系のステータス初期化
     private void InitializeGameStatus () {
         InitCharacterStatus(); //キャラクターステータスの初期化
@@ -461,15 +465,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         isPause = false; //ポーズフラグの初期化
         timingBars.Clear(); //タイミングバーの参照の初期化
         sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
-    }
-
-    //=============================================================
-    //シーン遷移(タイトルからホームへ)
-    public void JumpSceneTitleToHome () {
-        InitializeGameStatus();
-
-        soundManager.StopBGM(BGMName);
-        SceneManager.LoadScene("CharacterSelect");
     }
 
     //=============================================================
@@ -502,9 +497,24 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //タップエフェクト
     //==============================================================================================================================================
-    public void TapEffect () {
+    //タップした位置にエフェクトを生成する
+    private void TapEffect () {
         if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began) {
-
+            Camera cam = GameObject.FindGameObjectsWithTag("MainCamera")[0].GetComponent<Camera>();
+            if(cam != null) {
+                Vector3 touchPosition = TouchUtil.GetTouchWorldPosition(cam);
+                CreateTapEffect(new Vector3(touchPosition.x,touchPosition.y,0));
+                Debug.Log(TouchUtil.GetTouchWorldPosition(cam));
+            }
         }
+    }
+
+    //=============================================================
+    //タップエフェクトの生成
+    private void CreateTapEffect (Vector3 pos) {
+        GameObject obj = Instantiate(Resources.Load("Prefabs/Effects/TapEffect")) as GameObject;
+        obj.transform.SetParent(GameObject.Find("Canvas").transform,false);
+        obj.transform.position = pos;
+        obj.GetComponent<ParticleSystem>().Play();
     }
 }
