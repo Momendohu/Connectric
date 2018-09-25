@@ -60,7 +60,7 @@ public class Mouse : MonoBehaviour {
 
         if (!PlayScreenCheck() || is_ReleaseTapFlag)
         {
-            board.GetComponent<BoardManager_copy>().ReleaseMouseObj();
+            board.GetComponent<BoardManager>().ReleaseMouseObj();
             oldTapFlag = false;
             tapFlag = false;
             CaptureFlag = false;
@@ -141,7 +141,7 @@ public class Mouse : MonoBehaviour {
                     CaptureFlag = true;
                 }
                 other.GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f, 0.0f);
-                board.GetComponent<BoardManager_copy>().SetMouseObj();
+                board.GetComponent<BoardManager>().SetMouseObj();
 
             }
         }
@@ -152,7 +152,7 @@ public class Mouse : MonoBehaviour {
             if (other.tag == "Board")
             {
                 other.GetComponent<SpriteRenderer>().color = Color.black;
-                board.GetComponent<BoardManager_copy>().Change();
+                board.GetComponent<BoardManager>().Change();
             }
         }
     }
