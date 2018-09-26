@@ -83,16 +83,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private SoundManager soundManager;
 
     //=============================================================
+    private int BGMNum = 3; //bgmの数
+    private string[] BGMNames = { "bgm001","bgm002","bgm003" }; //bgmの名前
+    private float[] BGMBPMs = { 130f,128f,146f }; //bgmのBGM
+
+    //=============================================================
     [System.NonSerialized]
-    public float BGMBPM = 128f; //tst001->171 bgm001->130 bgm002->128 bgm003->146
+    public float BGMBPM = 130f; //tst001->171 bgm001->130 bgm002->128 bgm003->146
     [System.NonSerialized]
-    public string BGMName = "bgm002";
+    public string BGMName = "bgm001";
     [System.NonSerialized]
     public int BeatInterbal = 8;
     [System.NonSerialized]
     public int FocusCharacter = 0; //フォーカスするキャラクター
     [System.NonSerialized]
     public int FocusEnemy = 0; //フォーカスするエネミー
+    [System.NonSerialized]
+    public int FocusBGM = 0;
 
     //=============================================================
     //一時停止しているかどうか
@@ -282,6 +289,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //シーン遷移(キャラクターセレクトからゲーム)
     public void JumpSceneSelectSoundToCharacterSelect () {
         SceneManager.LoadScene("CharacterSelect");
+    }
+
+    //=============================================================
+    //BGMを選択適用する
+    public void ApplyToBGMData (int num) {
+        if(num >= 0 && num <= BGMNum - 1) {
+            FocusBGM = num;
+        } else {
+            FocusBGM = 0;
+        }
     }
 
     //==============================================================================================================================================

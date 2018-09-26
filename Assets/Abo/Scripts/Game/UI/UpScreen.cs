@@ -77,21 +77,26 @@ public class UpScreen : MonoBehaviour {
                 time = 0;
             }
 
+            //キャラクターなら(雑な実装)
+            if(isPlayerDamaged && obj == playerCharacter) {
+                yield return CharacterDamage(obj,1f);
+            }
+
             yield return null;
         }
     }
 
     //=============================================================
     //キャラクターがダメージを受ける
-    private IEnumerator CharacterDamage (GameObject obj) {
+    private IEnumerator CharacterDamage (GameObject obj,float waitTime) {
         //キャラクターがカナデならダメージ用の画像に差し替える
         if(gameManager.CharacterDatas[gameManager.FocusCharacter].Id == 0) {
-            //obj.GetComponent<Image>().sprite = gameManager.CharacterImage[3];
+            obj.GetComponent<Image>().sprite = gameManager.CharacterImageDamage[gameManager.FocusCharacter];
         }
 
         float time = 0;
         while(true) {
-            time += Time.deltaTime;
+            time += Time.deltaTime / waitTime;
             if(time >= 1) {
                 break;
             }
@@ -99,5 +104,7 @@ public class UpScreen : MonoBehaviour {
             yield return null;
         }
 
+        isPlayerDamaged = false;
+        obj.GetComponent<Image>().sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
     }
 }
