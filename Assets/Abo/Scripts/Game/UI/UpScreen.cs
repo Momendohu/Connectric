@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class UpScreen : MonoBehaviour {
     //=============================================================
+    private float beforeFrameHitPoint; //前フレームの体力(限フレームの体力と差分をとってアニメーション切り替えに使う)
+
+    //=============================================================
     private GameManager gameManager;
     private SoundManager soundManager;
 
@@ -67,6 +70,7 @@ public class UpScreen : MonoBehaviour {
             if(time >= 1) {
                 time = 0;
             }
+
             yield return null;
         }
     }
@@ -76,10 +80,16 @@ public class UpScreen : MonoBehaviour {
     private IEnumerator CharacterDamage (GameObject obj) {
         //キャラクターがカナデならダメージ用の画像に差し替える
         if(gameManager.CharacterDatas[gameManager.FocusCharacter].Id == 0) {
-            obj.GetComponent<Image>().sprite = gameManager.CharacterImage[3];
+            //obj.GetComponent<Image>().sprite = gameManager.CharacterImage[3];
         }
-        while(true) {
 
+        float time = 0;
+        while(true) {
+            time += Time.deltaTime;
+            if(time>=1) {
+                break;
+            }
+            
             yield return null;
         }
 
