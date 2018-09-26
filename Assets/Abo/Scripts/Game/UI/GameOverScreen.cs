@@ -46,6 +46,6 @@ public class GameOverScreen : MonoBehaviour {
     //=============================================================
     //曲選択に戻るボタン
     public void OnClickToSelect () {
-        gameManager.JumpSceneGameToResult();
+        gameManager.JumpSceneGameToMusicSelect();
     }
 }

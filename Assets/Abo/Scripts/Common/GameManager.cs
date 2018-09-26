@@ -196,6 +196,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //BGMの再生初期化
+    private void InitMusicPlay () {
+        for(int i = 0;i < BGMNum;i++) {
+            soundManager.StopBGM(BGMNames[i]);
+        }
+    }
+
+    //=============================================================
     private void Awake () {
         if(!Init()) return;
 
@@ -207,19 +215,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             case "Title":
             break;
 
+            case "SelectSound":
+            InitSelectSound();
+            break;
+
             case "CharacterSelect":
+            InitCharacterSelect();
             break;
 
             case "Game":
             InitGame();
             break;
 
-            case "Game_copy":
+            case "Game_copy2":
             InitGame();
             break;
 
-            case "Game_copy2":
-            InitGame();
+            case "Result":
             break;
 
             default:
@@ -246,6 +258,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             RoutineTitle();
             break;
 
+            case "SelectSound":
+            break;
+
             case "CharacterSelect":
             break;
 
@@ -253,12 +268,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             RoutineGame();
             break;
 
-            case "Game_copy":
+            case "Game_copy2":
             RoutineGame();
             break;
 
-            case "Game_copy2":
-            RoutineGame();
+            case "Result":
             break;
 
             default:
@@ -280,13 +294,18 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //シーン遷移(タイトルからホームへ)
     private void JumpSceneTitleToHome () {
-        SceneManager.LoadScene("CharacterSelect");
+        SceneManager.LoadScene("SelectSound");
     }
 
     //==============================================================================================================================================
     //SelectSoundシーン
     //==============================================================================================================================================
-    //シーン遷移(キャラクターセレクトからゲーム)
+    private void InitSelectSound () {
+        InitMusicPlay();
+    }
+
+    //=============================================================
+    //シーン遷移(曲セレクトからキャラクターセレクト)
     public void JumpSceneSelectSoundToCharacterSelect () {
         SceneManager.LoadScene("CharacterSelect");
     }
@@ -307,6 +326,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //CharacterSelectシーン
     //==============================================================================================================================================
+    private void InitCharacterSelect () {
+        InitMusicPlay();
+    }
+
+    //=============================================================
     //シーン遷移(キャラクターセレクトからゲーム)
     public void JumpSceneCharacterSelectToGame () {
         SceneManager.LoadScene("Game_copy2");
@@ -548,7 +572,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public void JumpSceneGameToGame () {
         InitializeGameStatus();
 
-        soundManager.StopBGM(BGMName);
         SceneManager.LoadScene("Game_copy2");
     }
 
@@ -557,8 +580,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public void JumpSceneGameToResult () {
         InitializeGameStatus();
 
-        soundManager.StopBGM(BGMName);
-        SceneManager.LoadScene("CharacterSelect");
+        SceneManager.LoadScene("Result");
     }
 
     //=============================================================
@@ -566,8 +588,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public void JumpSceneGameToMusicSelect () {
         InitializeGameStatus();
 
-        soundManager.StopBGM(BGMName);
-        SceneManager.LoadScene("CharacterSelect");
+        SceneManager.LoadScene("SelectSound");
     }
 
     //==============================================================================================================================================
@@ -575,7 +596,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //シーン遷移(リザルトから曲セレクトへ)
     public void JumpSceneResultToMusicSelect () {
-        SceneManager.LoadScene("CharacterSelect");
+        SceneManager.LoadScene("SelectSound");
     }
 
     //==============================================================================================================================================
