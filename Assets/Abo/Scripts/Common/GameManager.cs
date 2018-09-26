@@ -45,10 +45,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public struct CharacterState {
         public int Id; //ID
         public int Level; //レベル
+
         public float MaxHitPoint; //最大体力
         public float HitPoint; //体力
         public float AttackPower; //攻撃力
+
+        public float MaxVoltage; //最大ボルテージ(スキル)
         public float Voltage; //ボルテージ(スキル)
+        public float Tension; //テンション(ボルテージ上昇値)
     }
 
     //キャラクターのステータス
@@ -163,6 +167,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
+            CharacterStatus[i].MaxVoltage = 100;
+            CharacterStatus[i].Voltage = 0;
+            CharacterStatus[i].Tension = 10;
         }
     }
 
@@ -344,9 +351,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                         if(beforeCombo == 0) {
                             Debug.Log(EnemyDatas[FocusEnemy].Name + "の攻撃! " + CharacterDatas[FocusCharacter].Name + "に" + EnemyStatus[FocusEnemy].AttackPower + "のダメージ!");
                             ApplyToCharacterHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
-                        } else { //コンボ数が1以上なら敵にダメージを与える
+                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇
                             Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
                             ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
+                            ApplyToVoltage(FocusCharacter);
                         }
                     }
                 }
@@ -376,6 +384,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //エネミー体力値に数値を適用する
     private void ApplyToEnemyHitPoint (int id,float num) {
         EnemyStatus[id].HitPoint += num;
+    }
+
+    //=============================================================
+    //スキルボルテージに数値を適用する
+    private void ApplyToVoltage (int id) {
+        CharacterStatus[id].Voltage += CharacterStatus[id].Tension;
     }
 
     //=============================================================
