@@ -23,7 +23,10 @@ public class ResultManager : MonoBehaviour {
         enemy_break = GameObject.Find("ENEMY_break");
 
         // テキストの書き込み
-        totalscore.GetComponent<Text>().text = "TOTAL SCORE   < <color=#ff0000>99999</color> >";
+        totalscore.GetComponent<Text>().text  = "TOTAL SCORE      < " + 99999 + " >";
+        hi_combo.GetComponent<Text>().text    = "HI COMBO      < <color=#ff0000>" + 20 + "  COMBO</color> >";
+        hi_hit.GetComponent<Text>().text      = "HI HIT          < <color=#ff5500>" + 21 + "  HIT </color>>";
+        enemy_break.GetComponent<Text>().text = "ENEMY_break   < <color=#ffff00>CLEAR</color> >";
     }
 	
 	// Update is called once per frame

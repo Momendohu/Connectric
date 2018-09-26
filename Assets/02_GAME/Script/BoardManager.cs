@@ -11,7 +11,6 @@ public class BoardManager : MonoBehaviour {
     public const int BOARD_HEIGHT_NUM = 5;
     public const float between = 1.85f;
     public Vector3 vStartPos = new Vector3(-3.7f, 1.2f, 0.0f);
-
     public const float DEBUG_COLOR = 0.0f;
 
     // ピースタイプ
@@ -55,13 +54,14 @@ public class BoardManager : MonoBehaviour {
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
     [SerializeField] private int[,] Target = new int[2, 2];       // リンクテスト
     [SerializeField] private bool skill = false;
-
+    [SerializeField] private int combo = 0;                       // コンボ数
     private GameObject game_manager;
     private GameObject mouse;
     private GameObject sound;
 
-
-    [SerializeField] private int combo = 0;                       // コンボ数
+    //---------------------------------------------------
+    // コンボ数の取得
+    //---------------------------------------------------
     public int Combo
     {
         get { return combo; }
@@ -86,7 +86,9 @@ public class BoardManager : MonoBehaviour {
     //===================================================
     void Update() {
 
-        if(game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+        // ポーズ、クリア画面、ゲームオーバーいずれなら更新しない
+        if(game_manager.GetComponent<GameManager>().IsGameClear || 
+            game_manager.GetComponent<GameManager>().IsGameOver ||
                game_manager.GetComponent<GameManager>().IsPause){ return; }
 
 
@@ -95,22 +97,7 @@ public class BoardManager : MonoBehaviour {
         // 削除準備
         if (game_manager.GetComponent<GameManager>().IsBeatChange)
         {
-
-            for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
-            {
-                for (int width = 0; width < BOARD_WIDTH_NUM; width++)
-                {
-                    if (Boardpieces[width, height].linkflag)
-                    {
-                        Boardpieces[width, height].deletePrepareFrag = true;
-                        Boardpieces[width, height].obj.GetComponent<Piece>().SmallFrag = true;
-                        Debug.Log("削除準備");
-                    }
-                }
-            }
-            LinkFlameDelete();      // リンク背景削除
-            game_manager.GetComponent<GameManager>().IsBeatChange = false;
-
+            PieceDeletePrepare();
         }
 
         // 小さくする＆ピースを消す(演出)
@@ -167,8 +154,6 @@ public class BoardManager : MonoBehaviour {
                 flag[width + height * 5] = Boardpieces[width, height].moveFlag;
             }
         }
-
-
     }
 
     //-------------------------------------------------------
@@ -458,6 +443,7 @@ public class BoardManager : MonoBehaviour {
     // リンクチェックの実行
     //-------------------------------------------------------
     private void LinkDo() {
+
         // ノーツリンクの取得
         Target = game_manager.GetComponent<GameManager>().GetLatestPieceLink();
 
@@ -527,7 +513,28 @@ public class BoardManager : MonoBehaviour {
     }
 
     //-------------------------------------------------------
-    // リンク削除
+    // ピース削除準備
+    //-------------------------------------------------------
+    private void PieceDeletePrepare()
+    {
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
+        {
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
+            {
+                if (Boardpieces[width, height].linkflag)
+                {
+                    Boardpieces[width, height].deletePrepareFrag = true;
+                    Boardpieces[width, height].obj.GetComponent<Piece>().SmallFrag = true;
+                    Debug.Log("削除準備");
+                }
+            }
+        }
+        LinkFlameDelete();      // リンク背景削除
+        game_manager.GetComponent<GameManager>().IsBeatChange = false;
+    }
+
+    //-------------------------------------------------------
+    // ピース削除
     //-------------------------------------------------------
     private void PieceDelete(int width, int height) {
 
@@ -632,4 +639,6 @@ public class BoardManager : MonoBehaviour {
             }
         }
     }
+
+
 }
