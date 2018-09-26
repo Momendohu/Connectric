@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class ResultManager : MonoBehaviour {
 
+    // サウンド
+
+    // ゲームマネージャー
+
+
 	// Use this for initialization
 	void Start () {
+
+
 		
 	}
 	
