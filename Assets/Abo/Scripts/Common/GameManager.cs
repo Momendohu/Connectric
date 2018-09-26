@@ -356,11 +356,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                             ApplyToEnemyVoltage(FocusEnemy);
 
                             Combo = 0;
-                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + コンボ数が加算される
+                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + コンボ数が加算される + ヒット数が表示される
                             Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
                             ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
                             ApplyToCharacterVoltage(FocusCharacter);
 
+                            CreateHitDisplayer(beforeCombo);
                             Combo += beforeCombo;
                         }
                     }
@@ -429,6 +430,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         obj.transform.SetParent(GameObject.Find("Canvas/UpScreen").transform,false);
         obj.transform.SetSiblingIndex(GameObject.Find("Canvas/UpScreen/TimingBars/TimingBarGoal").transform.GetSiblingIndex() + 1);
         return obj;
+    }
+
+    //=============================================================
+    //ヒット数表示オブジェクトの生成
+    private void CreateHitDisplayer (int num) {
+        GameObject obj = Instantiate(Resources.Load("Prefabs/UI/HitDisplayer")) as GameObject;
+        obj.transform.SetParent(GameObject.Find("Canvas/UpScreen").transform,false);
+        obj.transform.SetAsLastSibling();
+
+        obj.GetComponent<HitDisplayer>().HitNum = num;
     }
 
     //=============================================================
