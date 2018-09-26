@@ -447,10 +447,10 @@ public class BoardManager : MonoBehaviour {
         // ノーツリンクの取得
         Target = game_manager.GetComponent<GameManager>().GetLatestPieceLink();
 
-        Debug.Log(Target[0, 0]);
-        Debug.Log(Target[0, 1]);
-        Debug.Log(Target[1, 0]);
-        Debug.Log(Target[1, 1]);
+        //Debug.Log(Target[0, 0]);
+        //Debug.Log(Target[0, 1]);
+        //Debug.Log(Target[1, 0]);
+        //Debug.Log(Target[1, 1]);
 
 
         // 念のため初期化
@@ -525,7 +525,7 @@ public class BoardManager : MonoBehaviour {
                 {
                     Boardpieces[width, height].deletePrepareFrag = true;
                     Boardpieces[width, height].obj.GetComponent<Piece>().SmallFrag = true;
-                    Debug.Log("削除準備");
+                    //Debug.Log("削除準備");
                 }
             }
         }
@@ -626,7 +626,7 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     private void SkillActiveTime()
     {
-        Debug.Log("スキル発動");
+        //Debug.Log("スキル発動");
         for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
         {
             for (int width = 0; width < BOARD_WIDTH_NUM; width++)

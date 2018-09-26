@@ -35,12 +35,12 @@ public class Mouse : MonoBehaviour {
         if (Application.isEditor)
         {
             MouseInfo();
-            Debug.Log("mause");
+            //Debug.Log("mause");
         }
         else
         {
             TouchInfo();
-            Debug.Log("実機");
+            //Debug.Log("実機");
         }
 
         game_manager = GameObject.Find("GameManager");
@@ -57,12 +57,12 @@ public class Mouse : MonoBehaviour {
         if (Application.isEditor)
         {
             MouseInfo();
-            Debug.Log("mause");
+            //Debug.Log("mause");
         }
         else
         {
             TouchInfo();
-            Debug.Log("実機");
+            //Debug.Log("実機");
         }
 
 
