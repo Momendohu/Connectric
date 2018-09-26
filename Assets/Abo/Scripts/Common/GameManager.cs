@@ -43,11 +43,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //キャラクターのステータス(構造体)
     public struct CharacterState {
-        public int Id;
-        public int Level;
-        public float MaxHitPoint;
-        public float HitPoint;
-        public float AttackPower;
+        public int Id; //ID
+        public int Level; //レベル
+        public float MaxHitPoint; //最大体力
+        public float HitPoint; //体力
+        public float AttackPower; //攻撃力
+        public float Voltage; //ボルテージ(スキル)
     }
 
     //キャラクターのステータス
