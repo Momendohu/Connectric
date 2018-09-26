@@ -299,9 +299,50 @@ Prefab:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 6f838b2c041719443bec0abe6df9be69, type: 2}
+    - target: {fileID: 114924689956530128, guid: 8339dd27818806a4bae27de4d2030c58,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114952510186699830, guid: 8339dd27818806a4bae27de4d2030c58,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1212518553}
+    - target: {fileID: 114952510186699830, guid: 8339dd27818806a4bae27de4d2030c58,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 114952510186699830, guid: 8339dd27818806a4bae27de4d2030c58,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114952510186699830, guid: 8339dd27818806a4bae27de4d2030c58,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114252224558049688, guid: 8339dd27818806a4bae27de4d2030c58,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114252224558049688, guid: 8339dd27818806a4bae27de4d2030c58,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8339dd27818806a4bae27de4d2030c58, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1212518553 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114502787862214862, guid: 8339dd27818806a4bae27de4d2030c58,
+    type: 2}
+  m_PrefabInternal: {fileID: 1212518552}
+  m_Script: {fileID: 11500000, guid: bab4dd3a94c596e4687b35d8ea63d50a, type: 3}
 --- !u!1001 &1799060388
 Prefab:
   m_ObjectHideFlags: 0

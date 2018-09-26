@@ -254,6 +254,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114304340753531586, guid: 14ac40d7c9c0de94080d60be113d2e11,
+        type: 2}
+      propertyPath: SEList.Array.size
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0

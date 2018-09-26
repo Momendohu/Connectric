@@ -5,23 +5,49 @@ using UnityEngine;
 // 親のボタンスクリプト
 public class ButtonScript : MonoBehaviour {
 
-    public ButtonScript button;
+    //-----------------------------------------
+    // どの曲が選ばれているか
+    //-----------------------------------------
+    private static int song_num;
+    public int Song_num
+    {
+        get { return song_num; }
+        set { song_num = value; }
+    }
 	
-    public void OnClick()
+    //-------------------------------------------------
+    // 各ボタンの処理
+    //-------------------------------------------------
+    public void OnClick(int num)
     {
-        if(button == null)
+        switch(num)
         {
-            throw new System.Exception("Button instance is null");
+            case 0:
+                {
+                    song_num = 0;
+                    Debug.Log("一曲目！");
+                    break;
+                }
+            case 1:
+                {
+                    song_num = 1;
+                    Debug.Log("二曲目！");
+                    break;
+                }
+            case 2:
+                {
+                    song_num = 2;
+                    Debug.Log("三曲目！");
+                    break;
+                }
+            default:
+                {
+                    song_num = -1;
+                    break;
+                }
+
+
         }
-
-        button.OnClick(this.gameObject.name);
-
-        Debug.Log("押された");
     }
 
-    protected virtual void OnClick(string name)
-    {
-        //
-        Debug.Log("base button");
-    }
 }

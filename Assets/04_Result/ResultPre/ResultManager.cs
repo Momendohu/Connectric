@@ -12,6 +12,7 @@ public class ResultManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        // シーン遷移
         if(Input.GetMouseButtonDown(0))
         {
 
