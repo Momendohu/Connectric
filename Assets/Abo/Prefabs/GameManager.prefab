@@ -60,3 +60,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 97f4deecb6b22f549b36f017c43fa1dc, type: 3}
   - {fileID: 21300000, guid: 414358679157ac84d8eca751689aea9d, type: 3}
   - {fileID: 21300000, guid: 864520fa6ede4764d90231114db71166, type: 3}
+  CharacterImageDamage:
+  - {fileID: 21300000, guid: 96f47a042049f934aac1822161358b64, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  Combo: 0
