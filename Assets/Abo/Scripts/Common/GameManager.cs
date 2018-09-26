@@ -299,6 +299,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         } else {
             FocusBGM = 0;
         }
+
+        BGMBPM = BGMBPMs[FocusBGM];
+        BGMName = BGMNames[FocusBGM];
     }
 
     //==============================================================================================================================================
