@@ -5,6 +5,8 @@ using UnityEngine;
 // 親のボタンスクリプト
 public class ButtonScript : MonoBehaviour {
 
+    private GameObject gamemanager;
+
     //-----------------------------------------
     // どの曲が選ばれているか
     //-----------------------------------------
@@ -14,7 +16,14 @@ public class ButtonScript : MonoBehaviour {
         get { return song_num; }
         set { song_num = value; }
     }
-	
+
+    // Use this for initialization
+    void Start()
+    {
+
+        gamemanager = GameObject.Find("GameManager");
+    }
+
     //-------------------------------------------------
     // 各ボタンの処理
     //-------------------------------------------------
@@ -26,18 +35,21 @@ public class ButtonScript : MonoBehaviour {
                 {
                     song_num = 0;
                     Debug.Log("一曲目！");
+                    gamemanager.GetComponent<GameManager>().JumpSceneSelectSoundToCharacterSelect();
                     break;
                 }
             case 1:
                 {
                     song_num = 1;
                     Debug.Log("二曲目！");
+                    gamemanager.GetComponent<GameManager>().JumpSceneSelectSoundToCharacterSelect();
                     break;
                 }
             case 2:
                 {
                     song_num = 2;
                     Debug.Log("三曲目！");
+                    gamemanager.GetComponent<GameManager>().JumpSceneSelectSoundToCharacterSelect();
                     break;
                 }
             default:

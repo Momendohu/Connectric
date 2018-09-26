@@ -8,6 +8,7 @@ public class SelectSoundManager : MonoBehaviour {
     [SerializeField]GameObject Button2;
     [SerializeField]GameObject Button3;
     
+    
     // Use this for initialization
     void Start () {
 	}
