@@ -181,6 +181,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             EnemyStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
             EnemyStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
+            EnemyStatus[i].MaxVoltage = 100;
+            EnemyStatus[i].Voltage = 0;
+            EnemyStatus[i].Tension = 10;
         }
     }
 
@@ -346,16 +349,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                         isBeatChange = true;
                         timingBars.RemoveAt(i);
 
-                        //コンボ数が0だったらダメージを受ける + コンボ数が0になる
+                        //コンボ数が0だったらダメージを受ける + 敵ボルテージ上昇 + コンボ数が0になる
                         if(beforeCombo == 0) {
                             Debug.Log(EnemyDatas[FocusEnemy].Name + "の攻撃! " + CharacterDatas[FocusCharacter].Name + "に" + EnemyStatus[FocusEnemy].AttackPower + "のダメージ!");
                             ApplyToCharacterHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
+                            ApplyToEnemyVoltage(FocusEnemy);
 
                             Combo = 0;
                         } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + コンボ数が加算される
                             Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
                             ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
-                            ApplyToVoltage(FocusCharacter);
+                            ApplyToCharacterVoltage(FocusCharacter);
 
                             Combo += beforeCombo;
                         }
@@ -389,9 +393,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
-    //スキルボルテージに数値を適用する
-    private void ApplyToVoltage (int id) {
+    //プレイヤーのスキルボルテージに数値を適用する
+    private void ApplyToCharacterVoltage (int id) {
         CharacterStatus[id].Voltage += CharacterStatus[id].Tension;
+    }
+
+    //=============================================================
+    //エネミーのスキルボルテージに数値を適用する
+    private void ApplyToEnemyVoltage (int id) {
+        EnemyStatus[id].Voltage += EnemyStatus[id].Tension;
     }
 
     //=============================================================
