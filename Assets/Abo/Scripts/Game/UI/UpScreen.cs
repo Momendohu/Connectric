@@ -70,4 +70,18 @@ public class UpScreen : MonoBehaviour {
             yield return null;
         }
     }
+
+    //=============================================================
+    //キャラクターがダメージを受ける
+    private IEnumerator CharacterDamage (GameObject obj) {
+        //キャラクターがカナデならダメージ用の画像に差し替える
+        if(gameManager.CharacterDatas[gameManager.FocusCharacter].Id == 0) {
+            obj.GetComponent<Image>().sprite = gameManager.CharacterImage[3];
+        }
+        while(true) {
+
+            yield return null;
+        }
+
+    }
 }
