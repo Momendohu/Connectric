@@ -262,7 +262,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     private void RoutineTitle () {
         if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began) {
-            //JumpSceneTitleToHome();
+            JumpSceneTitleToHome();
         }
     }
 
@@ -291,7 +291,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private bool onceFlagGamePause; //ゲームポーズ時に一回だけ使いたい処理を挟むときのためのフラグ
 
     private BoardManager boardManager; //ボードマネージャー
-    //private BoardManager_copy boardManager_copy; //ボードマネージャー
     private int beforeCombo; //前フレームのコンボ数(タイミングバー消滅感知から消すまでの流れで1Fかかる可能性を考慮)
 
     //=============================================================
@@ -317,9 +316,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             boardManager = GameObject.Find("BoardManager").GetComponent<BoardManager>();
         }
 
-        /*if(boardManager_copy == null) {
-            boardManager_copy = GameObject.Find("BoardManager_copy").GetComponent<BoardManager_copy>();
-        }*/
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
         //ゲームオーバー、ゲームクリアなら処理をスキップ
@@ -350,14 +346,18 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                         isBeatChange = true;
                         timingBars.RemoveAt(i);
 
-                        //コンボ数が0だったらダメージを受ける
+                        //コンボ数が0だったらダメージを受ける + コンボ数が0になる
                         if(beforeCombo == 0) {
                             Debug.Log(EnemyDatas[FocusEnemy].Name + "の攻撃! " + CharacterDatas[FocusCharacter].Name + "に" + EnemyStatus[FocusEnemy].AttackPower + "のダメージ!");
                             ApplyToCharacterHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
-                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇
+
+                            Combo = 0;
+                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + コンボ数が加算される
                             Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
                             ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
                             ApplyToVoltage(FocusCharacter);
+
+                            Combo += beforeCombo;
                         }
                     }
                 }
@@ -366,7 +366,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CheckGameOver();
             CheckGameClear();
             beforeCombo = boardManager.Combo; //コンボ数を保存
-            //beforeCombo = boardManager_copy.Combo; //コンボ数を保存
 
         } else { //ポーズ状態なら
             //BGMをポーズ状態にする
