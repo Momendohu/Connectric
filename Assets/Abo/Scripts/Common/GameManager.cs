@@ -30,6 +30,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     public Sprite[] PieceLinkImage; //ピースのイメージ
     public Sprite[] CharacterImage; //キャラクターのイメージ
+    public Sprite[] CharacterImageDamage; //キャラクターイメージ(ダメージ)
 
     //=============================================================
     //キャラクターデータ(構造体)
@@ -272,6 +273,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //シーン遷移(タイトルからホームへ)
     private void JumpSceneTitleToHome () {
+        SceneManager.LoadScene("CharacterSelect");
+    }
+
+    //==============================================================================================================================================
+    //SelectSoundシーン
+    //==============================================================================================================================================
+    //シーン遷移(キャラクターセレクトからゲーム)
+    public void JumpSceneSelectSoundToCharacterSelect () {
         SceneManager.LoadScene("CharacterSelect");
     }
 

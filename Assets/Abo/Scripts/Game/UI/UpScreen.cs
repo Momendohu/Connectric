@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class UpScreen : MonoBehaviour {
     //=============================================================
-    private float beforeFrameHitPoint; //前フレームの体力(限フレームの体力と差分をとってアニメーション切り替えに使う)
+    private float beforeFrameHitPoint; //前フレームの体力(現フレームの体力と差分をとってアニメーション切り替えに使う)
+    private bool isPlayerDamaged; //プレイヤーがダメージを受けたかどうか
 
     //=============================================================
     private GameManager gameManager;
@@ -51,6 +52,11 @@ public class UpScreen : MonoBehaviour {
     }
 
     private void Update () {
+        if(beforeFrameHitPoint > gameManager.CharacterStatus[gameManager.FocusCharacter].HitPoint) {
+            isPlayerDamaged = true;
+        }
+        beforeFrameHitPoint = gameManager.CharacterStatus[gameManager.FocusCharacter].HitPoint;
+
         //シークバー動作
         seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.BGMName) / soundManager.GetBGMTimeLength(gameManager.BGMName);
 
@@ -86,10 +92,10 @@ public class UpScreen : MonoBehaviour {
         float time = 0;
         while(true) {
             time += Time.deltaTime;
-            if(time>=1) {
+            if(time >= 1) {
                 break;
             }
-            
+
             yield return null;
         }
 
