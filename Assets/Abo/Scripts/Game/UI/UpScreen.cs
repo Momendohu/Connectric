@@ -91,6 +91,7 @@ public class UpScreen : MonoBehaviour {
     private IEnumerator CharacterDamage (GameObject obj,float waitTime) {
         //キャラクターがカナデならダメージ用の画像に差し替える
         if(gameManager.CharacterDatas[gameManager.FocusCharacter].Id == 0) {
+            //Debug.LogError("moved");
             obj.GetComponent<Image>().sprite = gameManager.CharacterImageDamage[gameManager.FocusCharacter];
         }
 
@@ -98,13 +99,12 @@ public class UpScreen : MonoBehaviour {
         while(true) {
             time += Time.deltaTime / waitTime;
             if(time >= 1) {
+                isPlayerDamaged = false;
+                obj.GetComponent<Image>().sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
                 break;
             }
 
             yield return null;
         }
-
-        isPlayerDamaged = false;
-        obj.GetComponent<Image>().sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
     }
 }
