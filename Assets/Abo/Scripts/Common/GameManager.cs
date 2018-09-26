@@ -618,7 +618,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             if(cam != null) {
                 Vector3 touchPosition = TouchUtil.GetTouchWorldPosition(cam);
                 CreateTapEffect(new Vector3(touchPosition.x,touchPosition.y,0));
-                Debug.Log(TouchUtil.GetTouchWorldPosition(cam));
+                //Debug.Log(TouchUtil.GetTouchWorldPosition(cam));
             }
         }
     }
