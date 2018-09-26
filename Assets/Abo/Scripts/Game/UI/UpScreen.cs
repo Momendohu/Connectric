@@ -25,9 +25,9 @@ public class UpScreen : MonoBehaviour {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
 
-        seekBar = transform.Find("MainImage/SeekBar").gameObject;
-        playerCharacter = transform.Find("MainImage/PlayerCharacter").gameObject;
-        enemyCharacter = transform.Find("MainImage/EnemyCharacter").gameObject;
+        seekBar = transform.Find("SeekBar").gameObject;
+        playerCharacter = transform.Find("PlayerCharacter").gameObject;
+        enemyCharacter = transform.Find("EnemyCharacter").gameObject;
     }
 
     //=============================================================

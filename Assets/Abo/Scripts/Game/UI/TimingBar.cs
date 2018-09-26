@@ -13,8 +13,8 @@ public class TimingBar : MonoBehaviour {
     private GameObject pieceLinkObj;
 
     //=============================================================
-    private Vector3 iniPos = new Vector3(-250,740,0);
-    private Vector3 goalPos = new Vector3(250,740,0);
+    private Vector3 iniPos = new Vector3(-250,750,0);
+    private Vector3 goalPos = new Vector3(250,750,0);
 
     private int destroyCountLength = 1;
 
