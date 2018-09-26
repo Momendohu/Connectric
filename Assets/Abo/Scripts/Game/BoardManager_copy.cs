@@ -489,7 +489,7 @@ public class BoardManager_copy : MonoBehaviour {
         for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
                 if(Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
-                    if(Boardpieces[width,height].obj.GetComponent<PieceTime>().GetFinAnim()) {
+                    if(Boardpieces[width,height].obj.GetComponent<PieceTime>().FinAnim) {
                         Destroy(Boardpieces[width,height].obj);
 
                         int obj_num = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);

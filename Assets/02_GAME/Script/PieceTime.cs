@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PieceTime : MonoBehaviour {
-    
-    public bool finAnimFrag = false;
+
+    private bool finAnimFrag;
+    public bool FinAnim
+    {
+        set { finAnimFrag = value; }
+        get { return finAnimFrag; }
+    }
+
 	// Use this for initialization
 	void Start () {
         GetComponent<Animator>().SetTrigger("CountDownTrigger");
@@ -33,12 +39,5 @@ public class PieceTime : MonoBehaviour {
     {
         this.GetComponent<Transform>().localScale = new Vector3(0.6f, 0.6f, 0.6f);
     }
-
-    //--------------------------------------------------------------
-    // アニメーション終了のお知らせ
-    //--------------------------------------------------------------
-    public bool GetFinAnim()
-    {
-        return finAnimFrag;
-    }
+    
 }

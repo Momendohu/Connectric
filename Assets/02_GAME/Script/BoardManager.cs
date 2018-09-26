@@ -65,6 +65,8 @@ public class BoardManager : MonoBehaviour {
     }
     [SerializeField] private int[,] Target = new int[2, 2];       // リンクテスト
 
+    [SerializeField] private bool skill = false;
+
 
     //===================================================
     // Use this for initialization
@@ -88,11 +90,14 @@ public class BoardManager : MonoBehaviour {
             LinkDelete();
         }
 
+        if(skill)
+        {
+            SkillActiveTime();
+        }
+
 
         LinkDo();
-
         Replenishment();    // 補充
-
 
     }
 
@@ -490,6 +495,12 @@ public class BoardManager : MonoBehaviour {
                     Boardpieces[width, height].mouseFlag = false;
                     Boardpieces[width, height].moveFlag = false;
                     Boardpieces[width, height].linkflag = false;
+
+                    // スキル発動時
+                    if(skill)
+                    {
+                        
+                    }
                 }
             }
         }
@@ -506,7 +517,7 @@ public class BoardManager : MonoBehaviour {
         for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
             for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
                 if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
-                    if (Boardpieces[width, height].obj.GetComponent<PieceTime>().GetFinAnim()) {
+                    if (Boardpieces[width, height].obj.GetComponent<PieceTime>().FinAnim) {
                         Destroy(Boardpieces[width, height].obj);
 
                         int obj_num = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
@@ -547,7 +558,7 @@ public class BoardManager : MonoBehaviour {
         Vector3 linkFlamePos = Boards[width, height].GetComponent<Transform>().position;
         linkFlamePos.x += 1.0f;
         Quaternion linkFlameRot = Quaternion.Euler(0.0f, 0.0f, 90.0f);
-        link_flame = Instantiate(linkFlame, linkFlamePos, Quaternion.identity);
+        link_flame = Instantiate(linkFlame, linkFlamePos, linkFlameRot);
         link_flame.GetComponent<SpriteRenderer>().sortingOrder = 1 + linkFlames.Count;
         return link_flame;
     }
@@ -562,5 +573,24 @@ public class BoardManager : MonoBehaviour {
             Destroy(linkFlames[i]);
         }
         linkFlames.Clear();
+    }
+
+    //-------------------------------------------------------
+    // スキル発動（タイム）
+    //-------------------------------------------------------
+    private void SkillActiveTime()
+    {
+        Debug.Log("スキル発動");
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
+        {
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
+            {
+                if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.TIME)
+                {
+                    Boardpieces[width, height].obj.GetComponent<PieceTime>().FinAnim = true;
+                    Replenishment();
+                }
+            }
+        }
     }
 }
