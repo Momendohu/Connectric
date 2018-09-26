@@ -40,6 +40,7 @@ public class BoardManager : MonoBehaviour {
         public bool mouseFlag;       // キャプチャーされているか
         public bool moveFlag;        // 動かせるか
         public bool linkflag;        // リンクしているかの確認
+        public bool deletePrepareFrag;
     };
 
     // 変数
@@ -52,9 +53,12 @@ public class BoardManager : MonoBehaviour {
     [SerializeField] private GameObject linkFlame;
     [SerializeField] private GameObject[] piece = new GameObject[(int)INSTRUMENT_TYPE.MAX];
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
+    [SerializeField] private int[,] Target = new int[2, 2];       // リンクテスト
+    [SerializeField] private bool skill = false;
 
     private GameObject game_manager;
     private GameObject mouse;
+    private GameObject sound;
 
 
     [SerializeField] private int combo = 0;                       // コンボ数
@@ -63,9 +67,7 @@ public class BoardManager : MonoBehaviour {
         get { return combo; }
         set { combo = value; }
     }
-    [SerializeField] private int[,] Target = new int[2, 2];       // リンクテスト
-
-    [SerializeField] private bool skill = false;
+    
 
 
     //===================================================
@@ -76,6 +78,7 @@ public class BoardManager : MonoBehaviour {
         CreateBoard();
         game_manager = GameObject.Find("GameManager");
         mouse = GameObject.Find("Mouse");
+        sound = GameObject.Find("SoundManager");
     }
 
     //===================================================
@@ -86,11 +89,46 @@ public class BoardManager : MonoBehaviour {
 
         MoveMausePiece();
 
-        if (game_manager.GetComponent<GameManager>().IsBeatChange) {
-            LinkDelete();
+        // 削除準備
+        if (game_manager.GetComponent<GameManager>().IsBeatChange)
+        {
+
+            for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
+            {
+                for (int width = 0; width < BOARD_WIDTH_NUM; width++)
+                {
+                    if (Boardpieces[width, height].linkflag)
+                    {
+                        Boardpieces[width, height].deletePrepareFrag = true;
+                        Boardpieces[width, height].obj.GetComponent<Piece>().SmallFrag = true;
+                        Debug.Log("削除準備");
+                    }
+                }
+            }
+            LinkFlameDelete();      // リンク背景削除
+            game_manager.GetComponent<GameManager>().IsBeatChange = false;
+
         }
 
-        if(skill)
+        // 小さくする＆ピースを消す(演出)
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
+        {
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
+            {
+                if (Boardpieces[width, height].deletePrepareFrag)
+                {
+                    Boardpieces[width, height].obj.GetComponent<Piece>().Small();
+                    if(Boardpieces[width, height].obj.GetComponent<Piece>().DeleteFrag)
+                    {
+                        PieceDelete(width, height);
+                    }
+                }
+            }
+        }
+
+
+
+        if (skill)
         {
             SkillActiveTime();
         }
@@ -120,6 +158,7 @@ public class BoardManager : MonoBehaviour {
                 Boardpieces[width, height].mouseFlag = false;
                 Boardpieces[width, height].moveFlag = false;
                 Boardpieces[width, height].linkflag = false;
+                Boardpieces[width, height].deletePrepareFrag  = false;
 
                 // デバッグ用
                 flag[width + height * 5] = Boardpieces[width, height].moveFlag;
@@ -342,6 +381,10 @@ public class BoardManager : MonoBehaviour {
                                     Boardpieces[width, height] = save;
 
 
+                                    // パネル入れかえサウンド
+                                    sound.GetComponent<SoundManager>().TriggerSE("puzzlemove");
+
+
                                     for (int height3 = 0; height3 < BOARD_HEIGHT_NUM; height3++) {
                                         for (int width3 = 0; width3 < BOARD_WIDTH_NUM; width3++) {
                                             Boards[width3, height3].GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 1.0f, DEBUG_COLOR);
@@ -483,31 +526,23 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // リンク削除
     //-------------------------------------------------------
-    private void LinkDelete() {
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-                if (Boardpieces[width, height].linkflag) {
-                    Destroy(Boardpieces[width, height].obj);
-                    Boardpieces[width, height].obj = Instantiate(piece[(int)INSTRUMENT_TYPE.TIME], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
-                    Boardpieces[width, height].arrayWidthNum = width;
-                    Boardpieces[width, height].arrayHeightNum = height;
-                    Boardpieces[width, height].typeNum = (int)INSTRUMENT_TYPE.TIME;
-                    Boardpieces[width, height].mouseFlag = false;
-                    Boardpieces[width, height].moveFlag = false;
-                    Boardpieces[width, height].linkflag = false;
+    private void PieceDelete(int width, int height) {
 
-                    // スキル発動時
-                    if(skill)
-                    {
-                        
-                    }
-                }
-            }
-        }
+        Destroy(Boardpieces[width, height].obj);
+
+        // パネル削除
+        sound.GetComponent<SoundManager>().TriggerSE("puzzledelete");
 
 
-        LinkFlameDelete();
-        game_manager.GetComponent<GameManager>().IsBeatChange = false;
+        Boardpieces[width, height].obj = Instantiate(piece[(int)INSTRUMENT_TYPE.TIME], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
+        Boardpieces[width, height].arrayWidthNum = width;
+        Boardpieces[width, height].arrayHeightNum = height;
+        Boardpieces[width, height].typeNum = (int)INSTRUMENT_TYPE.TIME;
+        Boardpieces[width, height].mouseFlag = false;
+        Boardpieces[width, height].moveFlag = false;
+        Boardpieces[width, height].linkflag = false;
+        Boardpieces[width, height].deletePrepareFrag = false;
+        
     }
 
     //-------------------------------------------------------
@@ -530,6 +565,7 @@ public class BoardManager : MonoBehaviour {
                         Boardpieces[width, height].mouseFlag = false;
                         Boardpieces[width, height].moveFlag = false;
                         Boardpieces[width, height].linkflag = false;
+                        Boardpieces[width, height].deletePrepareFrag = false;
                     }
                 }
             }
