@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ResultManager : MonoBehaviour {
 
@@ -22,7 +23,7 @@ public class ResultManager : MonoBehaviour {
         enemy_break = GameObject.Find("ENEMY_break");
 
         // テキストの書き込み
-        //totalscore.GetComponent<>()
+        totalscore.GetComponent<Text>().text = "TOTAL SCORE   < <color=#ff0000>99999</color> >";
     }
 	
 	// Update is called once per frame
