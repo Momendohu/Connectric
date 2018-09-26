@@ -235,7 +235,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         switch(SceneManager.GetActiveScene().name) {
             case "Title":
-            //RoutineTitle();
+            RoutineTitle();
             break;
 
             case "CharacterSelect":
@@ -280,7 +280,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //シーン遷移(キャラクターセレクトからゲーム)
     public void JumpSceneCharacterSelectToGame () {
-        SceneManager.LoadScene("Game_copy");
+        SceneManager.LoadScene("Game_copy2");
     }
 
     //==============================================================================================================================================
@@ -520,7 +520,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         InitializeGameStatus();
 
         soundManager.StopBGM(BGMName);
-        SceneManager.LoadScene("Game_copy");
+        SceneManager.LoadScene("Game_copy2");
     }
 
     //=============================================================
