@@ -585,6 +585,12 @@ Prefab:
       propertyPath: m_Text
       value: HI   HIT           < 21 HIT >
       objectReference: {fileID: 0}
+    - target: {fileID: 114865815224590570, guid: 5e7540efa8ce2994084ed21ae33c681e,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a9a180c480b98ef4f9d108f95e35ce9d,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e7540efa8ce2994084ed21ae33c681e, type: 2}
   m_IsPrefabParent: 0

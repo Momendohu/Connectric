@@ -15,8 +15,5 @@ EditorBuildSettings:
     path: Assets/Abo/Scenes/Game_copy2.unity
     guid: 30be23bad86cba84881f6cb39d0078a3
   - enabled: 0
-    path: Assets/Abo/Scenes/Game_copy.unity
-    guid: df87e0c7912ea0a4484d28cac969b647
-  - enabled: 0
     path: Assets/02_GAME/Game.unity
     guid: 3f760113353303148b27fe60d645cf2d
