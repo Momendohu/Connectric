@@ -23,6 +23,8 @@ public class Mouse : MonoBehaviour {
     [SerializeField] private GameObject board;
     [SerializeField] public static bool CaptureFlag;
 
+    private GameObject game_manager;
+
     // Use this for initialization
     void Start () {
         oldTapFlag = false;
@@ -40,13 +42,19 @@ public class Mouse : MonoBehaviour {
             TouchInfo();
             Debug.Log("実機");
         }
+
+        game_manager = GameObject.Find("GameManager");
     }
 
     // Update is called once per frame
     void FixedUpdate () {
 
+        if (game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+               game_manager.GetComponent<GameManager>().IsPause) { return; }
+
+
         // 実機で操作するか否か
-        if(Application.isEditor)
+        if (Application.isEditor)
         {
             MouseInfo();
             Debug.Log("mause");
@@ -130,6 +138,10 @@ public class Mouse : MonoBehaviour {
     //--------------------------------------------------------
     void OnTriggerEnter2D(Collider2D other)
     {
+
+        if (game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+               game_manager.GetComponent<GameManager>().IsPause) { return; }
+
         // クリック時一度のみ
         if (is_TriggerTapFlag)
         {
@@ -159,8 +171,13 @@ public class Mouse : MonoBehaviour {
 
 
     void OnTriggerStay2D (Collider2D other) {
+
+        if (game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+               game_manager.GetComponent<GameManager>().IsPause) { return; }
+
+
         // クリック時一度のみ
-        if(is_TriggerTapFlag) {
+        if (is_TriggerTapFlag) {
             // ボードのキャプチャー
             if(other.tag == "Board") {
                 if( PlayScreenCheck() ) {

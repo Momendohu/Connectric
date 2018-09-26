@@ -11,13 +11,26 @@ public class PieceTime : MonoBehaviour {
         get { return finAnimFrag; }
     }
 
-	// Use this for initialization
-	void Start () {
+    private GameObject game_manager;
+
+    // Use this for initialization
+    void Start () {
         GetComponent<Animator>().SetTrigger("CountDownTrigger");
+
+        game_manager = GameObject.Find("GameManager");
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+               game_manager.GetComponent<GameManager>().IsPause)
+        {
+            this.GetComponent<Animator>().speed = 0;
+            return;
+        }
+
+        this.GetComponent<Animator>().speed = 1;
 
         if (!Mouse.CaptureFlag)
         {

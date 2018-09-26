@@ -86,6 +86,9 @@ public class BoardManager : MonoBehaviour {
     //===================================================
     void Update() {
 
+        if(game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+               game_manager.GetComponent<GameManager>().IsPause){ return; }
+
 
         MoveMausePiece();
 

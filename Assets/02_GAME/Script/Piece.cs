@@ -21,14 +21,21 @@ public class Piece : MonoBehaviour {
         set { deleteFrag = value; }
     }
 
+    private GameObject game_manager;
+
     // Use this for initialization
     void Start () {
-		
-	}
+
+        game_manager = GameObject.Find("GameManager");
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		if(!Mouse.CaptureFlag && !smallFrag)
+
+        if (game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+               game_manager.GetComponent<GameManager>().IsPause) { return; }
+
+        if (!Mouse.CaptureFlag && !smallFrag)
         {
             this.GetComponent<Transform>().localScale = new Vector3(0.2f, 0.2f, 0.2f);
         }
