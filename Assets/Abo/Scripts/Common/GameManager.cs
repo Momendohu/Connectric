@@ -294,6 +294,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //シーン遷移(タイトルからホームへ)
     private void JumpSceneTitleToHome () {
+        if(cor == null) {
+            cor = StartCoroutine(ttttttt());
+        }
+    }
+
+    //仮(すぐにけす)
+    Coroutine cor;
+    private IEnumerator ttttttt () {
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene("SelectSound");
     }
 
