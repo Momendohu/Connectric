@@ -11,6 +11,7 @@ public class UpScreen : MonoBehaviour {
     private GameObject seekBar;
     private GameObject playerCharacter;
     private GameObject enemyCharacter;
+    private GameObject comboNum;
 
     //=============================================================
     public AnimationCurve CharacterRhythmAnim;
@@ -28,11 +29,12 @@ public class UpScreen : MonoBehaviour {
         seekBar = transform.Find("SeekBar").gameObject;
         playerCharacter = transform.Find("PlayerCharacter").gameObject;
         enemyCharacter = transform.Find("EnemyCharacter").gameObject;
+        comboNum = transform.Find("Combo").gameObject;
     }
 
     //=============================================================
     private void Awake () {
-        
+
     }
 
     private void Start () {
@@ -48,6 +50,9 @@ public class UpScreen : MonoBehaviour {
     private void Update () {
         //シークバー動作
         seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.BGMName) / soundManager.GetBGMTimeLength(gameManager.BGMName);
+
+        //コンボ数
+        comboNum.GetComponent<Text>().text = gameManager.Combo + " COMBO";
     }
 
     //=============================================================
