@@ -413,13 +413,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
                         //コンボ数が0だったらダメージを受ける + 敵ボルテージ上昇 + コンボ数が0になる
                         if(beforeCombo == 0) {
-                            Debug.Log(EnemyDatas[FocusEnemy].Name + "の攻撃! " + CharacterDatas[FocusCharacter].Name + "に" + EnemyStatus[FocusEnemy].AttackPower + "のダメージ!");
+                            //Debug.Log(EnemyDatas[FocusEnemy].Name + "の攻撃! " + CharacterDatas[FocusCharacter].Name + "に" + EnemyStatus[FocusEnemy].AttackPower + "のダメージ!");
                             ApplyToCharacterHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
                             ApplyToEnemyVoltage(FocusEnemy);
 
                             Combo = 0;
                         } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + コンボ数が加算される + ヒット数が表示される
-                            Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
+                            //Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
                             ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
                             ApplyToCharacterVoltage(FocusCharacter);
 
@@ -479,8 +479,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //ゲームクリアかどうかを判別する
     private void CheckGameClear () {
-        //●●だったらゲームクリア
-        if(/*TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began*/false) {
+        //曲が終わりに限りなく近づいたらゲームクリア(雑な実装)
+        //Debug.Log(soundManager.GetBGMTimeLength(BGMName) - soundManager.GetBGMTime(BGMName));
+        if(soundManager.GetBGMTimeLength(BGMName) - soundManager.GetBGMTime(BGMName) <= 0.1f) {
             isGameClear = true;
         }
     }
