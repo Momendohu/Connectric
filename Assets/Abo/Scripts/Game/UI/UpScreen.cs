@@ -19,6 +19,7 @@ public class UpScreen : MonoBehaviour {
 
     //=============================================================
     public AnimationCurve CharacterRhythmAnim;
+    public AnimationCurve CharacterDamageAnim;
 
     //=============================================================
     private void Init () {
@@ -49,6 +50,14 @@ public class UpScreen : MonoBehaviour {
 
         //エネミーがリズムに乗る
         StartCoroutine(CharacterRhythm(enemyCharacter,gameManager.BGMBPM));
+
+        //フォーカスしているキャラクターに応じて画像を切り替える
+        playerCharacter.GetComponent<Image>().sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
+        if(gameManager.FocusCharacter == 2) {
+            playerCharacter.GetComponent<RectTransform>().eulerAngles = new Vector3(0,180,0);
+        } else {
+            playerCharacter.GetComponent<RectTransform>().eulerAngles = Vector3.zero;
+        }
     }
 
     private void Update () {
@@ -89,6 +98,12 @@ public class UpScreen : MonoBehaviour {
     //=============================================================
     //キャラクターがダメージを受ける
     private IEnumerator CharacterDamage (GameObject obj,float waitTime) {
+        //スケールの初期化
+        obj.transform.localScale = Vector3.one;
+
+        //角度の調整
+        obj.GetComponent<RectTransform>().localEulerAngles = new Vector3(0,0,10);
+
         //キャラクターがカナデならダメージ用の画像に差し替える
         if(gameManager.CharacterDatas[gameManager.FocusCharacter].Id == 0) {
             //Debug.LogError("moved");
@@ -98,8 +113,13 @@ public class UpScreen : MonoBehaviour {
         float time = 0;
         while(true) {
             time += Time.deltaTime / waitTime;
+
+            obj.GetComponent<Image>().color = new Color(1,1,1,CharacterDamageAnim.Evaluate(time));
+
             if(time >= 1) {
                 isPlayerDamaged = false;
+
+                obj.GetComponent<RectTransform>().localEulerAngles = Vector3.zero;
                 obj.GetComponent<Image>().sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
                 break;
             }
