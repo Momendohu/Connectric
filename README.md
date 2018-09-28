@@ -9,8 +9,8 @@
 - Tag設定
   - `Board`
   - `Piece`
-- SortingLayer設定
-  - `14 PostProcessingUI`
+- Layer設定
+  -なし 
 - SortingLayer設定
   - `OnScreenUI`
   - `Effect`
