@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-//using UnityEngine.UI;
+using UnityEngine.UI;
 
 [DefaultExecutionOrder(-100)]
 /// <summary>
@@ -213,6 +213,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         switch(SceneManager.GetActiveScene().name) {
             case "Title":
+            InitTitle();
             break;
 
             case "SelectSound":
@@ -284,26 +285,49 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //Titleシーン
     //==============================================================================================================================================
+    private GameObject text_tapToStart;
+    private GameObject text_tokyoBTeam;
+
+    //=============================================================
+    private bool isTitleAppeared; //タイトルが出現済かどうか
+    public bool IsTitleAppeared {
+        get { return isTitleAppeared; }
+        set { isTitleAppeared = value; }
+    }
+
+    //=============================================================
+    private void CRefTitle () {
+        text_tapToStart = GameObject.Find("Canvas/TapToStart").gameObject;
+        text_tokyoBTeam = GameObject.Find("Canvas/TokyoBTeam").gameObject;
+    }
+
+    //=============================================================
+    private void InitTitle () {
+        CRefTitle();
+
+        text_tapToStart.SetActive(false);
+        text_tokyoBTeam.SetActive(false);
+    }
+
     //=============================================================
     private void RoutineTitle () {
         if(TouchUtil.GetTouch() == TouchUtil.TouchInfo.Began) {
             JumpSceneTitleToHome();
+        }
+
+        //タイトルが出現したら
+        if(isTitleAppeared) {
+            text_tapToStart.SetActive(true);
+            text_tokyoBTeam.SetActive(true);
         }
     }
 
     //=============================================================
     //シーン遷移(タイトルからホームへ)
     private void JumpSceneTitleToHome () {
-        if(cor == null) {
-            cor = StartCoroutine(ttttttt());
+        if(isTitleAppeared) {
+            SceneManager.LoadScene("SelectSound");
         }
-    }
-
-    //仮(すぐにけす)
-    Coroutine cor;
-    private IEnumerator ttttttt () {
-        yield return new WaitForSeconds(0.5f);
-        SceneManager.LoadScene("SelectSound");
     }
 
     //==============================================================================================================================================
