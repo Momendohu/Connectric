@@ -12,6 +12,7 @@
 - SortingLayer設定
   - `14 PostProcessingUI`
 - SortingLayer設定
+  - `OnScreenUI`
   - `Effect`
 - Canvas設定
   - ReferenceResolution`900x1600`
