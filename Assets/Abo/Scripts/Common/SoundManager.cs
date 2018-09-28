@@ -70,7 +70,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
             } else {
 
                 //オーディオ再生用の子オブジェクトを作成
-                GameObject obj = Instantiate(Resources.Load("Prefabs/SoundManagerAudio")) as GameObject;
+                GameObject obj = Instantiate(Resources.Load("Prefabs/Other/SoundManagerAudio")) as GameObject;
                 obj.name = name;
                 BGMObject.Add(obj);
                 obj.transform.SetParent(this.transform);
@@ -106,7 +106,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
             } else {
 
                 //オーディオ再生用の子オブジェクトを作成
-                GameObject obj = Instantiate(Resources.Load("Prefabs/SoundManagerAudio")) as GameObject;
+                GameObject obj = Instantiate(Resources.Load("Prefabs/Other/SoundManagerAudio")) as GameObject;
                 obj.name = name;
                 SEObject.Add(obj);
                 obj.transform.SetParent(this.transform);
