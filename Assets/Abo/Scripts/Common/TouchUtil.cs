@@ -20,14 +20,14 @@ public static class TouchUtil {
     //=============================================================
     //タッチの情報を取得する
     public static TouchInfo GetTouch () {
-        if(Application.isEditor) {
+        if(Application.platform==RuntimePlatform.Android) {
+            if(Input.touchCount > 0) {
+                return (TouchInfo)((int)Input.GetTouch(0).phase);
+            }   
+        } else {
             if(Input.GetMouseButtonDown(0)) { return TouchInfo.Began; }
             if(Input.GetMouseButton(0)) { return TouchInfo.Moved; }
             if(Input.GetMouseButtonUp(0)) { return TouchInfo.Ended; }
-        } else {
-            if(Input.touchCount > 0) {
-                return (TouchInfo)((int)Input.GetTouch(0).phase);
-            }
         }
         return TouchInfo.None;
     }
@@ -35,16 +35,16 @@ public static class TouchUtil {
     //=============================================================
     //タッチの位置を取得する
     public static Vector3 GetTouchPosition () {
-        if(Application.isEditor) {
-            TouchInfo touch = TouchUtil.GetTouch();
-            if(touch != TouchInfo.None) { return Input.mousePosition; }
-        } else {
+        if(Application.platform == RuntimePlatform.Android) {
             if(Input.touchCount > 0) {
                 Touch touch = Input.GetTouch(0);
                 TouchPosition.x = touch.position.x;
                 TouchPosition.y = touch.position.y;
                 return TouchPosition;
             }
+        } else {
+            TouchInfo touch = TouchUtil.GetTouch();
+            if(touch != TouchInfo.None) { return Input.mousePosition; }
         }
         return Vector3.zero;
     }
