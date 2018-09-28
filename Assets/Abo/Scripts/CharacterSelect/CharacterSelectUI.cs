@@ -37,7 +37,7 @@ public class CharacterSelectUI : MonoBehaviour {
     private void CRef () {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        _camera = GameObject.Find("CameraUI").GetComponent<Camera>();
+        _camera = GameObject.Find("Camera").GetComponent<Camera>();
 
         leftButton = transform.Find("LeftButton").gameObject;
         rightButton = transform.Find("RightButton").gameObject;
@@ -189,7 +189,7 @@ public class CharacterSelectUI : MonoBehaviour {
         //キャラクターデータの適用
         GameManager.CharacterData characterData = gameManager.CharacterDatas[gameManager.FocusCharacter];
         nameAndLV.text = characterData.Name + " LV " + gameManager.CharacterStatus[gameManager.FocusCharacter].Level;
-        skillDescription.text = "アクティブスキル - " + characterData.ActiveSkill + "\nパッシブスキル - " + characterData.PassiveSkill;
+        skillDescription.text = "スキル - " + gameManager.SkillDatas[gameManager.CharacterDatas[gameManager.FocusCharacter].SkillId].Name;
         instrumentTypeIcon.sprite = gameManager.PieceLinkImage[(int)characterData.InstrumentType];
 
         //イメージを適用

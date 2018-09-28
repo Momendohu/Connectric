@@ -37,8 +37,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public struct CharacterData {
         public int Id;
         public string Name;
-        public string ActiveSkill;
-        public string PassiveSkill;
+        public int SkillId;
         public INSTRUMENT_TYPE InstrumentType;
     }
 
@@ -56,6 +55,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         public float Tension; //テンション(ボルテージ上昇値)
     }
 
+    //スキルデータ(構造体)
+    public struct SkillData {
+        public int Id; //id
+        public string Name; //名前
+        public string Description; //説明
+    }
+
+    //=============================================================
     //キャラクターのステータス
     public CharacterState[] CharacterStatus = {
         new CharacterState{Id=0},
@@ -68,11 +75,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         new CharacterState{Id=0,}
     };
 
+    //スキルデータ
+    public SkillData[] SkillDatas = {
+        new SkillData{ Id=0,Name="ピッチシフト",Description="曲の速さを少し遅くして、敵に与えるダメージを1.5倍にする"},
+        new SkillData{ Id=1,Name="アバンドーネ",Description="レインボーピースを大量発生させる"},
+        new SkillData{ Id=2,Name="ゴーストノート",Description="攻撃を2重ヒットさせる"}
+    };
 
     public CharacterData[] CharacterDatas = {
-        new CharacterData{Id=0, Name="カナデ",ActiveSkill="Pitch Shift",PassiveSkill="Power Code",InstrumentType=INSTRUMENT_TYPE.GUITAR},
-        new CharacterData{Id=1, Name="セイラ",ActiveSkill="Abandonne",PassiveSkill="Con Anima",InstrumentType=INSTRUMENT_TYPE.DJ}, //abandonne(感情のままに) con anima(魂をこめて)
-        new CharacterData{Id=2, Name="ヒビカ",ActiveSkill="Poly Rhythm",PassiveSkill="Ghost Note",InstrumentType=INSTRUMENT_TYPE.DRUM},
+        new CharacterData{Id=0, Name="カナデ",SkillId=0,InstrumentType=INSTRUMENT_TYPE.GUITAR},
+        new CharacterData{Id=1, Name="セイラ",SkillId=1,InstrumentType=INSTRUMENT_TYPE.DJ}, //abandonne(感情のままに) con anima(魂をこめて)
+        new CharacterData{Id=2, Name="ヒビカ",SkillId=2,InstrumentType=INSTRUMENT_TYPE.DRUM},
     };
 
     public CharacterData[] EnemyDatas = {
