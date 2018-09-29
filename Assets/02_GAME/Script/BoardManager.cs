@@ -10,7 +10,7 @@ public class BoardManager : MonoBehaviour {
     public const int BOARD_WIDTH_NUM = 5;
     public const int BOARD_HEIGHT_NUM = 5;
     public const float between = 1.85f;
-    public Vector3 vStartPos = new Vector3(-3.7f, 1.2f, 0.0f);
+    public Vector3 vStartPos = new Vector3(-3.7f,1.2f,0.0f);
     public const float DEBUG_COLOR = 0.0f;
 
     // ピースタイプ
@@ -43,8 +43,8 @@ public class BoardManager : MonoBehaviour {
     };
 
     // 変数
-    public static GameObject[,] Boards = new GameObject[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
-    public static PANEL_DATA[,] Boardpieces = new PANEL_DATA[BOARD_WIDTH_NUM, BOARD_HEIGHT_NUM];
+    public static GameObject[,] Boards = new GameObject[BOARD_WIDTH_NUM,BOARD_HEIGHT_NUM];
+    public static PANEL_DATA[,] Boardpieces = new PANEL_DATA[BOARD_WIDTH_NUM,BOARD_HEIGHT_NUM];
 
     private List<GameObject> linkFlames = new List<GameObject>();
 
@@ -52,7 +52,7 @@ public class BoardManager : MonoBehaviour {
     [SerializeField] private GameObject linkFlame;
     [SerializeField] private GameObject[] piece = new GameObject[(int)INSTRUMENT_TYPE.MAX];
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
-    [SerializeField] private int[,] Target = new int[2, 2];       // リンクテスト
+    [SerializeField] private int[,] Target = new int[2,2];       // リンクテスト
     [SerializeField] private bool skill = false;
     [SerializeField] private int combo = 0;                       // コンボ数
     private GameObject game_manager;
@@ -69,16 +69,15 @@ public class BoardManager : MonoBehaviour {
     //---------------------------------------------------
     // コンボ数の取得
     //---------------------------------------------------
-    public int Combo
-    {
+    public int Combo {
         get { return combo; }
         set { combo = value; }
     }
-    
+
     //===================================================
     // Use this for initialization
     //===================================================
-    void Start() {
+    void Start () {
         // ピース出現確率の設定
         InitializeRate();
 
@@ -91,46 +90,39 @@ public class BoardManager : MonoBehaviour {
     //===================================================
     // Update is called once per frame
     //===================================================
-    void Update() {
+    void Update () {
 
         // ポーズ、クリア画面、ゲームオーバーいずれなら更新しない
-        if(game_manager.GetComponent<GameManager>().IsGameClear || 
+        if(game_manager.GetComponent<GameManager>().IsGameClear ||
             game_manager.GetComponent<GameManager>().IsGameOver ||
-               game_manager.GetComponent<GameManager>().IsPause){ return; }
+               game_manager.GetComponent<GameManager>().IsPause) { return; }
 
 
         MoveMausePiece();
 
         // 削除準備
-        if (game_manager.GetComponent<GameManager>().IsBeatChange)
-        {
+        if(game_manager.GetComponent<GameManager>().IsBeatChange) {
             PieceDeletePrepare();
         }
 
         // 小さくする＆ピースを消す(演出)
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
-        {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
-            {
-                if (Boardpieces[width, height].deletePrepareFrag)
-                {
-                    Boardpieces[width, height].obj.GetComponent<Piece>().Small();
-                    if(Boardpieces[width, height].obj.GetComponent<Piece>().DeleteFrag)
-                    {
-                        PieceDelete(width, height);
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                if(Boardpieces[width,height].deletePrepareFrag) {
+                    Boardpieces[width,height].obj.GetComponent<Piece>().Small();
+                    if(Boardpieces[width,height].obj.GetComponent<Piece>().DeleteFrag) {
+                        PieceDelete(width,height);
                     }
                 }
             }
         }
-        
+
         // ＊＊＊＊カナデのスキル発動条件＊＊＊＊
-        if (game_manager.GetComponent<GameManager>().IsSkillMode)
-        {
-            if(game_manager.GetComponent<GameManager>().FocusCharacter == 0)
-            {
+        if(game_manager.GetComponent<GameManager>().IsSkillMode) {
+            if(game_manager.GetComponent<GameManager>().FocusCharacter == 0) {
                 SkillActiveTime();
             }
-            
+
         }
 
         Replenishment();        // 補充
@@ -147,40 +139,38 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // 配置ボードの生成
     //-------------------------------------------------------
-    private void CreateBoard() {
+    private void CreateBoard () {
 
         // タイプの初期化
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
-        {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
-            {
-                Boardpieces[width, height].typeNum = -1;
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                Boardpieces[width,height].typeNum = -1;
             }
         }
 
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-                Boardpieces[width, height].typeNum = -1;
-                int obj_num = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                Boardpieces[width,height].typeNum = -1;
+                int obj_num = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
 
                 // ボード（あたり判定）
-                Boards[width, height] = Instantiate(board, new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
+                Boards[width,height] = Instantiate(board,new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
 
                 // ピース
-                Boardpieces[width, height].obj = Instantiate(piece[obj_num], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
-                Boardpieces[width, height].arrayWidthNum = width;
-                Boardpieces[width, height].arrayHeightNum = height;
-                Boardpieces[width, height].typeNum = obj_num;
-                Boardpieces[width, height].mouseFlag = false;
-                Boardpieces[width, height].moveFlag = false;
-                Boardpieces[width, height].linkflag = false;
-                Boardpieces[width, height].deletePrepareFrag  = false;
+                Boardpieces[width,height].obj = Instantiate(piece[obj_num],new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
+                Boardpieces[width,height].arrayWidthNum = width;
+                Boardpieces[width,height].arrayHeightNum = height;
+                Boardpieces[width,height].typeNum = obj_num;
+                Boardpieces[width,height].mouseFlag = false;
+                Boardpieces[width,height].moveFlag = false;
+                Boardpieces[width,height].linkflag = false;
+                Boardpieces[width,height].deletePrepareFrag = false;
 
                 // パズル出現率の調整用
-                AddRate(Boardpieces[width, height].typeNum);
+                AddRate(Boardpieces[width,height].typeNum);
 
                 // デバッグ用
-                flag[width + height * 5] = Boardpieces[width, height].moveFlag;
+                flag[width + height * 5] = Boardpieces[width,height].moveFlag;
             }
         }
     }
@@ -188,173 +178,173 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // 入れ替え可能ピースの設定
     //-------------------------------------------------------
-    private void SetMovepiece() {
+    private void SetMovepiece () {
 
-        Color cyan = new Color(0.0f, 1.0f, 1.0f, DEBUG_COLOR);
+        Color cyan = new Color(0.0f,1.0f,1.0f,DEBUG_COLOR);
 
         //念のため初期化
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-                Boardpieces[width, height].moveFlag = false;
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                Boardpieces[width,height].moveFlag = false;
             }
         }
 
         // 入れ替え
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-                if (Boardpieces[width, height].mouseFlag) {
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                if(Boardpieces[width,height].mouseFlag) {
                     // 左上角
-                    if (width == 0 && height == 0) {
-                        Boardpieces[1, 0].moveFlag = true;
-                        Boardpieces[0, 1].moveFlag = true;
+                    if(width == 0 && height == 0) {
+                        Boardpieces[1,0].moveFlag = true;
+                        Boardpieces[0,1].moveFlag = true;
 
                         // デバッグ用
-                        Boards[1, 0].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[0, 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[1,0].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[0,1].GetComponent<SpriteRenderer>().color = cyan;
 
                         // 斜めも対応
-                        Boardpieces[1, 1].moveFlag = true;
-                        Boards[1, 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boardpieces[1,1].moveFlag = true;
+                        Boards[1,1].GetComponent<SpriteRenderer>().color = cyan;
                     }
 
                     // 右上角
-                    else if (width == (BOARD_WIDTH_NUM - 1) && height == 0) {
-                        Boardpieces[BOARD_WIDTH_NUM - 2, 0].moveFlag = true;
-                        Boardpieces[BOARD_WIDTH_NUM - 1, 1].moveFlag = true;
+                    else if(width == (BOARD_WIDTH_NUM - 1) && height == 0) {
+                        Boardpieces[BOARD_WIDTH_NUM - 2,0].moveFlag = true;
+                        Boardpieces[BOARD_WIDTH_NUM - 1,1].moveFlag = true;
 
                         // デバッグ用
-                        Boards[BOARD_WIDTH_NUM - 2, 0].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[BOARD_WIDTH_NUM - 1, 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[BOARD_WIDTH_NUM - 2,0].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[BOARD_WIDTH_NUM - 1,1].GetComponent<SpriteRenderer>().color = cyan;
 
                         // 斜めも対応
-                        Boardpieces[BOARD_WIDTH_NUM - 2, 1].moveFlag = true;
-                        Boards[BOARD_WIDTH_NUM - 2, 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boardpieces[BOARD_WIDTH_NUM - 2,1].moveFlag = true;
+                        Boards[BOARD_WIDTH_NUM - 2,1].GetComponent<SpriteRenderer>().color = cyan;
 
                     }
 
                     // 左下角
-                    else if (width == 0 && height == (BOARD_HEIGHT_NUM - 1)) {
-                        Boardpieces[0, BOARD_HEIGHT_NUM - 2].moveFlag = true;
-                        Boardpieces[1, BOARD_HEIGHT_NUM - 1].moveFlag = true;
+                    else if(width == 0 && height == (BOARD_HEIGHT_NUM - 1)) {
+                        Boardpieces[0,BOARD_HEIGHT_NUM - 2].moveFlag = true;
+                        Boardpieces[1,BOARD_HEIGHT_NUM - 1].moveFlag = true;
 
                         // デバッグ用
-                        Boards[0, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[1, BOARD_HEIGHT_NUM - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[0,BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[1,BOARD_HEIGHT_NUM - 1].GetComponent<SpriteRenderer>().color = cyan;
 
                         // 斜めも対応
-                        Boardpieces[1, BOARD_HEIGHT_NUM - 2].moveFlag = true;
-                        Boards[1, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = cyan;
+                        Boardpieces[1,BOARD_HEIGHT_NUM - 2].moveFlag = true;
+                        Boards[1,BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = cyan;
 
                     }
 
                     // 右下角
-                    else if (width == (BOARD_WIDTH_NUM - 1) && height == (BOARD_HEIGHT_NUM - 1)) {
-                        Boardpieces[BOARD_WIDTH_NUM - 2, BOARD_HEIGHT_NUM - 1].moveFlag = true;
-                        Boardpieces[BOARD_WIDTH_NUM - 1, BOARD_HEIGHT_NUM - 2].moveFlag = true;
+                    else if(width == (BOARD_WIDTH_NUM - 1) && height == (BOARD_HEIGHT_NUM - 1)) {
+                        Boardpieces[BOARD_WIDTH_NUM - 2,BOARD_HEIGHT_NUM - 1].moveFlag = true;
+                        Boardpieces[BOARD_WIDTH_NUM - 1,BOARD_HEIGHT_NUM - 2].moveFlag = true;
 
                         // デバッグ用
-                        Boards[BOARD_WIDTH_NUM - 2, BOARD_HEIGHT_NUM - 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[BOARD_WIDTH_NUM - 1, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[BOARD_WIDTH_NUM - 2,BOARD_HEIGHT_NUM - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[BOARD_WIDTH_NUM - 1,BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = cyan;
 
                         // 斜めも対応
-                        Boardpieces[BOARD_WIDTH_NUM - 2, BOARD_HEIGHT_NUM - 2].moveFlag = true;
-                        Boards[BOARD_WIDTH_NUM - 2, BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = cyan;
+                        Boardpieces[BOARD_WIDTH_NUM - 2,BOARD_HEIGHT_NUM - 2].moveFlag = true;
+                        Boards[BOARD_WIDTH_NUM - 2,BOARD_HEIGHT_NUM - 2].GetComponent<SpriteRenderer>().color = cyan;
                     }
 
                     // 上列
-                    else if ((width != 0 && height == 0) || (width != (BOARD_WIDTH_NUM - 1) && height == 0)) {
-                        Boardpieces[width - 1, height].moveFlag = true;
-                        Boardpieces[width + 1, height].moveFlag = true;
-                        Boardpieces[width, height + 1].moveFlag = true;
+                    else if((width != 0 && height == 0) || (width != (BOARD_WIDTH_NUM - 1) && height == 0)) {
+                        Boardpieces[width - 1,height].moveFlag = true;
+                        Boardpieces[width + 1,height].moveFlag = true;
+                        Boardpieces[width,height + 1].moveFlag = true;
 
                         // デバッグ用
-                        Boards[width - 1, height].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width + 1, height].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width, height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width - 1,height].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width + 1,height].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width,height + 1].GetComponent<SpriteRenderer>().color = cyan;
 
                         // 斜めも対応
-                        Boardpieces[width - 1, height + 1].moveFlag = true;
-                        Boardpieces[width + 1, height + 1].moveFlag = true;
-                        Boards[width - 1, height + 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width + 1, height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boardpieces[width - 1,height + 1].moveFlag = true;
+                        Boardpieces[width + 1,height + 1].moveFlag = true;
+                        Boards[width - 1,height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width + 1,height + 1].GetComponent<SpriteRenderer>().color = cyan;
                     }
 
                     // 下列
-                    else if ((width != 0 && height == (BOARD_HEIGHT_NUM - 1)) || (width != (BOARD_WIDTH_NUM - 1) && height == (BOARD_HEIGHT_NUM - 1))) {
-                        Boardpieces[width - 1, height].moveFlag = true;
-                        Boardpieces[width + 1, height].moveFlag = true;
-                        Boardpieces[width, height - 1].moveFlag = true;
+                    else if((width != 0 && height == (BOARD_HEIGHT_NUM - 1)) || (width != (BOARD_WIDTH_NUM - 1) && height == (BOARD_HEIGHT_NUM - 1))) {
+                        Boardpieces[width - 1,height].moveFlag = true;
+                        Boardpieces[width + 1,height].moveFlag = true;
+                        Boardpieces[width,height - 1].moveFlag = true;
 
                         // デバッグ用
-                        Boards[width - 1, height].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width + 1, height].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width, height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width - 1,height].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width + 1,height].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width,height - 1].GetComponent<SpriteRenderer>().color = cyan;
 
                         // 斜めも対応
-                        Boardpieces[width - 1, height - 1].moveFlag = true;
-                        Boardpieces[width + 1, height - 1].moveFlag = true;
-                        Boards[width - 1, height - 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width + 1, height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boardpieces[width - 1,height - 1].moveFlag = true;
+                        Boardpieces[width + 1,height - 1].moveFlag = true;
+                        Boards[width - 1,height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width + 1,height - 1].GetComponent<SpriteRenderer>().color = cyan;
                     }
 
                     // 左列
-                    else if ((width == 0 && height != 0) || (width == 0 && height == (BOARD_HEIGHT_NUM - 1))) {
-                        Boardpieces[width, height - 1].moveFlag = true;
-                        Boardpieces[width, height + 1].moveFlag = true;
-                        Boardpieces[width + 1, height].moveFlag = true;
+                    else if((width == 0 && height != 0) || (width == 0 && height == (BOARD_HEIGHT_NUM - 1))) {
+                        Boardpieces[width,height - 1].moveFlag = true;
+                        Boardpieces[width,height + 1].moveFlag = true;
+                        Boardpieces[width + 1,height].moveFlag = true;
 
                         // デバッグ用
-                        Boards[width, height - 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width, height + 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width + 1, height].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width,height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width,height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width + 1,height].GetComponent<SpriteRenderer>().color = cyan;
 
                         // 斜めも対応
-                        Boardpieces[width + 1, height - 1].moveFlag = true;
-                        Boardpieces[width + 1, height + 1].moveFlag = true;
-                        Boards[width + 1, height - 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width + 1, height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boardpieces[width + 1,height - 1].moveFlag = true;
+                        Boardpieces[width + 1,height + 1].moveFlag = true;
+                        Boards[width + 1,height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width + 1,height + 1].GetComponent<SpriteRenderer>().color = cyan;
                     }
 
                     // 右列
-                    else if ((width == (BOARD_WIDTH_NUM - 1) && height != 0) || (width == (BOARD_WIDTH_NUM - 1) && height == (BOARD_HEIGHT_NUM - 1))) {
-                        Boardpieces[width, height - 1].moveFlag = true;
-                        Boardpieces[width, height + 1].moveFlag = true;
-                        Boardpieces[width - 1, height].moveFlag = true;
+                    else if((width == (BOARD_WIDTH_NUM - 1) && height != 0) || (width == (BOARD_WIDTH_NUM - 1) && height == (BOARD_HEIGHT_NUM - 1))) {
+                        Boardpieces[width,height - 1].moveFlag = true;
+                        Boardpieces[width,height + 1].moveFlag = true;
+                        Boardpieces[width - 1,height].moveFlag = true;
 
                         // デバッグ用
-                        Boards[width, height - 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width, height + 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width - 1, height].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width,height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width,height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width - 1,height].GetComponent<SpriteRenderer>().color = cyan;
 
                         // 斜めも対応
-                        Boardpieces[width - 1, height - 1].moveFlag = true;
-                        Boardpieces[width - 1, height + 1].moveFlag = true;
-                        Boards[width - 1, height - 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width - 1, height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boardpieces[width - 1,height - 1].moveFlag = true;
+                        Boardpieces[width - 1,height + 1].moveFlag = true;
+                        Boards[width - 1,height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width - 1,height + 1].GetComponent<SpriteRenderer>().color = cyan;
                     }
 
                     // 四か所できる
                     else {
-                        Boardpieces[width - 1, height].moveFlag = true;
-                        Boardpieces[width + 1, height].moveFlag = true;
-                        Boardpieces[width, height - 1].moveFlag = true;
-                        Boardpieces[width, height + 1].moveFlag = true;
+                        Boardpieces[width - 1,height].moveFlag = true;
+                        Boardpieces[width + 1,height].moveFlag = true;
+                        Boardpieces[width,height - 1].moveFlag = true;
+                        Boardpieces[width,height + 1].moveFlag = true;
 
                         // デバッグ用
-                        Boards[width - 1, height].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width + 1, height].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width, height - 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width, height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width - 1,height].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width + 1,height].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width,height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width,height + 1].GetComponent<SpriteRenderer>().color = cyan;
 
                         // 斜めの対応
-                        Boardpieces[width - 1, height - 1].moveFlag = true;
-                        Boardpieces[width + 1, height - 1].moveFlag = true;
-                        Boardpieces[width - 1, height + 1].moveFlag = true;
-                        Boardpieces[width + 1, height + 1].moveFlag = true;
-                        Boards[width - 1, height - 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width + 1, height - 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width - 1, height + 1].GetComponent<SpriteRenderer>().color = cyan;
-                        Boards[width + 1, height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boardpieces[width - 1,height - 1].moveFlag = true;
+                        Boardpieces[width + 1,height - 1].moveFlag = true;
+                        Boardpieces[width - 1,height + 1].moveFlag = true;
+                        Boardpieces[width + 1,height + 1].moveFlag = true;
+                        Boards[width - 1,height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width + 1,height - 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width - 1,height + 1].GetComponent<SpriteRenderer>().color = cyan;
+                        Boards[width + 1,height + 1].GetComponent<SpriteRenderer>().color = cyan;
                     }
 
                 }
@@ -365,12 +355,12 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // マウスが持っているオブジェクトを動かす
     //-------------------------------------------------------
-    private void MoveMausePiece() {
+    private void MoveMausePiece () {
 
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-                if (Boardpieces[width, height].mouseFlag) {
-                    Boardpieces[width, height].obj.GetComponent<Transform>().position = mouse.GetComponent<Mouse>().CursolWorldPos;
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                if(Boardpieces[width,height].mouseFlag) {
+                    Boardpieces[width,height].obj.GetComponent<Transform>().position = mouse.GetComponent<Mouse>().CursolWorldPos;
                     break;
                 }
             }
@@ -381,30 +371,30 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     //  ピースの入れ替え
     //-------------------------------------------------------
-    public void Change() {
+    public void Change () {
 
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
                 //マウスと当たったやつの検索
-                if (Boards[width, height].GetComponent<SpriteRenderer>().color == new Color(0.0f, 0.0f, 0.0f, DEBUG_COLOR)) {
-                    if (Boardpieces[width, height].moveFlag) {
-                        for (int height2 = 0; height2 < BOARD_HEIGHT_NUM; height2++) {
-                            for (int width2 = 0; width2 < BOARD_WIDTH_NUM; width2++) {
-                                if (Boardpieces[width2, height2].mouseFlag) {
+                if(Boards[width,height].GetComponent<SpriteRenderer>().color == new Color(0.0f,0.0f,0.0f,DEBUG_COLOR)) {
+                    if(Boardpieces[width,height].moveFlag) {
+                        for(int height2 = 0;height2 < BOARD_HEIGHT_NUM;height2++) {
+                            for(int width2 = 0;width2 < BOARD_WIDTH_NUM;width2++) {
+                                if(Boardpieces[width2,height2].mouseFlag) {
 
-                                    PANEL_DATA save = Boardpieces[width2, height2];
-                                    Boardpieces[width2, height2] = Boardpieces[width, height];
-                                    Boardpieces[width2, height2].obj.GetComponent<Transform>().position = Boards[width2, height2].GetComponent<Transform>().position;
-                                    Boardpieces[width, height] = save;
+                                    PANEL_DATA save = Boardpieces[width2,height2];
+                                    Boardpieces[width2,height2] = Boardpieces[width,height];
+                                    Boardpieces[width2,height2].obj.GetComponent<Transform>().position = Boards[width2,height2].GetComponent<Transform>().position;
+                                    Boardpieces[width,height] = save;
 
 
                                     // パネル入れかえサウンド
-                                    sound.GetComponent<SoundManager>().TriggerSE("puzzlemove", 0.5f);
+                                    sound.GetComponent<SoundManager>().TriggerSE("puzzlemove",0.5f);
 
 
-                                    for (int height3 = 0; height3 < BOARD_HEIGHT_NUM; height3++) {
-                                        for (int width3 = 0; width3 < BOARD_WIDTH_NUM; width3++) {
-                                            Boards[width3, height3].GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 1.0f, DEBUG_COLOR);
+                                    for(int height3 = 0;height3 < BOARD_HEIGHT_NUM;height3++) {
+                                        for(int width3 = 0;width3 < BOARD_WIDTH_NUM;width3++) {
+                                            Boards[width3,height3].GetComponent<SpriteRenderer>().color = new Color(1.0f,0.0f,1.0f,DEBUG_COLOR);
                                         }
                                     }
                                     SetMovepiece();
@@ -421,22 +411,22 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // マウスが持っているオブジェクトのセット
     //-------------------------------------------------------
-    public void SetMouseObj() {
-        Color Gray = new Color(0.5f, 0.5f, 0.5f, DEBUG_COLOR);
+    public void SetMouseObj () {
+        Color Gray = new Color(0.5f,0.5f,0.5f,DEBUG_COLOR);
 
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-                if (Boards[width, height].GetComponent<SpriteRenderer>().color == Gray) {
-                    if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
-                        Boardpieces[width, height].obj.GetComponent<PieceTime>().Big();
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                if(Boards[width,height].GetComponent<SpriteRenderer>().color == Gray) {
+                    if(Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
+                        Boardpieces[width,height].obj.GetComponent<PieceTime>().Big();
                     } else {
-                        Boardpieces[width, height].obj.GetComponent<Piece>().Big();
+                        Boardpieces[width,height].obj.GetComponent<Piece>().Big();
                     }
 
 
-                    Boardpieces[width, height].obj.GetComponent<SpriteRenderer>().sortingOrder = 101;
-                    Boardpieces[width, height].mouseFlag = true;
-                    Boards[width, height].GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 1.0f, DEBUG_COLOR);
+                    Boardpieces[width,height].obj.GetComponent<SpriteRenderer>().sortingOrder = 101;
+                    Boardpieces[width,height].mouseFlag = true;
+                    Boards[width,height].GetComponent<SpriteRenderer>().color = new Color(1.0f,0.0f,1.0f,DEBUG_COLOR);
                     SetMovepiece();
                     break;
                 }
@@ -447,20 +437,20 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // マウスが持っていたオブジェクトの解放
     //-------------------------------------------------------
-    public void ReleaseMouseObj() {
+    public void ReleaseMouseObj () {
         // ボードカラー初期化
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-                Boards[width, height].GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 1.0f, DEBUG_COLOR);
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                Boards[width,height].GetComponent<SpriteRenderer>().color = new Color(1.0f,0.0f,1.0f,DEBUG_COLOR);
             }
         }
 
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-                if (Boardpieces[width, height].mouseFlag) {
-                    Boardpieces[width, height].obj.GetComponent<Transform>().position = Boards[width, height].GetComponent<Transform>().position;
-                    Boardpieces[width, height].obj.GetComponent<SpriteRenderer>().sortingOrder = 100;
-                    Boardpieces[width, height].mouseFlag = false;
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                if(Boardpieces[width,height].mouseFlag) {
+                    Boardpieces[width,height].obj.GetComponent<Transform>().position = Boards[width,height].GetComponent<Transform>().position;
+                    Boardpieces[width,height].obj.GetComponent<SpriteRenderer>().sortingOrder = 100;
+                    Boardpieces[width,height].mouseFlag = false;
                     break;
                 }
 
@@ -471,21 +461,21 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // リンクチェックの実行
     //-------------------------------------------------------
-    private void LinkDo() {
+    private void LinkDo () {
 
         // ノーツリンクの取得
         Target = game_manager.GetComponent<GameManager>().GetLatestPieceLink();
 
-        Debug.Log(Target[0, 0]);
-        Debug.Log(Target[0, 1]);
-        Debug.Log(Target[1, 0]);
-        Debug.Log(Target[1, 1]);
+        Debug.Log(Target[0,0]);
+        Debug.Log(Target[0,1]);
+        Debug.Log(Target[1,0]);
+        Debug.Log(Target[1,1]);
 
 
         // 念のため初期化
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-                Boardpieces[width, height].linkflag = false;
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                Boardpieces[width,height].linkflag = false;
             }
         }
 
@@ -497,40 +487,40 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // リンクチェック
     //-------------------------------------------------------
-    private int Link() {
+    private int Link () {
         int linknum = 0;
 
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
                 // 左上の一致
-                if (Boardpieces[width, height].typeNum == Target[0, 0]) {
+                if(Boardpieces[width,height].typeNum == Target[0,0]) {
                     //if(!Boardpieces[width, height].mouseFlag)
                     {
                         // 縦と判断
-                        if (Target[1, 0] == -1 && Target[1, 1] == -1) {
-                            if (height == (BOARD_HEIGHT_NUM - 1)) { continue; }
-                            if (Boardpieces[width, height + 1].typeNum == Target[0, 1]) {
+                        if(Target[1,0] == -1 && Target[1,1] == -1) {
+                            if(height == (BOARD_HEIGHT_NUM - 1)) { continue; }
+                            if(Boardpieces[width,height + 1].typeNum == Target[0,1]) {
                                 //if(!Boardpieces[width, height + 1].mouseFlag) { continue; }
                                 linknum++;
-                                Boardpieces[width, height].linkflag = true;
-                                Boardpieces[width, height + 1].linkflag = true;
+                                Boardpieces[width,height].linkflag = true;
+                                Boardpieces[width,height + 1].linkflag = true;
 
-                                linkFlames.Add(CreateLinkFlame_t(width, height));
+                                linkFlames.Add(CreateLinkFlame_t(width,height));
                                 continue;
                             }
 
                         }
                         // 横と判断
-                        else if (Target[0, 1] == -1 && Target[1, 1] == -1) {
+                        else if(Target[0,1] == -1 && Target[1,1] == -1) {
 
-                            if (width == (BOARD_WIDTH_NUM - 1)) { continue; }
-                            if (Boardpieces[width + 1, height].typeNum == Target[1, 0]) {
+                            if(width == (BOARD_WIDTH_NUM - 1)) { continue; }
+                            if(Boardpieces[width + 1,height].typeNum == Target[1,0]) {
                                 //if (!Boardpieces[width + 1, height].mouseFlag) { continue; }
                                 linknum++;
-                                Boardpieces[width, height].linkflag = true;
-                                Boardpieces[width + 1, height].linkflag = true;
+                                Boardpieces[width,height].linkflag = true;
+                                Boardpieces[width + 1,height].linkflag = true;
 
-                                linkFlames.Add(CreateLinkFlame_y(width, height));
+                                linkFlames.Add(CreateLinkFlame_y(width,height));
                                 continue;
                             }
                         }
@@ -544,16 +534,12 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // ピース削除準備
     //-------------------------------------------------------
-    private void PieceDeletePrepare()
-    {
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
-        {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
-            {
-                if (Boardpieces[width, height].linkflag)
-                {
-                    Boardpieces[width, height].deletePrepareFrag = true;
-                    Boardpieces[width, height].obj.GetComponent<Piece>().SmallFrag = true;
+    private void PieceDeletePrepare () {
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                if(Boardpieces[width,height].linkflag) {
+                    Boardpieces[width,height].deletePrepareFrag = true;
+                    Boardpieces[width,height].obj.GetComponent<Piece>().SmallFrag = true;
                     //Debug.Log("削除準備");
                 }
             }
@@ -565,50 +551,50 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // ピース削除
     //-------------------------------------------------------
-    private void PieceDelete(int width, int height) {
+    private void PieceDelete (int width,int height) {
 
         SubRate(Boardpieces[width,height].typeNum);
-        Destroy(Boardpieces[width, height].obj);
+        Destroy(Boardpieces[width,height].obj);
 
         // パネル削除
-        sound.GetComponent<SoundManager>().TriggerSE("puzzledelete", 0.5f);
+        sound.GetComponent<SoundManager>().TriggerSE("puzzledelete",0.5f);
 
-        Boardpieces[width, height].obj = Instantiate(piece[(int)INSTRUMENT_TYPE.TIME], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
-        Boardpieces[width, height].arrayWidthNum = width;
-        Boardpieces[width, height].arrayHeightNum = height;
-        Boardpieces[width, height].typeNum = (int)INSTRUMENT_TYPE.TIME;
-        Boardpieces[width, height].mouseFlag = false;
-        Boardpieces[width, height].moveFlag = false;
-        Boardpieces[width, height].linkflag = false;
-        Boardpieces[width, height].deletePrepareFrag = false;
-        
+        Boardpieces[width,height].obj = Instantiate(piece[(int)INSTRUMENT_TYPE.TIME],new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
+        Boardpieces[width,height].arrayWidthNum = width;
+        Boardpieces[width,height].arrayHeightNum = height;
+        Boardpieces[width,height].typeNum = (int)INSTRUMENT_TYPE.TIME;
+        Boardpieces[width,height].mouseFlag = false;
+        Boardpieces[width,height].moveFlag = false;
+        Boardpieces[width,height].linkflag = false;
+        Boardpieces[width,height].deletePrepareFrag = false;
+
     }
 
     //-------------------------------------------------------
     // 補充
     //-------------------------------------------------------
-    private void Replenishment() {
+    private void Replenishment () {
 
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
 
-                if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
-                    if (Boardpieces[width, height].obj.GetComponent<PieceTime>().FinAnim) {
-                        Destroy(Boardpieces[width, height].obj);
+                if(Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
+                    if(Boardpieces[width,height].obj.GetComponent<PieceTime>().FinAnim) {
+                        Destroy(Boardpieces[width,height].obj);
 
-                        int obj_num = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
+                        int obj_num = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
 
                         // ピース
-                        Boardpieces[width, height].obj = Instantiate(piece[obj_num], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
-                        Boardpieces[width, height].arrayWidthNum = width;
-                        Boardpieces[width, height].arrayHeightNum = height;
-                        Boardpieces[width, height].typeNum = obj_num;
-                        Boardpieces[width, height].mouseFlag = false;
-                        Boardpieces[width, height].moveFlag = false;
-                        Boardpieces[width, height].linkflag = false;
-                        Boardpieces[width, height].deletePrepareFrag = false;
+                        Boardpieces[width,height].obj = Instantiate(piece[obj_num],new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
+                        Boardpieces[width,height].arrayWidthNum = width;
+                        Boardpieces[width,height].arrayHeightNum = height;
+                        Boardpieces[width,height].typeNum = obj_num;
+                        Boardpieces[width,height].mouseFlag = false;
+                        Boardpieces[width,height].moveFlag = false;
+                        Boardpieces[width,height].linkflag = false;
+                        Boardpieces[width,height].deletePrepareFrag = false;
 
-                        AddRate(Boardpieces[width, height].typeNum);
+                        AddRate(Boardpieces[width,height].typeNum);
 
                     }
                 }
@@ -619,12 +605,11 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // リンクフレーム（縦）
     //-------------------------------------------------------
-    private GameObject CreateLinkFlame_t(int width, int height)
-    {
+    private GameObject CreateLinkFlame_t (int width,int height) {
         GameObject link_flame;
-        Vector3 linkFlamePos = Boards [width, height].GetComponent<Transform>().position;
+        Vector3 linkFlamePos = Boards[width,height].GetComponent<Transform>().position;
         linkFlamePos.y -= 1.0f;
-        link_flame = Instantiate(linkFlame, linkFlamePos, Quaternion.identity);
+        link_flame = Instantiate(linkFlame,linkFlamePos,Quaternion.identity);
         link_flame.GetComponent<SpriteRenderer>().sortingOrder = 1 + linkFlames.Count;
         return link_flame;
     }
@@ -632,13 +617,12 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // リンクフレーム（横）
     //-------------------------------------------------------
-    private GameObject CreateLinkFlame_y(int width, int height)
-    {
+    private GameObject CreateLinkFlame_y (int width,int height) {
         GameObject link_flame;
-        Vector3 linkFlamePos = Boards[width, height].GetComponent<Transform>().position;
+        Vector3 linkFlamePos = Boards[width,height].GetComponent<Transform>().position;
         linkFlamePos.x += 1.0f;
-        Quaternion linkFlameRot = Quaternion.Euler(0.0f, 0.0f, 90.0f);
-        link_flame = Instantiate(linkFlame, linkFlamePos, linkFlameRot);
+        Quaternion linkFlameRot = Quaternion.Euler(0.0f,0.0f,90.0f);
+        link_flame = Instantiate(linkFlame,linkFlamePos,linkFlameRot);
         link_flame.GetComponent<SpriteRenderer>().sortingOrder = 1 + linkFlames.Count;
         return link_flame;
     }
@@ -646,10 +630,8 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // リンクフレーム削除
     //-------------------------------------------------------
-    private void LinkFlameDelete()
-    {
-        for (int i = 0; i < linkFlames.Count; i++)
-        {
+    private void LinkFlameDelete () {
+        for(int i = 0;i < linkFlames.Count;i++) {
             Destroy(linkFlames[i]);
         }
         linkFlames.Clear();
@@ -658,16 +640,12 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // スキル発動（タイム）
     //-------------------------------------------------------
-    private void SkillActiveTime()
-    {
+    private void SkillActiveTime () {
         //Debug.Log("スキル発動");
-        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
-        {
-            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
-            {
-                if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.TIME)
-                {
-                    Boardpieces[width, height].obj.GetComponent<PieceTime>().FinAnim = true;
+        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
+            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+                if(Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
+                    Boardpieces[width,height].obj.GetComponent<PieceTime>().FinAnim = true;
                     Replenishment();
                 }
             }
@@ -677,8 +655,7 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // パズル確率初期化
     //-------------------------------------------------------
-    private void InitializeRate()
-    {
+    private void InitializeRate () {
         guitarNum = 0;
         drumNum = 0;
         vocalNum = 0;
@@ -688,74 +665,67 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // パズル確率 加算
     //-------------------------------------------------------
-    private void AddRate(int num)
-    {
-        switch(num)
-        {
+    private void AddRate (int num) {
+        switch(num) {
             case (int)INSTRUMENT_TYPE.GUITAR:
-                guitarNum++;
-                break;
+            guitarNum++;
+            break;
 
             case (int)INSTRUMENT_TYPE.DRUM:
-                drumNum++;
-                break;
+            drumNum++;
+            break;
 
             case (int)INSTRUMENT_TYPE.VOCAL:
-                vocalNum++;
-                break;
+            vocalNum++;
+            break;
 
             case (int)INSTRUMENT_TYPE.DJ:
-                djNum++;
-                break;
+            djNum++;
+            break;
 
             default:
-                break;
+            break;
         }
     }
 
     //-------------------------------------------------------
     // パズル確率 減算
     //-------------------------------------------------------
-    private void SubRate(int num)
-    {
-        switch (num)
-        {
+    private void SubRate (int num) {
+        switch(num) {
             case (int)INSTRUMENT_TYPE.GUITAR:
-                guitarNum--;
-                break;
+            guitarNum--;
+            break;
 
             case (int)INSTRUMENT_TYPE.DRUM:
-                drumNum--;
-                break;
+            drumNum--;
+            break;
 
             case (int)INSTRUMENT_TYPE.VOCAL:
-                vocalNum--;
-                break;
+            vocalNum--;
+            break;
 
             case (int)INSTRUMENT_TYPE.DJ:
-                djNum--;
-                break;
+            djNum--;
+            break;
 
             default:
-                break;
+            break;
         }
     }
 
     //-------------------------------------------------------
     // パズル乱数調整(初期化)
     //-------------------------------------------------------
-    private int RandomPieceInitialize()
-    {
+    private int RandomPieceInitialize () {
         int random = -1;
-        random = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
+        random = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
 
         // 分岐処理（必ず４つずつ）
-        if(guitarNum >= 4)
-        {
-            do
-            {
-               random = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
-            } while (random == (int)INSTRUMENT_TYPE.GUITAR);
+        if(guitarNum >= 4) {
+            do {
+                random = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
+            } while(random == (int)INSTRUMENT_TYPE.GUITAR);
         }
 
 
@@ -763,11 +733,29 @@ public class BoardManager : MonoBehaviour {
         return random;
     }
 
+    private int RandomPieceInitialize2 () {
+        int randomNum = -1;
+        while(true) {
+            randomNum = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
+
+            bool[] checkNum = { (guitarNum >= 4),(drumNum >= 4),(vocalNum >= 4),(djNum >= 4) };
+
+            for(int i = 0;i < checkNum.Length;i++) {
+                if(checkNum[i]) {
+                    continue;
+                }
+            }
+
+            break;
+        }
+
+        return randomNum;
+    }
+
     //-------------------------------------------------------
     // パズル乱数調整(更新時)
     //-------------------------------------------------------
-    private void RandomPieceUpdate()
-    {
+    private void RandomPieceUpdate () {
 
     }
 }

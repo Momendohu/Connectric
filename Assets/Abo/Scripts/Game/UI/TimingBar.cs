@@ -119,7 +119,6 @@ public class TimingBar : MonoBehaviour {
             Color iniColor = image.color;
             float time = 0;
 
-
             while(true) {
                 time += Time.deltaTime * speed;
                 if(time >= 1) {

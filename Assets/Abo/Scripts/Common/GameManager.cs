@@ -740,7 +740,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             CharacterStatus[i].MaxVoltage = 100;
             CharacterStatus[i].Voltage = 0;
-            CharacterStatus[i].Tension = 10;
+            CharacterStatus[i].Tension = 100;
         }
     }
 
