@@ -97,8 +97,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     private int BGMNum = 3; //bgmの数
-    private string[] BGMNames = { "bgm001","bgm002","bgm003" }; //bgmの名前
-    private float[] BGMBPMs = { 130f,128f,146f }; //bgmのBGM
+    private string[] BGMNames = { "bgm001","bgm002","bgm003","bgm004" }; //bgmの名前
+    private float[] BGMBPMs = { 128f,146f,128f,202f }; //bgmのBGM
 
     //=============================================================
     [System.NonSerialized]
