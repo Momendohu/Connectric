@@ -135,20 +135,21 @@ public class BoardManager : MonoBehaviour {
             SkillActiveTime();
         }
 
-        LinkDo();
         Replenishment();        // 補充
+        LinkDo();
+
         PieceRate();
 
         // それぞれのピース数
-        Debug.Log("ギターのピース数　　　" + guitarNum);
-        Debug.Log("ドラムのピース数　　　" + drumNum);
-        Debug.Log("ボーカルのピース数　　" + vocalNum);
-        Debug.Log("キーボードのピース数　" + djNum);
-
-        Debug.Log("ギター出現確率　　　" + guitarRate);
-        Debug.Log("ドラム出現確率　　　" + drumRate);
-        Debug.Log("ボーカル出現確率　　" + vocalRate);
-        Debug.Log("キーボード出現確率　" + djRate);
+        //Debug.Log("ギターのピース数　　　" + guitarNum);
+        //Debug.Log("ドラムのピース数　　　" + drumNum);
+        //Debug.Log("ボーカルのピース数　　" + vocalNum);
+        //Debug.Log("キーボードのピース数　" + djNum);
+        //
+        //Debug.Log("ギター出現確率　　　" + guitarRate);
+        //Debug.Log("ドラム出現確率　　　" + drumRate);
+        //Debug.Log("ボーカル出現確率　　" + vocalRate);
+        //Debug.Log("キーボード出現確率　" + djRate);
 
     }
 
@@ -475,10 +476,10 @@ public class BoardManager : MonoBehaviour {
         // ノーツリンクの取得
         Target = game_manager.GetComponent<GameManager>().GetLatestPieceLink();
 
-        //Debug.Log(Target[0, 0]);
-        //Debug.Log(Target[0, 1]);
-        //Debug.Log(Target[1, 0]);
-        //Debug.Log(Target[1, 1]);
+        Debug.Log(Target[0, 0]);
+        Debug.Log(Target[0, 1]);
+        Debug.Log(Target[1, 0]);
+        Debug.Log(Target[1, 1]);
 
 
         // 念のため初期化
@@ -654,6 +655,19 @@ public class BoardManager : MonoBehaviour {
         linkFlames.Clear();
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     //-------------------------------------------------------
     // スキル発動（タイム）
     //-------------------------------------------------------
@@ -672,6 +686,24 @@ public class BoardManager : MonoBehaviour {
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //-------------------------------------------------------
     // パズル確率初期化

@@ -27,6 +27,7 @@ public class Piece : MonoBehaviour {
     void Start () {
 
         game_manager = GameObject.Find("GameManager");
+        this.GetComponent<Transform>().localScale = new Vector3(0.2f, 0.2f, 0.2f);
     }
 	
 	// Update is called once per frame

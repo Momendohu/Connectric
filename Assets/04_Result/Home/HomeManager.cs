@@ -15,16 +15,28 @@ public class HomeManager : MonoBehaviour {
     }
 
     //--------------------------------------------
-    // タグ
+    // タブ
     private GameObject tabObj;
+
+    //--------------------------------------------
+    // 黒い背景
+    private GameObject blackBackOgj;
 
     // Use this for initialization
     void Start () {
         tabObj = GameObject.Find("tab");
+        blackBackOgj = GameObject.Find("BlackBack");
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+        // 黒背景の表示 / 非表示
+        if(!tabObj.GetComponent<Tab>().IsTabIndicateFlag)
+        {
+            blackBackOgj.GetComponent<BlackBack>().IsBackBlackFlag = false;
+        }
+
         CheckMode();
     }
     
@@ -35,7 +47,7 @@ public class HomeManager : MonoBehaviour {
     private void CheckMode()
     {
 
-        // タグ表示中は更新しない
+        // タブ表示中は更新しない
         if (tabObj.GetComponent<Tab>().IsTabIndicateFlag) { return; }
 
         switch(selectmode)
@@ -48,49 +60,49 @@ public class HomeManager : MonoBehaviour {
             // クエスト
             case 1:
                 Debug.Log("クエスト");
-                tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
+                TagIndicate();
                 break;
 
             // 強化
             case 2:
                 Debug.Log("強化");
-                tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
+                TagIndicate();
                 break;
 
             // ホーム
             case 3:
                 Debug.Log("ホーム");
-                tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
+                TagIndicate();
                 break;
 
             // ガチャ
             case 4:
                 Debug.Log("ガチャ");
-                tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
+                TagIndicate();
                 break;
 
             // 設定
             case 5:
                 Debug.Log("設定");
-                tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
+                TagIndicate();
                 break;
 
             // 設定
             case 6:
                 Debug.Log("お知らせ");
-                tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
+                TagIndicate();
                 break;
 
             // 設定
             case 7:
                 Debug.Log("メール");
-                tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
+                TagIndicate();
                 break;
 
             // 設定
             case 8:
                 Debug.Log("フレンド");
-                tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
+                TagIndicate();
                 break;
 
             // その他
@@ -99,6 +111,15 @@ public class HomeManager : MonoBehaviour {
         }
 
         selectmode = -1;
+    }
+
+    //-------------------------------------------------
+    // タブ表示
+    //-------------------------------------------------
+    private void TagIndicate()
+    {
+        tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
+        blackBackOgj.GetComponent<BlackBack>().IsBackBlackFlag = true;
     }
 
 
