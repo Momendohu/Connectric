@@ -138,6 +138,7 @@ public class BoardManager : MonoBehaviour {
         LinkDo();
         Replenishment();        // 補充
         PieceRate();
+
         // それぞれのピース数
         Debug.Log("ギターのピース数　　　" + guitarNum);
         Debug.Log("ドラムのピース数　　　" + drumNum);
