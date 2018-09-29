@@ -399,7 +399,7 @@ public class BoardManager : MonoBehaviour {
 
 
                                     // パネル入れかえサウンド
-                                    sound.GetComponent<SoundManager>().TriggerSE("puzzlemove");
+                                    sound.GetComponent<SoundManager>().TriggerSE("puzzlemove", 0.5f);
 
 
                                     for (int height3 = 0; height3 < BOARD_HEIGHT_NUM; height3++) {
@@ -571,7 +571,7 @@ public class BoardManager : MonoBehaviour {
         Destroy(Boardpieces[width, height].obj);
 
         // パネル削除
-        sound.GetComponent<SoundManager>().TriggerSE("puzzledelete");
+        sound.GetComponent<SoundManager>().TriggerSE("puzzledelete", 0.5f);
 
         Boardpieces[width, height].obj = Instantiate(piece[(int)INSTRUMENT_TYPE.TIME], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
         Boardpieces[width, height].arrayWidthNum = width;
@@ -744,9 +744,23 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // パズル乱数調整(初期化)
     //-------------------------------------------------------
-    private void RandomPieceInitialize()
+    private int RandomPieceInitialize()
     {
+        int random = -1;
+        random = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
 
+        // 分岐処理（必ず４つずつ）
+        if(guitarNum >= 4)
+        {
+            do
+            {
+               random = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
+            } while (random == (int)INSTRUMENT_TYPE.GUITAR);
+        }
+
+
+
+        return random;
     }
 
     //-------------------------------------------------------
