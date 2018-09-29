@@ -152,6 +152,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //スキルモードかどうか
+    private bool isSkillMode;
+    public bool IsSkillMode {
+        get { return isSkillMode; }
+        set { isSkillMode = value; }
+    }
+
+    //=============================================================
     //ビートが変わったかどうか(タイミングバーが到達したかどうか)
     private bool isBeatChange;
     public bool IsBeatChange {
@@ -459,6 +467,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
             CheckGameOver();
             CheckGameClear();
+            CheckSkillMode();
+
             beforeCombo = boardManager.Combo; //コンボ数を保存
 
         } else { //ポーズ状態なら
@@ -516,6 +526,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         //Debug.Log(soundManager.GetBGMTimeLength(BGMName) - soundManager.GetBGMTime(BGMName));
         if(soundManager.GetBGMTimeLength(BGMName) - soundManager.GetBGMTime(BGMName) <= 0.1f) {
             isGameClear = true;
+        }
+    }
+
+    //=============================================================
+    //スキルモードかどうかを判断する
+    private void CheckSkillMode () {
+        //ボルテージが最大に達したら
+        if(CharacterStatus[FocusCharacter].Voltage >= CharacterStatus[FocusCharacter].MaxVoltage) {
+            isSkillMode = true;
         }
     }
 
