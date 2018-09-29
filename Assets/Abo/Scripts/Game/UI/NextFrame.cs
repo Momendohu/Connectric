@@ -7,6 +7,7 @@ public class NextFrame : PieceLinkUI {
     //=============================================================
     private GameManager gameManager;
 
+    private GameObject linkAll;
     private GameObject linkV;
     private GameObject linkH;
     private GameObject linkO;
@@ -35,6 +36,7 @@ public class NextFrame : PieceLinkUI {
     private void CRef () {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        linkAll = transform.Find("PieceLink_NextFrame").gameObject;
         linkV = transform.Find("PieceLink_NextFrame/V").gameObject;
         linkH = transform.Find("PieceLink_NextFrame/H").gameObject;
         linkO = transform.Find("PieceLink_NextFrame/O").gameObject;
@@ -47,9 +49,15 @@ public class NextFrame : PieceLinkUI {
 
     //=============================================================
     private void Update () {
-        pieceLink = gameManager.GetNextPieceLink();
-        base.SelectPieceLinkType(pieceLink,ref pieceLinkType); //ピースリンクのタイプの選択
-        SetPieceLinkDisplay(); //リンクに応じて表示形式と色を変える
+        if(!gameManager.IsPause) {
+            linkAll.SetActive(true);
+
+            pieceLink = gameManager.GetNextPieceLink();
+            base.SelectPieceLinkType(pieceLink,ref pieceLinkType); //ピースリンクのタイプの選択
+            SetPieceLinkDisplay(); //リンクに応じて表示形式と色を変える
+        } else {
+            linkAll.SetActive(false);
+        }
     }
 
     //=============================================================
