@@ -88,7 +88,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //スキルデータ
     public SkillData[] SkillDatas = {
-        new SkillData{ Id=0,Name="ピッチシフト",Description="曲の速さを少し遅くして、敵に与えるダメージを1.5倍にする"},
+        new SkillData{ Id=0,Name="ピッチシフト",Description="敵に与えるダメージを1.5倍にして、曲の速さを1.1倍にする(デメリット)"},
         new SkillData{ Id=1,Name="アバンドーネ",Description="レインボーピースを大量発生させる"},
         new SkillData{ Id=2,Name="ゴーストノート",Description="攻撃を2重ヒットさせる"}
     };
@@ -474,11 +474,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             if(isSkillMode) {
                 //一回だけカットインを作成する
                 if(!onceFlagSkillActivate) {
-                    CreateCutIn();
+                    StartCoroutine(SkillEffect(CharacterDatas[FocusCharacter].SkillId)); //スキルの発動
                     onceFlagSkillActivate = true;
                 }
-            } else {
-                onceFlagSkillActivate = false;
             }
 
             beforeCombo = boardManager.Combo; //コンボ数を保存
@@ -490,6 +488,41 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                 onceFlagGamePause = true;
             }
         }
+    }
+
+    //=============================================================
+    //スキルの処理(効果面)
+    private IEnumerator SkillEffect (int num) {
+        CreateCutIn();
+
+        switch(num) {
+            case 0:
+            CharacterStatus[FocusCharacter].AttackPower *= 1.5f; //攻撃力を1.5倍に
+            soundManager.SetBGMPitch(BGMName,1.1f); //速度(ピッチ)を1.1倍に
+
+            yield return new WaitForSeconds(5); //30秒待つ
+
+            //効果を元にもどす
+            CharacterStatus[FocusCharacter].AttackPower /= 1.5f;
+            soundManager.SetBGMPitch(BGMName,1f);
+            break;
+
+            case 1:
+
+            break;
+
+            case 2:
+
+            break;
+
+            default:
+            Debug.Log("謎のスキルだよ");
+            break;
+        }
+
+        onceFlagSkillActivate = false;
+        isSkillMode = false;
+        CharacterStatus[FocusCharacter].Voltage = 0;
     }
 
     //=============================================================
@@ -685,7 +718,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             CharacterStatus[i].MaxVoltage = 100;
             CharacterStatus[i].Voltage = 0;
-            CharacterStatus[i].Tension = 10;
+            CharacterStatus[i].Tension = 100;
         }
     }
 
