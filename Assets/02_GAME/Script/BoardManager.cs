@@ -744,7 +744,7 @@ public class BoardManager : MonoBehaviour {
     private int RandomPieceUpdate () {
 
         int randomNum = 0;
-        bool[] checkNum = { (guitarNum >= 0), (drumNum >= 0), (vocalNum >= 0), (djNum >= 0) };
+        bool[] checkNum = { (guitarNum > 0), (drumNum > 0), (vocalNum > 0), (djNum > 0) };
         List<int> candidate = new List<int>();
 
         for (int i = 0; i < checkNum.Length; i++)
