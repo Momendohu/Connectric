@@ -20,12 +20,17 @@ public class HomeManager : MonoBehaviour {
 
     //--------------------------------------------
     // 黒い背景
-    private GameObject blackBackOgj;
+    private GameObject blackBackObj;
+
+    //--------------------------------------------
+    // ゲームマネージャー
+    private GameObject gameManagerObj;
 
     // Use this for initialization
     void Start () {
         tabObj = GameObject.Find("tab");
-        blackBackOgj = GameObject.Find("BlackBack");
+        blackBackObj = GameObject.Find("BlackBack");
+        gameManagerObj = GameObject.Find("GameManager");
     }
 	
 	// Update is called once per frame
@@ -34,7 +39,7 @@ public class HomeManager : MonoBehaviour {
         // 黒背景の表示 / 非表示
         if(!tabObj.GetComponent<Tab>().IsTabIndicateFlag)
         {
-            blackBackOgj.GetComponent<BlackBack>().IsBackBlackFlag = false;
+            blackBackObj.GetComponent<BlackBack>().IsBackBlackFlag = false;
         }
 
         CheckMode();
@@ -55,6 +60,7 @@ public class HomeManager : MonoBehaviour {
             // バトル
             case 0:
                 Debug.Log("バトル");
+                gameManagerObj.GetComponent<GameManager>().JumpSceneHomeToSelectSound();
                 break;
 
             // クエスト
@@ -119,7 +125,7 @@ public class HomeManager : MonoBehaviour {
     private void TagIndicate()
     {
         tabObj.GetComponent<Tab>().IsTabIndicateFlag = true;
-        blackBackOgj.GetComponent<BlackBack>().IsBackBlackFlag = true;
+        blackBackObj.GetComponent<BlackBack>().IsBackBlackFlag = true;
     }
 
 

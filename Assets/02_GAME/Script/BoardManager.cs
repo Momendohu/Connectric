@@ -11,7 +11,7 @@ public class BoardManager : MonoBehaviour {
     public const int BOARD_HEIGHT_NUM = 5;
     public const float between = 1.85f;
     public Vector3 vStartPos = new Vector3(-3.7f, 1.2f, 0.0f);
-    public const float DEBUG_COLOR = 0.0f;
+    public const float DEBUG_COLOR = 1.0f;
 
     // ピースタイプ
     public enum INSTRUMENT_TYPE {
