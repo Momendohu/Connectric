@@ -70,7 +70,7 @@ public class UpScreen : MonoBehaviour {
         seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.BGMName) / soundManager.GetBGMTimeLength(gameManager.BGMName);
 
         //コンボ数
-        comboNum.GetComponent<Text>().text = gameManager.Combo + " COMBO";
+        comboNum.GetComponent<Text>().text = gameManager.GameRecordStatus.Combo + " COMBO";
     }
 
     //=============================================================

@@ -55,10 +55,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         public float Tension; //テンション(ボルテージ上昇値)
     }
 
-    //ゲーム中の記録系ステータス
+    //ゲーム中の記録系ステータス(構造体)
     public struct GameRecordState {
         public int Combo; //コンボ数
         public int MaxCombo; //最大コンボ数
+        public int MaxHit; //最大ヒット数
+        public int Score; //スコア
     }
 
     //スキルデータ(構造体)
@@ -113,7 +115,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     [System.NonSerialized]
-    public float BGMBPM = 130f; //tst001->171 bgm001->130 bgm002->128 bgm003->146
+    public float BGMBPM = 128f; //tst001->171 bgm001->128 bgm002->146
     [System.NonSerialized]
     public string BGMName = "bgm001";
     [System.NonSerialized]
@@ -188,6 +190,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //攻撃力を計算する
     private int CalculateAttackPoint (int level) {
         return 5 * level;
+    }
+
+    //=============================================================
+    //取得スコアを計算する
+    private int CalculateGetScore (int hit,int combo) {
+        return hit * 300 + combo * 100;
     }
 
     //=============================================================
@@ -433,13 +441,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                             ApplyToEnemyVoltage(FocusEnemy);
 
                             GameRecordStatus.Combo = 0;
-                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + コンボ数が加算される + ヒット数が表示される
+                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + コンボ数が加算される + ヒット数が表示される + スコアが加算される + maxヒット、コンボの保存
                             //Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
                             ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
                             ApplyToCharacterVoltage(FocusCharacter);
+                            ApplyToScore(CalculateGetScore(beforeCombo,GameRecordStatus.Combo));
 
                             CreateHitDisplayer(beforeCombo);
                             GameRecordStatus.Combo += beforeCombo;
+
+                            GameRecordStatus.MaxCombo = (GameRecordStatus.MaxCombo < GameRecordStatus.Combo) ? GameRecordStatus.Combo : GameRecordStatus.MaxCombo;
+                            GameRecordStatus.MaxHit = (GameRecordStatus.MaxHit < beforeCombo) ? beforeCombo : GameRecordStatus.MaxHit;
                         }
                     }
                 }
@@ -480,6 +492,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //エネミーのスキルボルテージに数値を適用する
     private void ApplyToEnemyVoltage (int id) {
         EnemyStatus[id].Voltage += EnemyStatus[id].Tension;
+    }
+
+    //=============================================================
+    //スコアに数値を適用する
+    private void ApplyToScore (int num) {
+        GameRecordStatus.Score += num;
     }
 
     //=============================================================
@@ -661,6 +679,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void InitializeGameRecordStatus () {
         GameRecordStatus.Combo = 0;
         GameRecordStatus.MaxCombo = 0;
+        GameRecordStatus.MaxHit = 0;
+        GameRecordStatus.Score = 0;
     }
 
     //==============================================================================================================================================
