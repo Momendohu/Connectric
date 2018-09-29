@@ -61,6 +61,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         public int MaxCombo; //最大コンボ数
         public int MaxHit; //最大ヒット数
         public int Score; //スコア
+        public int DefeatEnemyNum; //撃破した敵の数
     }
 
     //スキルデータ(構造体)
