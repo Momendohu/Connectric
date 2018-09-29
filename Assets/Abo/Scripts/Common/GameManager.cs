@@ -575,6 +575,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         GameObject obj = Instantiate(Resources.Load("Prefabs/UI/CutIn")) as GameObject;
         obj.transform.SetParent(GameObject.Find("Canvas").transform,false);
         obj.transform.SetAsLastSibling();
+        obj.GetComponent<CutIn>().DisplayText = SkillDatas[CharacterDatas[FocusCharacter].SkillId].Name; //スキル名の取得
+        obj.GetComponent<CutIn>().Id = CharacterDatas[FocusCharacter].Id; //キャラクターIDの指定
     }
 
     //=============================================================

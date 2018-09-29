@@ -5,6 +5,16 @@ using UnityEngine.UI;
 
 public class CutIn : MonoBehaviour {
     //=============================================================
+    public Sprite[] CharacterImage; //キャラクターイメージ(立ち絵)
+
+    //=============================================================
+    [System.NonSerialized]
+    public string DisplayText; //表示テキスト
+
+    [System.NonSerialized]
+    public int Id; //id
+
+    //=============================================================
     private GameObject under;
     private GameObject over;
 
@@ -14,9 +24,6 @@ public class CutIn : MonoBehaviour {
     //=============================================================
     private void Init () {
         CRef();
-
-        text.SetActive(false);
-        character.SetActive(false);
     }
 
     //=============================================================
@@ -34,6 +41,12 @@ public class CutIn : MonoBehaviour {
     }
 
     private void Start () {
+        character.GetComponent<Image>().sprite = CharacterImage[Id]; //イメージの適用
+        text.GetComponent<Text>().text = DisplayText; //表示テキストの適用
+
+        text.SetActive(false);
+        character.SetActive(false);
+
         StartCoroutine(CutInAnimations(0.3f,0.8f,0.3f,0.9f));
     }
 
