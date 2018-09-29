@@ -15,15 +15,18 @@ public class PieceTime : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        GetComponent<Animator>().SetTrigger("CountDownTrigger");
 
         game_manager = GameObject.Find("GameManager");
+        this.GetComponent<Animator>().SetTrigger("CountDownTrigger");
+        this.GetComponent<Animator>().Play("CountDown",0);                    // 即座に再生
+        this.GetComponent<Animator>().CrossFade("CountDown", 0, 0, 0.7f);     // 飛ばして再生
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        if (game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+        if (game_manager.GetComponent<GameManager>().IsGameClear || 
+              game_manager.GetComponent<GameManager>().IsGameOver ||
                game_manager.GetComponent<GameManager>().IsPause)
         {
             this.GetComponent<Animator>().speed = 0;

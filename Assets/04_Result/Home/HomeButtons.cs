@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class HomeButtons : MonoBehaviour {
 
-    // 
+    //--------------------------------------------
+    // オブジェクト
+    private GameObject tabObj;
     private GameObject homeManager;
 
 	// Use this for initialization
 	void Start () {
+        tabObj = GameObject.Find("tab");
         homeManager = GameObject.Find("HomeManager");
 	}
 	
@@ -20,6 +23,9 @@ public class HomeButtons : MonoBehaviour {
     // クリック分岐処理
     public void OnClick(int num)
     {
+        // タグ表示中は更新しない
+        if (tabObj.GetComponent<Tab>().IsTabIndicateFlag) { return; }
+
         homeManager.GetComponent<HomeManager>().Selectmode = num;
     }
 }

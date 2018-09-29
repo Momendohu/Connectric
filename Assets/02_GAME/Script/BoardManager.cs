@@ -59,6 +59,18 @@ public class BoardManager : MonoBehaviour {
     private GameObject mouse;
     private GameObject sound;
 
+    // 確率 調整用
+    private int guitarNum = 0;
+    private int drumNum = 0;
+    private int vocalNum = 0;
+    private int djNum = 0;
+
+    private float guitarRate;
+    private float drumRate;
+    private float vocalRate;
+    private float djRate;
+
+
     //---------------------------------------------------
     // コンボ数の取得
     //---------------------------------------------------
@@ -68,12 +80,13 @@ public class BoardManager : MonoBehaviour {
         set { combo = value; }
     }
     
-
-
     //===================================================
     // Use this for initialization
     //===================================================
     void Start() {
+        // ピース出現確率の設定
+        InitializeRate();
+        PieceRate();
 
         CreateBoard();
         game_manager = GameObject.Find("GameManager");
@@ -115,17 +128,26 @@ public class BoardManager : MonoBehaviour {
                 }
             }
         }
-
-
-
+        
+        // 未実装（後で統合）
         if (skill)
         {
             SkillActiveTime();
         }
 
-
         LinkDo();
-        Replenishment();    // 補充
+        Replenishment();        // 補充
+        PieceRate();
+        // それぞれのピース数
+        Debug.Log("ギターのピース数　　　" + guitarNum);
+        Debug.Log("ドラムのピース数　　　" + drumNum);
+        Debug.Log("ボーカルのピース数　　" + vocalNum);
+        Debug.Log("キーボードのピース数　" + djNum);
+
+        Debug.Log("ギター出現確率　　　" + guitarRate);
+        Debug.Log("ドラム出現確率　　　" + drumRate);
+        Debug.Log("ボーカル出現確率　　" + vocalRate);
+        Debug.Log("キーボード出現確率　" + djRate);
 
     }
 
@@ -133,8 +155,10 @@ public class BoardManager : MonoBehaviour {
     // 配置ボードの生成
     //-------------------------------------------------------
     private void CreateBoard() {
+
         for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
             for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
+
                 int obj_num = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
 
                 // ボード（あたり判定）
@@ -149,6 +173,9 @@ public class BoardManager : MonoBehaviour {
                 Boardpieces[width, height].moveFlag = false;
                 Boardpieces[width, height].linkflag = false;
                 Boardpieces[width, height].deletePrepareFrag  = false;
+
+                // パズル出現率の調整用
+                AddRate(Boardpieces[width, height].typeNum);
 
                 // デバッグ用
                 flag[width + height * 5] = Boardpieces[width, height].moveFlag;
@@ -538,11 +565,11 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     private void PieceDelete(int width, int height) {
 
+        SubRate(Boardpieces[width,height].typeNum);
         Destroy(Boardpieces[width, height].obj);
 
         // パネル削除
         sound.GetComponent<SoundManager>().TriggerSE("puzzledelete");
-
 
         Boardpieces[width, height].obj = Instantiate(piece[(int)INSTRUMENT_TYPE.TIME], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
         Boardpieces[width, height].arrayWidthNum = width;
@@ -559,8 +586,10 @@ public class BoardManager : MonoBehaviour {
     // 補充
     //-------------------------------------------------------
     private void Replenishment() {
+
         for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
             for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
+
                 if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
                     if (Boardpieces[width, height].obj.GetComponent<PieceTime>().FinAnim) {
                         Destroy(Boardpieces[width, height].obj);
@@ -576,6 +605,9 @@ public class BoardManager : MonoBehaviour {
                         Boardpieces[width, height].moveFlag = false;
                         Boardpieces[width, height].linkflag = false;
                         Boardpieces[width, height].deletePrepareFrag = false;
+
+                        AddRate(Boardpieces[width, height].typeNum);
+
                     }
                 }
             }
@@ -640,5 +672,76 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
+    //-------------------------------------------------------
+    // パズル確率初期化
+    //-------------------------------------------------------
+    private void InitializeRate()
+    {
+        guitarNum = 0;
+        drumNum = 0;
+        vocalNum = 0;
+        djNum = 0;
+    }
+
+    //-------------------------------------------------------
+    // パズル確率 加算
+    //-------------------------------------------------------
+    private void AddRate(int num)
+    {
+        switch(num)
+        {
+            case (int)INSTRUMENT_TYPE.GUITAR:
+                guitarNum++;
+                break;
+
+            case (int)INSTRUMENT_TYPE.DRUM:
+                drumNum++;
+                break;
+
+            case (int)INSTRUMENT_TYPE.VOCAL:
+                vocalNum++;
+                break;
+
+            case (int)INSTRUMENT_TYPE.DJ:
+                djNum++;
+                break;
+        }
+    }
+
+    //-------------------------------------------------------
+    // パズル確率 減算
+    //-------------------------------------------------------
+    private void SubRate(int num)
+    {
+        switch (num)
+        {
+            case (int)INSTRUMENT_TYPE.GUITAR:
+                guitarNum--;
+                break;
+
+            case (int)INSTRUMENT_TYPE.DRUM:
+                drumNum--;
+                break;
+
+            case (int)INSTRUMENT_TYPE.VOCAL:
+                vocalNum--;
+                break;
+
+            case (int)INSTRUMENT_TYPE.DJ:
+                djNum--;
+                break;
+        }
+    }
+
+    //-------------------------------------------------------
+    // パズル出現確率
+    //-------------------------------------------------------
+    private void PieceRate()
+    {
+        guitarRate = guitarNum / BOARD_ALL_NUM;
+        drumRate = drumNum / BOARD_ALL_NUM;
+        vocalRate = vocalNum / BOARD_ALL_NUM;
+        djRate = djNum / BOARD_ALL_NUM;
+    }
 
 }
