@@ -151,7 +151,7 @@ public class BoardManager : MonoBehaviour {
         for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
                 Boardpieces[width,height].typeNum = -1;
-                int obj_num = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
+                int obj_num = RandomPieceInitialize2();
 
                 // ボード（あたり判定）
                 Boards[width,height] = Instantiate(board,new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
@@ -582,7 +582,7 @@ public class BoardManager : MonoBehaviour {
                     if(Boardpieces[width,height].obj.GetComponent<PieceTime>().FinAnim) {
                         Destroy(Boardpieces[width,height].obj);
 
-                        int obj_num = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
+                        int obj_num = RandomPieceUpdate();
 
                         // ピース
                         Boardpieces[width,height].obj = Instantiate(piece[obj_num],new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
@@ -717,22 +717,6 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // パズル乱数調整(初期化)
     //-------------------------------------------------------
-    private int RandomPieceInitialize () {
-        int random = -1;
-        random = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
-
-        // 分岐処理（必ず４つずつ）
-        if(guitarNum >= 4) {
-            do {
-                random = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
-            } while(random == (int)INSTRUMENT_TYPE.GUITAR);
-        }
-
-
-
-        return random;
-    }
-
     private int RandomPieceInitialize2 () {
         int randomNum = 0;
         bool[] checkNum = { (guitarNum >= 4),(drumNum >= 4),(vocalNum >= 4),(djNum >= 4) };
@@ -740,7 +724,7 @@ public class BoardManager : MonoBehaviour {
 
         for(int i = 0;i < checkNum.Length;i++) {
             if(!checkNum[i]) {
-                candidate.Add(0);
+                candidate.Add(i);
             }
         }
 
@@ -757,7 +741,30 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // パズル乱数調整(更新時)
     //-------------------------------------------------------
-    private void RandomPieceUpdate () {
+    private int RandomPieceUpdate () {
 
+        int randomNum = 0;
+        bool[] checkNum = { (guitarNum >= 0), (drumNum >= 0), (vocalNum >= 0), (djNum >= 0) };
+        List<int> candidate = new List<int>();
+
+        for (int i = 0; i < checkNum.Length; i++)
+        {
+            if (!checkNum[i])
+            {
+                candidate.Add(i);
+            }
+        }
+
+        if (candidate.Count > 0)
+        {
+            int rand = Random.Range(0, candidate.Count);
+            randomNum = candidate[rand];
+        }
+        else
+        {
+            randomNum = Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
+        }
+
+        return randomNum;
     }
 }
