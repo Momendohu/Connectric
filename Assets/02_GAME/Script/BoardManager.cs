@@ -734,19 +734,21 @@ public class BoardManager : MonoBehaviour {
     }
 
     private int RandomPieceInitialize2 () {
-        int randomNum = -1;
-        while(true) {
-            randomNum = UnityEngine.Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
+        int randomNum = 0;
+        bool[] checkNum = { (guitarNum >= 4),(drumNum >= 4),(vocalNum >= 4),(djNum >= 4) };
+        List<int> candidate = new List<int>();
 
-            bool[] checkNum = { (guitarNum >= 4),(drumNum >= 4),(vocalNum >= 4),(djNum >= 4) };
-
-            for(int i = 0;i < checkNum.Length;i++) {
-                if(checkNum[i]) {
-                    continue;
-                }
+        for(int i = 0;i < checkNum.Length;i++) {
+            if(!checkNum[i]) {
+                candidate.Add(0);
             }
+        }
 
-            break;
+        if(candidate.Count > 0) {
+            int rand = Random.Range(0,candidate.Count);
+            randomNum = candidate[rand];
+        } else {
+            randomNum = Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
         }
 
         return randomNum;
