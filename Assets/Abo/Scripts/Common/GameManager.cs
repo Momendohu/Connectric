@@ -192,7 +192,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //体力を計算する
     private int CalculateHitPoint (int level) {
-        return 25 + (level - 1) * 5;
+        return 50 + (level - 1) * 5;
     }
 
     //攻撃力を計算する
@@ -497,22 +497,22 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         switch(num) {
             case 0:
-            CharacterStatus[FocusCharacter].AttackPower *= 1.5f; //攻撃力を1.5倍に
+            CharacterStatus[FocusCharacter].AttackPower *= 1.2f; //攻撃力を1.2倍に
             soundManager.SetBGMPitch(BGMName,1.1f); //速度(ピッチ)を1.1倍に
-
-            yield return new WaitForSeconds(5); //30秒待つ
+            //カウントダウンない
+            yield return new WaitForSeconds(10); //10秒待つ
 
             //効果を元にもどす
-            CharacterStatus[FocusCharacter].AttackPower /= 1.5f;
+            CharacterStatus[FocusCharacter].AttackPower /= 1.2f;
             soundManager.SetBGMPitch(BGMName,1f);
             break;
 
             case 1:
-
+            yield return new WaitForSeconds(20); //10秒待つ
             break;
 
             case 2:
-
+            yield return new WaitForSeconds(15); //15秒待つ
             break;
 
             default:
@@ -718,7 +718,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             CharacterStatus[i].MaxVoltage = 100;
             CharacterStatus[i].Voltage = 0;
-            CharacterStatus[i].Tension = 100;
+            CharacterStatus[i].Tension = 10;
         }
     }
 
