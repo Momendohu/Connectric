@@ -55,6 +55,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         public float Tension; //テンション(ボルテージ上昇値)
     }
 
+    //ゲーム中の記録系ステータス
+    public struct GameRecordState {
+        public int Combo; //コンボ数
+        public int MaxCombo; //最大コンボ数
+    }
+
     //スキルデータ(構造体)
     public struct SkillData {
         public int Id; //id
@@ -75,6 +81,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         new CharacterState{Id=0,}
     };
 
+    //ゲームレコード
+    public GameRecordState GameRecordStatus = new GameRecordState { };
+
     //スキルデータ
     public SkillData[] SkillDatas = {
         new SkillData{ Id=0,Name="ピッチシフト",Description="曲の速さを少し遅くして、敵に与えるダメージを1.5倍にする"},
@@ -82,12 +91,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         new SkillData{ Id=2,Name="ゴーストノート",Description="攻撃を2重ヒットさせる"}
     };
 
+    //キャラクターデータ
     public CharacterData[] CharacterDatas = {
         new CharacterData{Id=0, Name="カナデ",SkillId=0,InstrumentType=INSTRUMENT_TYPE.GUITAR},
         new CharacterData{Id=1, Name="セイラ",SkillId=1,InstrumentType=INSTRUMENT_TYPE.DJ}, //abandonne(感情のままに) con anima(魂をこめて)
         new CharacterData{Id=2, Name="ヒビカ",SkillId=2,InstrumentType=INSTRUMENT_TYPE.DRUM},
     };
 
+    //エネミーデータ
     public CharacterData[] EnemyDatas = {
         new CharacterData{Id=0, Name="enemy"},
     };
@@ -177,35 +188,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //攻撃力を計算する
     private int CalculateAttackPoint (int level) {
         return 5 * level;
-    }
-
-    //=============================================================
-    //キャラクターステータスの初期化
-    private void InitCharacterStatus () {
-        for(int i = 0;i < CharacterStatus.Length;i++) {
-            CharacterStatus[i].Level = 1;
-            //CharacterStatus[i].MaxHitPoint = 1;
-            CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
-            CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
-            CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
-            CharacterStatus[i].MaxVoltage = 100;
-            CharacterStatus[i].Voltage = 0;
-            CharacterStatus[i].Tension = 10;
-        }
-    }
-
-    //=============================================================
-    //エネミーステータスの初期化
-    private void InitEnemyStatus () {
-        for(int i = 0;i < EnemyStatus.Length;i++) {
-            EnemyStatus[i].Level = 1;
-            EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
-            EnemyStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
-            EnemyStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
-            EnemyStatus[i].MaxVoltage = 100;
-            EnemyStatus[i].Voltage = 0;
-            EnemyStatus[i].Tension = 10;
-        }
     }
 
     //=============================================================
@@ -385,9 +367,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //Gameシーン
     //==============================================================================================================================================
-    public int Combo; //コンボ数
-
-    //=============================================================
     private List<GameObject> timingBars = new List<GameObject>();
     private int notesWaveForTimingBar;
     private bool onceFlagGamePause; //ゲームポーズ時に一回だけ使いたい処理を挟むときのためのフラグ
@@ -434,7 +413,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             }
 
             //Debug.Log("ボードマネージャー:"+boardManager);
-            //Debug.Log(boardManager.Combo);
 
             //タイミングバー生成
             if(notesWaveForTimingBar != GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM)) {
@@ -454,14 +432,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                             ApplyToCharacterHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
                             ApplyToEnemyVoltage(FocusEnemy);
 
-                            Combo = 0;
+                            GameRecordStatus.Combo = 0;
                         } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + コンボ数が加算される + ヒット数が表示される
                             //Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
                             ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
                             ApplyToCharacterVoltage(FocusCharacter);
 
                             CreateHitDisplayer(beforeCombo);
-                            Combo += beforeCombo;
+                            GameRecordStatus.Combo += beforeCombo;
                         }
                     }
                 }
@@ -603,18 +581,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
-    //ゲームプレイ系のステータス初期化
-    private void InitializeGameStatus () {
-        InitCharacterStatus(); //キャラクターステータスの初期化
-        InitEnemyStatus(); //エネミーステータスの初期化
-        isGameOver = false; //ゲームオーバーフラグの初期化
-        isGameClear = false; //ゲームクリアフラグの初期化
-        isPause = false; //ポーズフラグの初期化
-        timingBars.Clear(); //タイミングバーの参照の初期化
-        sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
-    }
-
-    //=============================================================
     //シーン遷移(ゲームからゲームへ)
     public void JumpSceneGameToGame () {
         InitializeGameStatus();
@@ -643,7 +609,58 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //シーン遷移(リザルトから曲セレクトへ)
     public void JumpSceneResultToMusicSelect () {
+        InitializeGameRecordStatus();
         SceneManager.LoadScene("SelectSound");
+    }
+
+    //==============================================================================================================================================
+    //初期化系
+    //==============================================================================================================================================
+    //キャラクターステータスの初期化
+    private void InitCharacterStatus () {
+        for(int i = 0;i < CharacterStatus.Length;i++) {
+            CharacterStatus[i].Level = 1;
+            //CharacterStatus[i].MaxHitPoint = 1;
+            CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
+            CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
+            CharacterStatus[i].MaxVoltage = 100;
+            CharacterStatus[i].Voltage = 0;
+            CharacterStatus[i].Tension = 10;
+        }
+    }
+
+    //=============================================================
+    //エネミーステータスの初期化
+    private void InitEnemyStatus () {
+        for(int i = 0;i < EnemyStatus.Length;i++) {
+            EnemyStatus[i].Level = 1;
+            EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            EnemyStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
+            EnemyStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
+            EnemyStatus[i].MaxVoltage = 100;
+            EnemyStatus[i].Voltage = 0;
+            EnemyStatus[i].Tension = 10;
+        }
+    }
+
+    //=============================================================
+    //ゲームプレイ系のステータス初期化
+    private void InitializeGameStatus () {
+        InitCharacterStatus(); //キャラクターステータスの初期化
+        InitEnemyStatus(); //エネミーステータスの初期化
+        isGameOver = false; //ゲームオーバーフラグの初期化
+        isGameClear = false; //ゲームクリアフラグの初期化
+        isPause = false; //ポーズフラグの初期化
+        timingBars.Clear(); //タイミングバーの参照の初期化
+        sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
+    }
+
+    //=============================================================
+    //ゲームレコード系のステータス初期化
+    private void InitializeGameRecordStatus () {
+        GameRecordStatus.Combo = 0;
+        GameRecordStatus.MaxCombo = 0;
     }
 
     //==============================================================================================================================================
