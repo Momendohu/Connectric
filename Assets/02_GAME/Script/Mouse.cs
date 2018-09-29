@@ -10,8 +10,7 @@ public class Mouse : MonoBehaviour {
     private const float RIMIT_RIGHT = 5.0f;
 
     [SerializeField] private Vector3 cursol_world_pos;
-    public Vector3 CursolWorldPos
-    {
+    public Vector3 CursolWorldPos {
         get { return cursol_world_pos; }
         set { cursol_world_pos = value; }
     }
@@ -32,7 +31,7 @@ public class Mouse : MonoBehaviour {
         CaptureFlag = false;
 
         // 実機で操作するか否か
-        if (Application.isEditor)
+        /*if (Application.isEditor)
         {
             MouseInfo();
             //Debug.Log("mause");
@@ -41,7 +40,15 @@ public class Mouse : MonoBehaviour {
         {
             TouchInfo();
             //Debug.Log("実機");
+        }*/
+
+        // アンドロイドかどうか
+        if(Application.platform == RuntimePlatform.Android) {
+            TouchInfo();
+        } else {
+            MouseInfo();
         }
+
 
         game_manager = GameObject.Find("GameManager");
     }
@@ -49,12 +56,12 @@ public class Mouse : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate () {
 
-        if (game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+        if(game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
                game_manager.GetComponent<GameManager>().IsPause) { return; }
 
 
         // 実機で操作するか否か
-        if (Application.isEditor)
+        /*if (Application.isEditor)
         {
             MouseInfo();
             //Debug.Log("mause");
@@ -63,11 +70,17 @@ public class Mouse : MonoBehaviour {
         {
             TouchInfo();
             //Debug.Log("実機");
+        }*/
+
+        // アンドロイドかどうか
+        if(Application.platform == RuntimePlatform.Android) {
+            TouchInfo();
+        } else {
+            MouseInfo();
         }
 
 
-        if (!PlayScreenCheck() || is_ReleaseTapFlag)
-        {
+        if(!PlayScreenCheck() || is_ReleaseTapFlag) {
             board.GetComponent<BoardManager>().ReleaseMouseObj();
             oldTapFlag = false;
             tapFlag = false;
@@ -88,81 +101,69 @@ public class Mouse : MonoBehaviour {
         is_TriggerTapFlag = !oldTapFlag && tapFlag; // トリガー
         is_ReleaseTapFlag = oldTapFlag && !tapFlag; // リリース 
         oldTapFlag = tapFlag;                       // 過去のクリック
-        this.transform.position = new Vector3(cursol_world_pos.x, cursol_world_pos.y, cursol_world_pos.z);
+        this.transform.position = new Vector3(cursol_world_pos.x,cursol_world_pos.y,cursol_world_pos.z);
     }
 
     //---------------------------------------------------------
     // タッチ座標やクリックの管理
     //---------------------------------------------------------
-    private void TouchInfo()
-    {
+    private void TouchInfo () {
 
-        Vector3 vPos = new Vector3(0.0f, 0.0f, 10.0f);
+        Vector3 vPos = new Vector3(0.0f,0.0f,10.0f);
         cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
         tapFlag = false;
         is_TriggerTapFlag = false; // トリガー
         is_ReleaseTapFlag = false; // リリース 
 
         // タッチしているかチェック
-        if (Input.touchCount > 0)
-        {
+        if(Input.touchCount > 0) {
             tapFlag = true;
 
             // タッチ情報の取得
             Touch touch = Input.GetTouch(0);
-            vPos = new Vector3(touch.position.x, touch.position.y, 10.0f);
+            vPos = new Vector3(touch.position.x,touch.position.y,10.0f);
             cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
 
-            if (!oldTapFlag)
-            {
-                if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
-                {
+            if(!oldTapFlag) {
+                if(touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
                     is_TriggerTapFlag = true;
                 }
             }
-            if (oldTapFlag)
-            {
-                if (touch.phase == TouchPhase.Ended)
-                {
+            if(oldTapFlag) {
+                if(touch.phase == TouchPhase.Ended) {
                     is_ReleaseTapFlag = true;
                 }
             }
         }
 
-        this.transform.position = new Vector3(cursol_world_pos.x, cursol_world_pos.y, cursol_world_pos.z);
+        this.transform.position = new Vector3(cursol_world_pos.x,cursol_world_pos.y,cursol_world_pos.z);
         oldTapFlag = tapFlag;
     }
 
     //--------------------------------------------------------
     // 侵入検知(領域に入っているとき)
     //--------------------------------------------------------
-    void OnTriggerEnter2D(Collider2D other)
-    {
+    void OnTriggerEnter2D (Collider2D other) {
 
-        if (game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+        if(game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
                game_manager.GetComponent<GameManager>().IsPause) { return; }
 
         // クリック時一度のみ
-        if (is_TriggerTapFlag)
-        {
+        if(is_TriggerTapFlag) {
             // ボードのキャプチャー
-            if (other.tag == "Board")
-            {
-                if (PlayScreenCheck())
-                {
+            if(other.tag == "Board") {
+                if(PlayScreenCheck()) {
                     CaptureFlag = true;
                 }
-                other.GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f, 0.0f);
+                other.GetComponent<SpriteRenderer>().color = new Color(0.5f,0.5f,0.5f,0.0f);
                 board.GetComponent<BoardManager>().SetMouseObj();
 
             }
         }
 
         // クリックしている間
-        if (tapFlag && !is_TriggerTapFlag)
-        {
-            if (other.tag == "Board")
-            {
+        if(tapFlag && !is_TriggerTapFlag) {
+            if(other.tag == "Board") {
                 other.GetComponent<SpriteRenderer>().color = Color.black;
                 board.GetComponent<BoardManager>().Change();
             }
@@ -172,15 +173,15 @@ public class Mouse : MonoBehaviour {
 
     void OnTriggerStay2D (Collider2D other) {
 
-        if (game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
+        if(game_manager.GetComponent<GameManager>().IsGameClear || game_manager.GetComponent<GameManager>().IsGameOver ||
                game_manager.GetComponent<GameManager>().IsPause) { return; }
 
 
         // クリック時一度のみ
-        if (is_TriggerTapFlag) {
+        if(is_TriggerTapFlag) {
             // ボードのキャプチャー
             if(other.tag == "Board") {
-                if( PlayScreenCheck() ) {
+                if(PlayScreenCheck()) {
                     CaptureFlag = true;
                 }
                 other.GetComponent<SpriteRenderer>().color = new Color(0.5f,0.5f,0.5f,0.0f);
@@ -201,10 +202,9 @@ public class Mouse : MonoBehaviour {
     //--------------------------------------------------------
     // 画面操作範囲外チェック
     //--------------------------------------------------------
-    public bool PlayScreenCheck()
-    {
-        return ( cursol_world_pos.x > RIMIT_LEFT && cursol_world_pos.x < RIMIT_RIGHT && 
-                 cursol_world_pos.y > RIMIT_BOTTOM && cursol_world_pos.y < RIMIT_TOP );
+    public bool PlayScreenCheck () {
+        return (cursol_world_pos.x > RIMIT_LEFT && cursol_world_pos.x < RIMIT_RIGHT &&
+                 cursol_world_pos.y > RIMIT_BOTTOM && cursol_world_pos.y < RIMIT_TOP);
     }
 
 }
