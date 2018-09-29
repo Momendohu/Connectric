@@ -26,7 +26,7 @@ public class ResultManager : MonoBehaviour {
         totalscore.GetComponent<Text>().text  = "トータルスコア      < " + gamemanager.GetComponent<GameManager>().GameRecordStatus.Score + " >";
         hi_combo.GetComponent<Text>().text    = "最大コンボ      < <color=#ff0000>" + gamemanager.GetComponent<GameManager>().GameRecordStatus.MaxCombo + "  COMBO</color> >";
         hi_hit.GetComponent<Text>().text      = "最大ヒット          < <color=#ff5500>" + gamemanager.GetComponent<GameManager>().GameRecordStatus.MaxHit + "  HIT </color>>";
-        //enemy_break.GetComponent<Text>().text = "敵の撃破数   < <color=#ffff00>"+ gamemanager.GetComponent<GameManager>().GameRecordStatus.MaxHit + "</color> >";
+        enemy_break.GetComponent<Text>().text = "敵の撃破数   < <color=#ffff00>"+ gamemanager.GetComponent<GameManager>().GameRecordStatus.DefeatEnemyNum + "</color> >";
 
     }
 	
