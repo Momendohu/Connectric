@@ -390,6 +390,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private BoardManager boardManager; //ボードマネージャー
     private int beforeCombo; //前フレームのコンボ数(タイミングバー消滅感知から消すまでの流れで1Fかかる可能性を考慮)
 
+    private bool onceFlagSkillActivate; //スキルが発動したときに一回だけ動作させる処理のためのフラグ
+
     //=============================================================
     private void CRefGame () {
         //boardManager_copy = GameObject.Find("BoardManager_copy").GetComponent<BoardManager_copy>();
@@ -468,6 +470,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CheckGameOver();
             CheckGameClear();
             CheckSkillMode();
+
+            if(isSkillMode) {
+                //一回だけカットインを作成する
+                if(!onceFlagSkillActivate) {
+                    CreateCutIn();
+                    onceFlagSkillActivate = true;
+                }
+            } else {
+                onceFlagSkillActivate = false;
+            }
 
             beforeCombo = boardManager.Combo; //コンボ数を保存
 
@@ -555,6 +567,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         obj.transform.SetAsLastSibling();
 
         obj.GetComponent<HitDisplayer>().HitNum = num;
+    }
+
+    //=============================================================
+    //カットインの作成
+    private void CreateCutIn () {
+        GameObject obj = Instantiate(Resources.Load("Prefabs/UI/CutIn")) as GameObject;
+        obj.transform.SetParent(GameObject.Find("Canvas").transform,false);
+        obj.transform.SetAsLastSibling();
     }
 
     //=============================================================
