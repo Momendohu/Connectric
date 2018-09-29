@@ -65,11 +65,6 @@ public class BoardManager : MonoBehaviour {
     private int vocalNum = 0;
     private int djNum = 0;
 
-    private float guitarRate;
-    private float drumRate;
-    private float vocalRate;
-    private float djRate;
-
 
     //---------------------------------------------------
     // コンボ数の取得
@@ -86,7 +81,6 @@ public class BoardManager : MonoBehaviour {
     void Start() {
         // ピース出現確率の設定
         InitializeRate();
-        PieceRate();
 
         CreateBoard();
         game_manager = GameObject.Find("GameManager");
@@ -129,27 +123,24 @@ public class BoardManager : MonoBehaviour {
             }
         }
         
-        // 未実装（後で統合）
-        if (skill)
+        // ＊＊＊＊カナデのスキル発動条件＊＊＊＊
+        if (game_manager.GetComponent<GameManager>().IsSkillMode)
         {
-            SkillActiveTime();
+            if(game_manager.GetComponent<GameManager>().FocusCharacter == 0)
+            {
+                SkillActiveTime();
+            }
+            
         }
 
         Replenishment();        // 補充
         LinkDo();
 
-        PieceRate();
-
         // それぞれのピース数
-        //Debug.Log("ギターのピース数　　　" + guitarNum);
-        //Debug.Log("ドラムのピース数　　　" + drumNum);
-        //Debug.Log("ボーカルのピース数　　" + vocalNum);
-        //Debug.Log("キーボードのピース数　" + djNum);
-        //
-        //Debug.Log("ギター出現確率　　　" + guitarRate);
-        //Debug.Log("ドラム出現確率　　　" + drumRate);
-        //Debug.Log("ボーカル出現確率　　" + vocalRate);
-        //Debug.Log("キーボード出現確率　" + djRate);
+        Debug.Log("ギターのピース数　　　" + guitarNum);
+        Debug.Log("ドラムのピース数　　　" + drumNum);
+        Debug.Log("ボーカルのピース数　　" + vocalNum);
+        Debug.Log("キーボードのピース数　" + djNum);
 
     }
 
@@ -158,9 +149,18 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     private void CreateBoard() {
 
+        // タイプの初期化
+        for (int height = 0; height < BOARD_HEIGHT_NUM; height++)
+        {
+            for (int width = 0; width < BOARD_WIDTH_NUM; width++)
+            {
+                Boardpieces[width, height].typeNum = -1;
+            }
+        }
+
         for (int height = 0; height < BOARD_HEIGHT_NUM; height++) {
             for (int width = 0; width < BOARD_WIDTH_NUM; width++) {
-
+                Boardpieces[width, height].typeNum = -1;
                 int obj_num = UnityEngine.Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
 
                 // ボード（あたり判定）
@@ -655,19 +655,6 @@ public class BoardManager : MonoBehaviour {
         linkFlames.Clear();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     //-------------------------------------------------------
     // スキル発動（タイム）
     //-------------------------------------------------------
@@ -686,24 +673,6 @@ public class BoardManager : MonoBehaviour {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //-------------------------------------------------------
     // パズル確率初期化
@@ -738,6 +707,9 @@ public class BoardManager : MonoBehaviour {
             case (int)INSTRUMENT_TYPE.DJ:
                 djNum++;
                 break;
+
+            default:
+                break;
         }
     }
 
@@ -763,18 +735,25 @@ public class BoardManager : MonoBehaviour {
             case (int)INSTRUMENT_TYPE.DJ:
                 djNum--;
                 break;
+
+            default:
+                break;
         }
     }
 
     //-------------------------------------------------------
-    // パズル出現確率
+    // パズル乱数調整(初期化)
     //-------------------------------------------------------
-    private void PieceRate()
+    private void RandomPieceInitialize()
     {
-        guitarRate = guitarNum / BOARD_ALL_NUM;
-        drumRate = drumNum / BOARD_ALL_NUM;
-        vocalRate = vocalNum / BOARD_ALL_NUM;
-        djRate = djNum / BOARD_ALL_NUM;
+
     }
 
+    //-------------------------------------------------------
+    // パズル乱数調整(更新時)
+    //-------------------------------------------------------
+    private void RandomPieceUpdate()
+    {
+
+    }
 }
