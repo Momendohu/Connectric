@@ -228,6 +228,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             InitTitle();
             break;
 
+            case "Home":
+            break;
+
             case "SelectSound":
             InitSelectSound();
             break;
@@ -241,6 +244,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             break;
 
             case "Game_copy2":
+            InitGame();
+            break;
+
+            case "Game_copy3":
             InitGame();
             break;
 
@@ -271,6 +278,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             RoutineTitle();
             break;
 
+            case "Home":
+            break;
+
             case "SelectSound":
             break;
 
@@ -282,6 +292,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             break;
 
             case "Game_copy2":
+            RoutineGame();
+            break;
+
+            case "Game_copy3":
             RoutineGame();
             break;
 
