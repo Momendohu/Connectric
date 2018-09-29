@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Abo/Scenes/Title.unity
     guid: c479d4063a6da1441b2c6a179c2fde8c
   - enabled: 1
+    path: Assets/04_Result/Home.unity
+    guid: 4ca3082c7f3d6c54e81b8beb4a307caf
+  - enabled: 1
     path: Assets/04_Result/SelectSound.unity
     guid: bc3be2baee0c56f4f9911a2e9140625a
   - enabled: 1
