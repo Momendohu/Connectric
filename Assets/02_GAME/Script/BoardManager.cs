@@ -12,6 +12,7 @@ public class BoardManager : MonoBehaviour {
     public const float between = 1.85f;
     public Vector3 vStartPos = new Vector3(-3.7f,1.2f,0.0f);
     public const float DEBUG_COLOR = 0.0f;
+    public const int RAINBOM_HIT = 3;
 
     // ピースタイプ
     public enum INSTRUMENT_TYPE {
@@ -20,6 +21,7 @@ public class BoardManager : MonoBehaviour {
         VOCAL,
         DJ,
         RAINBOW,
+        RAINBOM,
         TIME,
         MAX
     };
@@ -53,7 +55,7 @@ public class BoardManager : MonoBehaviour {
     [SerializeField] private GameObject linkFlame;
     [SerializeField] private GameObject[] piece = new GameObject[(int)INSTRUMENT_TYPE.MAX];
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
-    [SerializeField] private int[,] Target = new int[2,2];       // リンクテスト
+    [SerializeField] private int[,] Target = new int[2,2];        // リンクテスト
     [SerializeField] private int combo = 0;                       // コンボ数
     private GameObject game_manager;
     private GameObject mouse;
@@ -65,7 +67,9 @@ public class BoardManager : MonoBehaviour {
     private int vocalNum = 0;
     private int djNum = 0;
     private int rainbowNum = 0;
+    private int rainbomNum = 0;
     private int rainbowCounter = 0;
+    private bool rainbomFlag = false;
 
 
     //---------------------------------------------------
@@ -481,17 +485,27 @@ public class BoardManager : MonoBehaviour {
         for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
                 // 左上の一致
-                if(Boardpieces[width,height].typeNum == Target[0,0] || Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW) {
+                if(Boardpieces[width,height].typeNum == Target[0,0] || 
+                    Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW || 
+                    Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
                     //if(!Boardpieces[width, height].mouseFlag)
                     {
                         // 縦と判断
                         if(Target[1,0] == -1 && Target[1,1] == -1) {
                             if(height == (BOARD_HEIGHT_NUM - 1)) { continue; }
-                            if(Boardpieces[width,height + 1].typeNum == Target[0,1] || Boardpieces[width, height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOW) {
+                            if(Boardpieces[width,height + 1].typeNum == Target[0,1] || 
+                                Boardpieces[width, height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOW ||
+                                Boardpieces[width, height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
                                 //if(!Boardpieces[width, height + 1].mouseFlag) { continue; }
                                 linknum++;
                                 Boardpieces[width,height].linkflag = true;
                                 Boardpieces[width,height + 1].linkflag = true;
+                                
+                                // レインボム用リンク
+                                if(Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM)
+                                {
+                                    RainbomLink(width, height);
+                                }
 
                                 linkFlames.Add(CreateLinkFlame_t(width,height));
                                 continue;
@@ -502,11 +516,19 @@ public class BoardManager : MonoBehaviour {
                         else if(Target[0,1] == -1 && Target[1,1] == -1) {
 
                             if(width == (BOARD_WIDTH_NUM - 1)) { continue; }
-                            if(Boardpieces[width + 1,height].typeNum == Target[1,0] || Boardpieces[width + 1, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW) {
+                            if(Boardpieces[width + 1,height].typeNum == Target[1,0] || 
+                                Boardpieces[width + 1, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW ||
+                                Boardpieces[width + 1, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
                                 //if (!Boardpieces[width + 1, height].mouseFlag) { continue; }
                                 linknum++;
                                 Boardpieces[width,height].linkflag = true;
                                 Boardpieces[width + 1,height].linkflag = true;
+
+                                // レインボム用リンク
+                                if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM)
+                                {
+                                    RainbomLink(width, height);
+                                }
 
                                 linkFlames.Add(CreateLinkFlame_y(width,height));
                                 continue;
@@ -516,6 +538,13 @@ public class BoardManager : MonoBehaviour {
                 }
             }
         }
+
+        // レインボムの出現確率発生調整
+        if(linknum >= RAINBOM_HIT)
+        {
+            rainbomFlag = true;
+        }
+
         return linknum;
     }
 
@@ -525,6 +554,8 @@ public class BoardManager : MonoBehaviour {
     private void PieceDeletePrepare () {
         for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
+
+                // リンクフラグ参照押して削除準備に入る
                 if(Boardpieces[width,height].linkflag) {
                     Boardpieces[width,height].deletePrepareFrag = true;
                     Boardpieces[width,height].obj.GetComponent<Piece>().SmallFrag = true;
@@ -663,7 +694,9 @@ public class BoardManager : MonoBehaviour {
         vocalNum = 0;
         djNum = 0;
         rainbowNum = 0;
+        rainbomNum = 0;
         rainbowCounter = 0;
+        rainbomFlag = false;
     }
 
     //-------------------------------------------------------
@@ -689,6 +722,10 @@ public class BoardManager : MonoBehaviour {
 
             case (int)INSTRUMENT_TYPE.RAINBOW:
             rainbowNum++;
+            break;
+
+            case (int)INSTRUMENT_TYPE.RAINBOM:
+            rainbomNum++;
             break;
 
             default:
@@ -721,6 +758,10 @@ public class BoardManager : MonoBehaviour {
             rainbowNum--;
             break;
 
+            case (int)INSTRUMENT_TYPE.RAINBOM:
+            rainbomNum--;
+            break;
+
             default:
             break;
         }
@@ -744,7 +785,7 @@ public class BoardManager : MonoBehaviour {
             int rand = Random.Range(0,candidate.Count);
             randomNum = candidate[rand];
         } else {
-            randomNum = Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 2);
+            randomNum = Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 3);
         }
 
         return randomNum;
@@ -756,7 +797,7 @@ public class BoardManager : MonoBehaviour {
     private int RandomPieceUpdate () {
 
         int randomNum = 0;
-        bool[] checkNum = { (guitarNum > 0), (drumNum > 0), (vocalNum > 0), (djNum > 0), (rainbowCounter < 10) };
+        bool[] checkNum = { (guitarNum > 0), (drumNum > 0), (vocalNum > 0), (djNum > 0), (rainbowCounter < 10), (!rainbomFlag) };
         List<int> candidate = new List<int>();
 
         for (int i = 0; i < checkNum.Length; i++)
@@ -774,7 +815,7 @@ public class BoardManager : MonoBehaviour {
         }
         else
         {
-            randomNum = Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 2);
+            randomNum = Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 3);
         }
 
         // レインボー生成タイミングの初期化
@@ -783,6 +824,20 @@ public class BoardManager : MonoBehaviour {
             rainbowCounter = 0;
         }
 
+        // レインボム生成を一つに制限
+        if(randomNum == (int)INSTRUMENT_TYPE.RAINBOM)
+        {
+            rainbomFlag = false;
+        }
+
         return randomNum;
+    }
+
+    //-------------------------------------------------------
+    // レインボムリンク用
+    //-------------------------------------------------------
+    private void RainbomLink(int width, int height)
+    {
+
     }
 }
