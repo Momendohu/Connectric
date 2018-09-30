@@ -19,6 +19,7 @@ public class BoardManager : MonoBehaviour {
         DRUM,
         VOCAL,
         DJ,
+        RAINBOW,
         TIME,
         MAX
     };
@@ -53,7 +54,6 @@ public class BoardManager : MonoBehaviour {
     [SerializeField] private GameObject[] piece = new GameObject[(int)INSTRUMENT_TYPE.MAX];
     [SerializeField] private bool[] flag = new bool[BOARD_ALL_NUM];
     [SerializeField] private int[,] Target = new int[2,2];       // リンクテスト
-    [SerializeField] private bool skill = false;
     [SerializeField] private int combo = 0;                       // コンボ数
     private GameObject game_manager;
     private GameObject mouse;
@@ -64,6 +64,8 @@ public class BoardManager : MonoBehaviour {
     private int drumNum = 0;
     private int vocalNum = 0;
     private int djNum = 0;
+    private int rainbowNum = 0;
+    private int rainbowCounter = 0;
 
 
     //---------------------------------------------------
@@ -133,6 +135,8 @@ public class BoardManager : MonoBehaviour {
         Debug.Log("ドラムのピース数　　　" + drumNum);
         Debug.Log("ボーカルのピース数　　" + vocalNum);
         Debug.Log("キーボードのピース数　" + djNum);
+        Debug.Log("レインボーのピース数　　" + rainbowNum);
+        Debug.Log("レインボー出現タイミング　" + rainbowCounter);
 
     }
 
@@ -141,33 +145,17 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     private void CreateBoard () {
 
-        // タイプの初期化
         for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
-                Boardpieces[width,height].typeNum = -1;
-            }
-        }
 
-        for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
-            for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
-                Boardpieces[width,height].typeNum = -1;
+                // 確率調整
                 int obj_num = RandomPieceInitialize2();
 
                 // ボード（あたり判定）
                 Boards[width,height] = Instantiate(board,new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
 
-                // ピース
-                Boardpieces[width,height].obj = Instantiate(piece[obj_num],new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
-                Boardpieces[width,height].arrayWidthNum = width;
-                Boardpieces[width,height].arrayHeightNum = height;
-                Boardpieces[width,height].typeNum = obj_num;
-                Boardpieces[width,height].mouseFlag = false;
-                Boardpieces[width,height].moveFlag = false;
-                Boardpieces[width,height].linkflag = false;
-                Boardpieces[width,height].deletePrepareFrag = false;
-
-                // パズル出現率の調整用
-                AddRate(Boardpieces[width,height].typeNum);
+                // ピースの生成
+                CreatePiece(width, height, obj_num);
 
                 // デバッグ用
                 flag[width + height * 5] = Boardpieces[width,height].moveFlag;
@@ -493,13 +481,13 @@ public class BoardManager : MonoBehaviour {
         for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
                 // 左上の一致
-                if(Boardpieces[width,height].typeNum == Target[0,0]) {
+                if(Boardpieces[width,height].typeNum == Target[0,0] || Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW) {
                     //if(!Boardpieces[width, height].mouseFlag)
                     {
                         // 縦と判断
                         if(Target[1,0] == -1 && Target[1,1] == -1) {
                             if(height == (BOARD_HEIGHT_NUM - 1)) { continue; }
-                            if(Boardpieces[width,height + 1].typeNum == Target[0,1]) {
+                            if(Boardpieces[width,height + 1].typeNum == Target[0,1] || Boardpieces[width, height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOW) {
                                 //if(!Boardpieces[width, height + 1].mouseFlag) { continue; }
                                 linknum++;
                                 Boardpieces[width,height].linkflag = true;
@@ -514,7 +502,7 @@ public class BoardManager : MonoBehaviour {
                         else if(Target[0,1] == -1 && Target[1,1] == -1) {
 
                             if(width == (BOARD_WIDTH_NUM - 1)) { continue; }
-                            if(Boardpieces[width + 1,height].typeNum == Target[1,0]) {
+                            if(Boardpieces[width + 1,height].typeNum == Target[1,0] || Boardpieces[width + 1, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW) {
                                 //if (!Boardpieces[width + 1, height].mouseFlag) { continue; }
                                 linknum++;
                                 Boardpieces[width,height].linkflag = true;
@@ -580,26 +568,40 @@ public class BoardManager : MonoBehaviour {
 
                 if(Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
                     if(Boardpieces[width,height].obj.GetComponent<PieceTime>().FinAnim) {
+
+                        // 削除
                         Destroy(Boardpieces[width,height].obj);
 
+                        // 乱数調整
                         int obj_num = RandomPieceUpdate();
 
-                        // ピース
-                        Boardpieces[width,height].obj = Instantiate(piece[obj_num],new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
-                        Boardpieces[width,height].arrayWidthNum = width;
-                        Boardpieces[width,height].arrayHeightNum = height;
-                        Boardpieces[width,height].typeNum = obj_num;
-                        Boardpieces[width,height].mouseFlag = false;
-                        Boardpieces[width,height].moveFlag = false;
-                        Boardpieces[width,height].linkflag = false;
-                        Boardpieces[width,height].deletePrepareFrag = false;
+                        // ピースの生成
+                        CreatePiece(width, height, obj_num);
 
-                        AddRate(Boardpieces[width,height].typeNum);
+                        rainbowCounter++;
 
                     }
                 }
             }
         }
+    }
+
+    //-------------------------------------------------------
+    // ピースデータの初期化
+    //-------------------------------------------------------
+    private void CreatePiece(int width, int height, int obj_num)
+    {
+        // ピース
+        Boardpieces[width, height].obj = Instantiate(piece[obj_num], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
+        Boardpieces[width, height].arrayWidthNum = width;
+        Boardpieces[width, height].arrayHeightNum = height;
+        Boardpieces[width, height].typeNum = obj_num;
+        Boardpieces[width, height].mouseFlag = false;
+        Boardpieces[width, height].moveFlag = false;
+        Boardpieces[width, height].linkflag = false;
+        Boardpieces[width, height].deletePrepareFrag = false;
+
+        AddRate(Boardpieces[width, height].typeNum);
     }
 
     //-------------------------------------------------------
@@ -660,6 +662,8 @@ public class BoardManager : MonoBehaviour {
         drumNum = 0;
         vocalNum = 0;
         djNum = 0;
+        rainbowNum = 0;
+        rainbowCounter = 0;
     }
 
     //-------------------------------------------------------
@@ -681,6 +685,10 @@ public class BoardManager : MonoBehaviour {
 
             case (int)INSTRUMENT_TYPE.DJ:
             djNum++;
+            break;
+
+            case (int)INSTRUMENT_TYPE.RAINBOW:
+            rainbowNum++;
             break;
 
             default:
@@ -709,6 +717,10 @@ public class BoardManager : MonoBehaviour {
             djNum--;
             break;
 
+            case (int)INSTRUMENT_TYPE.RAINBOW:
+            rainbowNum--;
+            break;
+
             default:
             break;
         }
@@ -719,7 +731,7 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     private int RandomPieceInitialize2 () {
         int randomNum = 0;
-        bool[] checkNum = { (guitarNum >= 4),(drumNum >= 4),(vocalNum >= 4),(djNum >= 4) };
+        bool[] checkNum = { (guitarNum >= 4),(drumNum >= 4),(vocalNum >= 4),(djNum >= 4)};
         List<int> candidate = new List<int>();
 
         for(int i = 0;i < checkNum.Length;i++) {
@@ -732,7 +744,7 @@ public class BoardManager : MonoBehaviour {
             int rand = Random.Range(0,candidate.Count);
             randomNum = candidate[rand];
         } else {
-            randomNum = Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 1);
+            randomNum = Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 2);
         }
 
         return randomNum;
@@ -744,7 +756,7 @@ public class BoardManager : MonoBehaviour {
     private int RandomPieceUpdate () {
 
         int randomNum = 0;
-        bool[] checkNum = { (guitarNum > 0), (drumNum > 0), (vocalNum > 0), (djNum > 0) };
+        bool[] checkNum = { (guitarNum > 0), (drumNum > 0), (vocalNum > 0), (djNum > 0), (rainbowCounter < 10) };
         List<int> candidate = new List<int>();
 
         for (int i = 0; i < checkNum.Length; i++)
@@ -762,7 +774,13 @@ public class BoardManager : MonoBehaviour {
         }
         else
         {
-            randomNum = Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 1);
+            randomNum = Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 2);
+        }
+
+        // レインボー生成タイミングの初期化
+        if(randomNum == (int)INSTRUMENT_TYPE.RAINBOW)
+        {
+            rainbowCounter = 0;
         }
 
         return randomNum;
