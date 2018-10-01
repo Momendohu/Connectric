@@ -17,9 +17,10 @@
 - Canvas設定
   - ReferenceResolution`900x1600`
 - DefaultExecutionOrder設定(スクリプトの実行順)
-  - TimingBar`-120`
-  - SoundManager`-110`
-  - GameManager`-100`
+  - `BoardManager`-200
+  - `TimingBar`-120`
+  - `SoundManager`-110`
+  - `GameManager`-100`
   
   ## Resources
 1. [タイトル](リンク)
