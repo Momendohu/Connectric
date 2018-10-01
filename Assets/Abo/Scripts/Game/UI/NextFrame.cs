@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class NextFrame : PieceLinkUI {
     //=============================================================
-    private GameManager gameManager;
-
     private GameObject linkAll;
     private GameObject linkV;
     private GameObject linkH;
@@ -33,8 +31,8 @@ public class NextFrame : PieceLinkUI {
 
 
     //=============================================================
-    private void CRef () {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    protected override void CRef () {
+        base.CRef();
 
         linkAll = transform.Find("PieceLink_NextFrame").gameObject;
         linkV = transform.Find("PieceLink_NextFrame/V").gameObject;

@@ -79,7 +79,6 @@ public class UpScreen : MonoBehaviour {
         float time = 0;
         while(true) {
             time = gameManager.GetBeatWaveTiming(soundManager.GetBGMTime(gameManager.BGMName),2,tempo);
-            //time += Time.deltaTime * (tempo / 60f);
             obj.transform.localScale = new Vector3(1,CharacterRhythmAnim.Evaluate(time),1);
 
             if(time >= 1) {
@@ -104,15 +103,12 @@ public class UpScreen : MonoBehaviour {
         //角度の調整
         obj.GetComponent<RectTransform>().localEulerAngles = new Vector3(0,0,10);
 
-        //キャラクターがカナデならダメージ用の画像に差し替える
-        if(gameManager.CharacterDatas[gameManager.FocusCharacter].Id == 0) {
-            //Debug.LogError("moved");
-            obj.GetComponent<Image>().sprite = gameManager.CharacterImageDamage[gameManager.FocusCharacter];
-        }
+        //ダメージ差分に画像を切り替え
+        obj.GetComponent<Image>().sprite = gameManager.CharacterImageDamage[gameManager.FocusCharacter];
 
         float time = 0;
         while(true) {
-            time += Time.deltaTime / waitTime;
+            time += gameManager.TimeForGame() / waitTime;
 
             obj.GetComponent<Image>().color = new Color(1,1,1,CharacterDamageAnim.Evaluate(time));
 

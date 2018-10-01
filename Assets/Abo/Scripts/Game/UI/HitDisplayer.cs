@@ -15,6 +15,7 @@ public class HitDisplayer : MonoBehaviour {
     private float alphaSpeed = 3f;
 
     //=============================================================
+    private GameManager gameManager;
     private Text main;
     private Text shadow;
     private Color mainColor;
@@ -27,6 +28,7 @@ public class HitDisplayer : MonoBehaviour {
 
     //=============================================================
     private void CRef () {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         main = transform.Find("Main").GetComponent<Text>();
         shadow = transform.Find("Shadow").GetComponent<Text>();
 
@@ -40,10 +42,10 @@ public class HitDisplayer : MonoBehaviour {
     }
 
     private void Update () {
-        speed += grav * Time.deltaTime;
-        alpha -= Time.deltaTime * alphaSpeed;
+        speed += grav * gameManager.TimeForGame();
+        alpha -= gameManager.TimeForGame() * alphaSpeed;
 
-        GetComponent<RectTransform>().localPosition += new Vector3(0,speed,0);
+        if(gameManager.TimeForGame() != 0) GetComponent<RectTransform>().localPosition += new Vector3(0,speed,0);
         GetComponent<RectTransform>().localEulerAngles += new Vector3(0,0,rotateSpeed);
         main.color = new Color(mainColor.r,mainColor.g,mainColor.b,alpha);
         shadow.color = new Color(shadowColor.r,shadowColor.g,shadowColor.b,alpha);

@@ -110,11 +110,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private SoundManager soundManager;
 
     //=============================================================
-    private int BGMNum = 3; //bgmの数
-    private string[] BGMNames = { "bgm001","bgm002","bgm003","bgm004" }; //bgmの名前
-    private float[] BGMBPMs = { 128f,146f,128f,202f }; //bgmのBGM
-
-    //=============================================================
     [System.NonSerialized]
     public float BGMBPM = 128f; //tst001->171 bgm001->128 bgm002->146
     [System.NonSerialized]
@@ -210,8 +205,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //BGMの再生初期化
     private void InitMusicPlay () {
-        for(int i = 0;i < BGMNum;i++) {
-            soundManager.StopBGM(BGMNames[i]);
+        for(int i = 0;i < soundManager.BGMNum;i++) {
+            soundManager.StopBGM(soundManager.BGMDatas[i].Name);
         }
     }
 
@@ -379,14 +374,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //BGMを選択適用する
     public void ApplyToBGMData (int num) {
-        if(num >= 0 && num <= BGMNum - 1) {
+        if(num >= 0 && num <= soundManager.BGMNum - 1) {
             FocusBGM = num;
         } else {
             FocusBGM = 0;
         }
 
-        BGMBPM = BGMBPMs[FocusBGM];
-        BGMName = BGMNames[FocusBGM];
+        BGMBPM = soundManager.BGMDatas[FocusBGM].BPM;
+        BGMName = soundManager.BGMDatas[FocusBGM].Name;
     }
 
     //==============================================================================================================================================
@@ -513,6 +508,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //特定のスキルが発動しているかどうか
+    public bool IsUsingSkill (int num) {
+        return IsSkillMode && (CharacterDatas[FocusCharacter].SkillId == num);
+    }
+
+    //=============================================================
     //スキルの処理(効果面)
     private IEnumerator SkillEffect (int num) {
         CreateCutIn();
@@ -522,7 +523,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[FocusCharacter].AttackPower *= 1.2f; //攻撃力を1.2倍に
             soundManager.SetBGMPitch(BGMName,1.1f); //速度(ピッチ)を1.1倍に
             //カウントダウンない
-            yield return new WaitForSeconds(10); //10秒待つ
+            yield return MyWaitForSeconds(15); //15秒待つ
 
             //効果を元にもどす
             CharacterStatus[FocusCharacter].AttackPower /= 1.2f;
@@ -530,11 +531,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             break;
 
             case 1:
-            yield return new WaitForSeconds(20); //10秒待つ
+            yield return MyWaitForSeconds(20); //20秒待つ
             break;
 
             case 2:
-            yield return new WaitForSeconds(15); //15秒待つ
+            yield return MyWaitForSeconds(15); //15秒待つ
             break;
 
             default:
@@ -545,6 +546,30 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         onceFlagSkillActivate = false;
         isSkillMode = false;
         CharacterStatus[FocusCharacter].Voltage = 0;
+    }
+
+    //=============================================================
+    //指定した秒数待つ(ゲームフラグでの管理用に作成)
+    private IEnumerator MyWaitForSeconds (float waitTime) {
+        float time = 0;
+        while(true) {
+            time += TimeForGame();
+            if(time >= waitTime) {
+                break;
+            }
+
+            yield return null;
+        }
+    }
+
+    //=============================================================
+    //ゲームシーン管理下のTime
+    public float TimeForGame () {
+        if(IsGameClear || IsGameOver || IsPause) {
+            return 0;
+        } else {
+            return Time.fixedDeltaTime;
+        }
     }
 
     //=============================================================
@@ -695,9 +720,28 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //一番新しく生成されたピースリンクを取得
+    public int[,] GetNewestPieceLink () {
+        if(timingBars.Count >= 1) {
+            if(timingBars[timingBars.Count - 1] != null) {
+                return timingBars[timingBars.Count - 1].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
+            } else {
+                //Debug.Log("ピースリンクがうまく取得できてないよ");
+                int[,] tmp = { { -1,-1 },{ -1,-1 } };
+                return tmp;
+            }
+        } else {
+            //Debug.Log("ピースリンクが1個以下だよ");
+            int[,] tmp = { { -1,-1 },{ -1,-1 } };
+            return tmp;
+        }
+    }
+
+    //=============================================================
     //シーン遷移(ゲームからゲームへ)
     public void JumpSceneGameToGame () {
         InitializeGameStatus();
+        InitializeGameRecordStatus();
 
         SceneManager.LoadScene("Game_copy2");
     }
@@ -714,6 +758,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //シーン遷移(ゲームから曲セレクトへ)
     public void JumpSceneGameToMusicSelect () {
         InitializeGameStatus();
+        InitializeGameRecordStatus();
 
         SceneManager.LoadScene("SelectSound");
     }

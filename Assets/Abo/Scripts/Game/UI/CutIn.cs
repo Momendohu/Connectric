@@ -15,11 +15,20 @@ public class CutIn : MonoBehaviour {
     public int Id; //id
 
     //=============================================================
+    private GameManager gameManager;
+
     private GameObject under;
     private GameObject over;
 
     private GameObject text;
     private GameObject character;
+
+    //=============================================================
+    private Vector3[] characterPos = {
+        new Vector3(0,-430,0),
+        new Vector3(0,-400,0),
+        new Vector3(0,-525,0)
+    };
 
     //=============================================================
     private void Init () {
@@ -28,6 +37,8 @@ public class CutIn : MonoBehaviour {
 
     //=============================================================
     private void CRef () {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         under = transform.Find("Under").gameObject;
         over = transform.Find("Over").gameObject;
 
@@ -41,6 +52,7 @@ public class CutIn : MonoBehaviour {
     }
 
     private void Start () {
+        character.GetComponent<RectTransform>().localPosition = characterPos[Id]; //位置の適用
         character.GetComponent<Image>().sprite = CharacterImage[Id]; //イメージの適用
         text.GetComponent<Text>().text = DisplayText; //表示テキストの適用
 
@@ -60,7 +72,7 @@ public class CutIn : MonoBehaviour {
 
         //カットインを出す
         while(true) {
-            time += Time.deltaTime / interval1;
+            time += gameManager.TimeForGame() / interval1;
             if(time >= 1) {
                 under.GetComponent<RectTransform>().localScale = Vector3.one;
                 over.GetComponent<RectTransform>().localScale = Vector3.one;
@@ -82,7 +94,7 @@ public class CutIn : MonoBehaviour {
 
         //キャラクターを微妙に動かす
         while(true) {
-            time += Time.deltaTime / interval2;
+            time += gameManager.TimeForGame() / interval2;
             if(time >= 1) {
                 time = 0;
                 break;
@@ -95,7 +107,7 @@ public class CutIn : MonoBehaviour {
 
         //透過して消滅
         while(true) {
-            time += Time.deltaTime / interval3;
+            time += gameManager.TimeForGame() / interval3;
             if(time >= 1) {
                 time = 0;
                 break;

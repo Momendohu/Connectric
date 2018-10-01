@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class PieceLink_UpScreen : PieceLinkUI {
     //=============================================================
-    private GameManager gameManager;
-
     private GameObject linkV;
     private GameObject linkH;
     private GameObject linkO;
@@ -31,8 +29,8 @@ public class PieceLink_UpScreen : PieceLinkUI {
     }
 
     //=============================================================
-    private void CRef () {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    protected override void CRef () {
+        base.CRef();
 
         linkV = transform.Find("V").gameObject;
         linkH = transform.Find("H").gameObject;

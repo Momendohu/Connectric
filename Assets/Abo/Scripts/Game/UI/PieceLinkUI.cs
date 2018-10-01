@@ -5,6 +5,22 @@ using UnityEngine;
 
 public class PieceLinkUI : MonoBehaviour {
     //=============================================================
+    protected GameManager gameManager; //ゲームマネージャー
+
+    //=============================================================
+    //ピースリンクモード
+    private enum PieceLinkMode {
+        Two = 0,
+        Four = 1
+    }
+    PieceLinkMode pieceLinkMode = PieceLinkMode.Two;
+
+    //=============================================================
+    protected virtual void CRef () {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    //=============================================================
     //ピースリンクのタイプの選択
     protected virtual void SelectPieceLinkType (int[,] pieceLink,ref GameManager.PIECE_LINK_TYPE pieceLinkType) {
         //左下がなくてアクティブなピースリンクの数が2なら横長タイプ
@@ -68,8 +84,24 @@ public class PieceLinkUI : MonoBehaviour {
         pieceLink[0,0] = Random.Range(0,4);
 
         int branch1 = Random.Range(0,2);
-        int branch2 = 0/*Random.Range(0,3)*/;
-        int branch3 = 0/*Random.Range(0,2)*/;
+        int branch2 = 0;
+        int branch3 = 0;
+
+        switch(pieceLinkMode) {
+            case PieceLinkMode.Two:
+            branch2 = 0;
+            branch3 = 0;
+            break;
+
+            case PieceLinkMode.Four:
+            branch2 = Random.Range(0,3);
+            branch3 = Random.Range(0,2);
+            break;
+
+            default:
+            Debug.Log("ピースリンク生成モードがおかしいよ");
+            break;
+        }
 
         if(branch1 == 0) {
             //右上
@@ -78,6 +110,7 @@ public class PieceLinkUI : MonoBehaviour {
             switch(branch2) {
                 case 0:
                 //終了
+                CheckFinishForDecidePieceLink(pieceLink);
                 return;
 
                 case 1:
@@ -86,6 +119,7 @@ public class PieceLinkUI : MonoBehaviour {
 
                 if(branch3 == 0) {
                     //終了
+                    CheckFinishForDecidePieceLink(pieceLink);
                     return;
                 } else {
                     //右下
@@ -100,6 +134,7 @@ public class PieceLinkUI : MonoBehaviour {
 
                 if(branch3 == 0) {
                     //終了
+                    CheckFinishForDecidePieceLink(pieceLink);
                     return;
                 } else {
                     //左下
@@ -114,6 +149,7 @@ public class PieceLinkUI : MonoBehaviour {
             switch(branch2) {
                 case 0:
                 //終了
+                CheckFinishForDecidePieceLink(pieceLink);
                 return;
 
                 case 1:
@@ -122,6 +158,7 @@ public class PieceLinkUI : MonoBehaviour {
 
                 if(branch3 == 0) {
                     //終了
+                    CheckFinishForDecidePieceLink(pieceLink);
                     return;
                 } else {
                     //右下
@@ -136,6 +173,7 @@ public class PieceLinkUI : MonoBehaviour {
 
                 if(branch3 == 0) {
                     //終了
+                    CheckFinishForDecidePieceLink(pieceLink);
                     return;
                 } else {
                     //右上
@@ -144,5 +182,54 @@ public class PieceLinkUI : MonoBehaviour {
                 break;
             }
         }
+    }
+
+    //=============================================================
+    //終了処理
+    private void CheckFinishForDecidePieceLink (int[,] pieceLink) {
+        if(gameManager.GetNewestPieceLink() != null) {
+            bool notSame = false;
+
+            //ピース単位一致検索
+            int[] before = CheckUpAppearPieces(gameManager.GetNewestPieceLink());
+            int[] now = CheckUpAppearPieces(pieceLink);
+            for(int i = 0;i < before.Length - 1;i++) { //空白部分は検索しない
+                if(before[i] != now[i]) {
+                    notSame = true;
+                }
+            }
+
+            //完全一致検索
+            /*for(int i = 0;i < pieceLink.GetLength(0);i++) {
+                for(int j = 0;j < pieceLink.GetLength(1);j++) {
+                    if(pieceLink[i,j] != gameManager.GetNewestPieceLink()[i,j]) {
+                        notSame = true;
+                    }
+                }
+            }*/
+
+            //ピースリンクの情報が同じなら
+            if(!notSame) {
+                //Debug.Log("same");
+                DecidePieceLink(pieceLink);
+            }
+        }
+    }
+
+    //=============================================================
+    //ピースの出現数を調べる
+    private int[] CheckUpAppearPieces (int[,] pieceLink) {
+        int[] appearPieces = new int[5];
+        for(int i = 0;i < pieceLink.GetLength(0);i++) {
+            for(int j = 0;j < pieceLink.GetLength(1);j++) {
+                if(pieceLink[i,j] != -1) {
+                    appearPieces[pieceLink[i,j]]++;
+                } else {
+                    appearPieces[appearPieces.Length - 1]++;
+                }
+            }
+        }
+
+        return appearPieces;
     }
 }
