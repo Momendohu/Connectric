@@ -18,9 +18,9 @@
   - ReferenceResolution`900x1600`
 - DefaultExecutionOrder設定(スクリプトの実行順)
   - `BoardManager`-200
-  - `TimingBar`-120`
-  - `SoundManager`-110`
-  - `GameManager`-100`
+  - `TimingBar`-120
+  - `SoundManager`-110
+  - `GameManager`-100
   
   ## Resources
 1. [タイトル](リンク)
