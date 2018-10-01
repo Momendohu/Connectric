@@ -261,6 +261,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 38686387}
+--- !u!1001 &86501149
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4705017296144278, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 14ac40d7c9c0de94080d60be113d2e11, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &118226587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,7 +2029,7 @@ Canvas:
   m_GameObject: {fileID: 1465742667}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 807352229}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
