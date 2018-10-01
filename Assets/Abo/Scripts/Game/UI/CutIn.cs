@@ -15,6 +15,8 @@ public class CutIn : MonoBehaviour {
     public int Id; //id
 
     //=============================================================
+    private GameManager gameManager;
+
     private GameObject under;
     private GameObject over;
 
@@ -28,6 +30,8 @@ public class CutIn : MonoBehaviour {
 
     //=============================================================
     private void CRef () {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         under = transform.Find("Under").gameObject;
         over = transform.Find("Over").gameObject;
 
@@ -60,7 +64,7 @@ public class CutIn : MonoBehaviour {
 
         //カットインを出す
         while(true) {
-            time += Time.deltaTime / interval1;
+            time += gameManager.TimeForGame() / interval1;
             if(time >= 1) {
                 under.GetComponent<RectTransform>().localScale = Vector3.one;
                 over.GetComponent<RectTransform>().localScale = Vector3.one;
@@ -82,7 +86,7 @@ public class CutIn : MonoBehaviour {
 
         //キャラクターを微妙に動かす
         while(true) {
-            time += Time.deltaTime / interval2;
+            time += gameManager.TimeForGame() / interval2;
             if(time >= 1) {
                 time = 0;
                 break;
@@ -95,7 +99,7 @@ public class CutIn : MonoBehaviour {
 
         //透過して消滅
         while(true) {
-            time += Time.deltaTime / interval3;
+            time += gameManager.TimeForGame() / interval3;
             if(time >= 1) {
                 time = 0;
                 break;

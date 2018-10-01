@@ -79,7 +79,6 @@ public class UpScreen : MonoBehaviour {
         float time = 0;
         while(true) {
             time = gameManager.GetBeatWaveTiming(soundManager.GetBGMTime(gameManager.BGMName),2,tempo);
-            //time += Time.deltaTime * (tempo / 60f);
             obj.transform.localScale = new Vector3(1,CharacterRhythmAnim.Evaluate(time),1);
 
             if(time >= 1) {
@@ -112,7 +111,7 @@ public class UpScreen : MonoBehaviour {
 
         float time = 0;
         while(true) {
-            time += Time.deltaTime / waitTime;
+            time += gameManager.TimeForGame() / waitTime;
 
             obj.GetComponent<Image>().color = new Color(1,1,1,CharacterDamageAnim.Evaluate(time));
 

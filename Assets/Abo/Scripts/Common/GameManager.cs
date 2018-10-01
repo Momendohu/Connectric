@@ -522,7 +522,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[FocusCharacter].AttackPower *= 1.2f; //攻撃力を1.2倍に
             soundManager.SetBGMPitch(BGMName,1.1f); //速度(ピッチ)を1.1倍に
             //カウントダウンない
-            yield return new WaitForSeconds(10); //10秒待つ
+            yield return MyWaitForSeconds(10); //10秒待つ
 
             //効果を元にもどす
             CharacterStatus[FocusCharacter].AttackPower /= 1.2f;
@@ -530,11 +530,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             break;
 
             case 1:
-            yield return new WaitForSeconds(20); //10秒待つ
+            yield return MyWaitForSeconds(20); //10秒待つ
             break;
 
             case 2:
-            yield return new WaitForSeconds(15); //15秒待つ
+            yield return MyWaitForSeconds(15); //15秒待つ
             break;
 
             default:
@@ -545,6 +545,30 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         onceFlagSkillActivate = false;
         isSkillMode = false;
         CharacterStatus[FocusCharacter].Voltage = 0;
+    }
+
+    //=============================================================
+    //指定した秒数待つ(ゲームフラグでの管理用に作成)
+    private IEnumerator MyWaitForSeconds (float waitTime) {
+        float time= 0;
+        while(true) {
+            time += TimeForGame();
+            if(time>=waitTime) {
+                break;
+            }
+
+            yield return null;
+        }
+    }
+
+    //=============================================================
+    //ゲームシーン管理下のTime
+    public float TimeForGame () {
+        if(IsGameClear || IsGameOver || IsPause) {
+            return 0;
+        } else {
+            return Time.fixedDeltaTime;
+        }
     }
 
     //=============================================================

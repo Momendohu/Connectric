@@ -120,7 +120,7 @@ public class TimingBar : MonoBehaviour {
             float time = 0;
 
             while(true) {
-                time += Time.deltaTime * speed;
+                time += gameManager.TimeForGame() * speed;
                 if(time >= 1) {
                     break;
                 }
