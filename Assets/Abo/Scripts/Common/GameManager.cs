@@ -62,6 +62,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         public int MaxHit; //最大ヒット数
         public int Score; //スコア
         public int DefeatEnemyNum; //撃破した敵の数
+
+        public int SeparateCombo; //区切りコンボ数
+        public int SeparateComboSeparateNum; //区切りコンボ数の区切り
     }
 
     //スキルデータ(構造体)
@@ -422,6 +425,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         soundManager.TriggerBGM(BGMName,false);
         //タイミングバー用のウェーブ指定
         notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
+
+        InitializeGameRecordStatus();
+        InitializeGameStatus();
     }
 
     //=============================================================
@@ -468,14 +474,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                             ApplyToEnemyVoltage(FocusEnemy);
 
                             GameRecordStatus.Combo = 0;
-                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + コンボ数が加算される + ヒット数が表示される + スコアが加算される + maxヒット、コンボの保存
+                            GameRecordStatus.SeparateCombo = 0;
+                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + スコアが加算される + maxヒット、コンボの保存
                             //Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
                             ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
                             ApplyToCharacterVoltage(FocusCharacter);
                             ApplyToScore(CalculateGetScore(beforeCombo,GameRecordStatus.Combo));
 
+                            //ヒット数の表示 + コンボ数の加算
                             CreateHitDisplayer(beforeCombo);
                             GameRecordStatus.Combo += beforeCombo;
+
+                            //区切りコンボ数の計算、下部にコンボの表示
+                            GameRecordStatus.SeparateCombo += beforeCombo;
+                            if(GameRecordStatus.SeparateCombo >= GameRecordStatus.SeparateComboSeparateNum) {
+                                GameRecordStatus.SeparateCombo -= GameRecordStatus.SeparateComboSeparateNum;
+                                CreateComboUnder((GameRecordStatus.Combo - GameRecordStatus.SeparateCombo));
+                            }
 
                             GameRecordStatus.MaxCombo = (GameRecordStatus.MaxCombo < GameRecordStatus.Combo) ? GameRecordStatus.Combo : GameRecordStatus.MaxCombo;
                             GameRecordStatus.MaxHit = (GameRecordStatus.MaxHit < beforeCombo) ? beforeCombo : GameRecordStatus.MaxHit;
@@ -647,6 +662,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         obj.transform.SetAsLastSibling();
 
         obj.GetComponent<HitDisplayer>().HitNum = num;
+    }
+
+    //=============================================================
+    //下部のコンボ数表示の生成
+    private void CreateComboUnder (int num) {
+        GameObject obj = Instantiate(Resources.Load("Prefabs/UI/ComboUnder")) as GameObject;
+        obj.transform.SetParent(GameObject.Find("Canvas/UpScreen").transform,false);
+        obj.transform.SetAsLastSibling();
+
+        obj.GetComponent<ComboUnder>().Combo = num;
     }
 
     //=============================================================
@@ -822,6 +847,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         GameRecordStatus.MaxCombo = 0;
         GameRecordStatus.MaxHit = 0;
         GameRecordStatus.Score = 0;
+
+        GameRecordStatus.SeparateCombo = 0;
+        GameRecordStatus.SeparateComboSeparateNum = 10;
     }
 
     //==============================================================================================================================================

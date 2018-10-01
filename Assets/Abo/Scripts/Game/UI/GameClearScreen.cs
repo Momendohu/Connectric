@@ -56,7 +56,7 @@ public class GameClearScreen : MonoBehaviour {
                 break;
             }
 
-            GetComponent<RectTransform>().localScale = Vector3.one * AnimScaleChange.Evaluate(time);
+            gameClearImage.GetComponent<RectTransform>().localScale = Vector3.one * AnimScaleChange.Evaluate(time);
 
             yield return null;
         }
