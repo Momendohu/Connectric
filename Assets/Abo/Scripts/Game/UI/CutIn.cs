@@ -24,6 +24,13 @@ public class CutIn : MonoBehaviour {
     private GameObject character;
 
     //=============================================================
+    private Vector3[] characterPos = {
+        new Vector3(0,-430,0),
+        new Vector3(0,-400,0),
+        new Vector3(0,-525,0)
+    };
+
+    //=============================================================
     private void Init () {
         CRef();
     }
@@ -45,6 +52,7 @@ public class CutIn : MonoBehaviour {
     }
 
     private void Start () {
+        character.GetComponent<RectTransform>().localPosition = characterPos[Id]; //位置の適用
         character.GetComponent<Image>().sprite = CharacterImage[Id]; //イメージの適用
         text.GetComponent<Text>().text = DisplayText; //表示テキストの適用
 

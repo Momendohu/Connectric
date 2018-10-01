@@ -103,11 +103,8 @@ public class UpScreen : MonoBehaviour {
         //角度の調整
         obj.GetComponent<RectTransform>().localEulerAngles = new Vector3(0,0,10);
 
-        //キャラクターがカナデならダメージ用の画像に差し替える
-        if(gameManager.CharacterDatas[gameManager.FocusCharacter].Id == 0) {
-            //Debug.LogError("moved");
-            obj.GetComponent<Image>().sprite = gameManager.CharacterImageDamage[gameManager.FocusCharacter];
-        }
+        //ダメージ差分に画像を切り替え
+        obj.GetComponent<Image>().sprite = gameManager.CharacterImageDamage[gameManager.FocusCharacter];
 
         float time = 0;
         while(true) {
