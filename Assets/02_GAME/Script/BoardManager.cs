@@ -381,7 +381,7 @@ public class BoardManager : MonoBehaviour {
 
 
                                     // パネル入れかえサウンド
-                                    sound.GetComponent<SoundManager>().TriggerSE("puzzlemove",0.5f);
+                                    sound.GetComponent<SoundManager>().TriggerSE("puzzlemove");
 
 
                                     for(int height3 = 0;height3 < BOARD_HEIGHT_NUM;height3++) {
@@ -577,7 +577,7 @@ public class BoardManager : MonoBehaviour {
         Destroy(Boardpieces[width,height].obj);
 
         // パネル削除
-        sound.GetComponent<SoundManager>().TriggerSE("puzzledelete",0.5f);
+        sound.GetComponent<SoundManager>().TriggerSE("puzzledelete");
 
         Boardpieces[width,height].obj = Instantiate(piece[(int)INSTRUMENT_TYPE.TIME],new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
         Boardpieces[width,height].arrayWidthNum = width;

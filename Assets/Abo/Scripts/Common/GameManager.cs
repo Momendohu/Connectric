@@ -110,11 +110,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private SoundManager soundManager;
 
     //=============================================================
-    private int BGMNum = 3; //bgmの数
-    private string[] BGMNames = { "bgm001","bgm002","bgm003","bgm004" }; //bgmの名前
-    private float[] BGMBPMs = { 128f,146f,128f,202f }; //bgmのBGM
-
-    //=============================================================
     [System.NonSerialized]
     public float BGMBPM = 128f; //tst001->171 bgm001->128 bgm002->146
     [System.NonSerialized]
@@ -210,8 +205,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //BGMの再生初期化
     private void InitMusicPlay () {
-        for(int i = 0;i < BGMNum;i++) {
-            soundManager.StopBGM(BGMNames[i]);
+        for(int i = 0;i < soundManager.BGMNum;i++) {
+            soundManager.StopBGM(soundManager.BGMDatas[i].Name);
         }
     }
 
@@ -379,14 +374,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //BGMを選択適用する
     public void ApplyToBGMData (int num) {
-        if(num >= 0 && num <= BGMNum - 1) {
+        if(num >= 0 && num <= soundManager.BGMNum - 1) {
             FocusBGM = num;
         } else {
             FocusBGM = 0;
         }
 
-        BGMBPM = BGMBPMs[FocusBGM];
-        BGMName = BGMNames[FocusBGM];
+        BGMBPM = soundManager.BGMDatas[FocusBGM].BPM;
+        BGMName = soundManager.BGMDatas[FocusBGM].Name;
     }
 
     //==============================================================================================================================================

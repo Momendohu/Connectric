@@ -14,6 +14,34 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     private List<GameObject> SEObject = new List<GameObject>();
 
     //===============================================================================
+    public int BGMNum = 3; //bgmの数
+
+    //BGMデータ(構造体)
+    public struct BGMData {
+        public string Name;
+        public float BPM;
+        public float Volume;
+    }
+
+    public BGMData[] BGMDatas ={
+        new BGMData{ Name="bgm001",BPM=128f,Volume=0.7f},
+        new BGMData{ Name="bgm002",BPM=146f,Volume=0.7f},
+        new BGMData{ Name="bgm003",BPM=128f,Volume=1f},
+        new BGMData{ Name="bgm004",BPM=202f,Volume=0.7f},
+    };
+
+    //SEデータ(構造体)
+    public struct SEData {
+        public string Name;
+        public float Volume;
+    }
+
+    public SEData[] SEDatas = {
+        new SEData{ Name="puzzledelete",Volume=0.3f},
+        new SEData{ Name="puzzlemove",Volume=0.3f},
+    };
+
+    //===============================================================================
     private bool Init () {
         if(this != Instance) {
             Destroy(this.gameObject);
@@ -53,6 +81,30 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     }
 
     //===============================================================================
+    //特定のBGMの名前をデータと照合してボリューム設定を取得する
+    private float GetVolumeInBGMData (string name) {
+        for(int i = 0;i < BGMDatas.Length;i++) {
+            if(BGMDatas[i].Name.Equals(name)) {
+                return BGMDatas[i].Volume;
+            }
+        }
+
+        return 0;
+    }
+
+    //===============================================================================
+    //特定のSEの名前をデータと照合してボリューム設定を取得する
+    private float GetVolumeInSEData (string name) {
+        for(int i = 0;i < SEDatas.Length;i++) {
+            if(SEDatas[i].Name.Equals(name)) {
+                return SEDatas[i].Volume;
+            }
+        }
+
+        return 0;
+    }
+
+    //===============================================================================
     //オーディオを鳴らす
     public void TriggerBGM (string name,bool isUseLoop) {
         Debug.Log(name);
@@ -66,6 +118,10 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
             //ないならオブジェクト生成して再生
             int bgmObjNum = CheckMatchNameInList(name,BGMObject);
             if(bgmObjNum != -1) {
+                //BGMDataからボリュームを設定
+                SetBGMVolume(name,GetVolumeInBGMData(name));
+
+                //再生
                 BGMObject[bgmObjNum].GetComponent<AudioSource>().Play();
             } else {
 
@@ -77,6 +133,9 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = BGMList[bgmListNum];
+
+                //BGMDataからボリュームを設定
+                SetBGMVolume(name,GetVolumeInBGMData(name));
 
                 //再生
                 obj.GetComponent<AudioSource>().Play();
@@ -141,6 +200,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
             int seObjNum = CheckMatchNameInList(name,SEObject);
             if(seObjNum != -1) {
                 AudioSource audioSource = SEObject[seObjNum].GetComponent<AudioSource>();
+                audioSource.volume = GetVolumeInSEData(name); //SEDataからボリュームを設定
                 audioSource.PlayOneShot(audioSource.clip);
             } else {
 
@@ -152,6 +212,9 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = SEList[seListNum];
+
+                //SEDataからボリュームを設定
+                obj.GetComponent<AudioSource>().volume = GetVolumeInSEData(name);
 
                 //再生
                 obj.GetComponent<AudioSource>().PlayOneShot(SEList[seListNum]);
