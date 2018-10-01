@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class PieceLinkUI : MonoBehaviour {
     //=============================================================
+    protected GameManager gameManager; //ゲームマネージャー
+
+    //=============================================================
+    protected virtual void CRef () {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
+    //=============================================================
     //ピースリンクのタイプの選択
     protected virtual void SelectPieceLinkType (int[,] pieceLink,ref GameManager.PIECE_LINK_TYPE pieceLinkType) {
         //左下がなくてアクティブなピースリンクの数が2なら横長タイプ
@@ -78,6 +86,7 @@ public class PieceLinkUI : MonoBehaviour {
             switch(branch2) {
                 case 0:
                 //終了
+                CheckFinishForDecidePieceLink(pieceLink);
                 return;
 
                 case 1:
@@ -86,6 +95,7 @@ public class PieceLinkUI : MonoBehaviour {
 
                 if(branch3 == 0) {
                     //終了
+                    CheckFinishForDecidePieceLink(pieceLink);
                     return;
                 } else {
                     //右下
@@ -100,6 +110,7 @@ public class PieceLinkUI : MonoBehaviour {
 
                 if(branch3 == 0) {
                     //終了
+                    CheckFinishForDecidePieceLink(pieceLink);
                     return;
                 } else {
                     //左下
@@ -114,6 +125,7 @@ public class PieceLinkUI : MonoBehaviour {
             switch(branch2) {
                 case 0:
                 //終了
+                CheckFinishForDecidePieceLink(pieceLink);
                 return;
 
                 case 1:
@@ -122,6 +134,7 @@ public class PieceLinkUI : MonoBehaviour {
 
                 if(branch3 == 0) {
                     //終了
+                    CheckFinishForDecidePieceLink(pieceLink);
                     return;
                 } else {
                     //右下
@@ -136,12 +149,36 @@ public class PieceLinkUI : MonoBehaviour {
 
                 if(branch3 == 0) {
                     //終了
+                    CheckFinishForDecidePieceLink(pieceLink);
                     return;
                 } else {
                     //右上
                     pieceLink[1,0] = Random.Range(0,4);
                 }
                 break;
+            }
+        }
+    }
+
+    //=============================================================
+    //終了処理
+    private void CheckFinishForDecidePieceLink (int[,] pieceLink) {
+        Debug.Log(gameManager.GetNewestPieceLink());
+        if(gameManager.GetNewestPieceLink() != null) {
+            bool notSame = false;
+
+            for(int i = 0;i < pieceLink.GetLength(0);i++) {
+                for(int j = 0;j < pieceLink.GetLength(1);j++) {
+                    if(pieceLink[i,j] != gameManager.GetNewestPieceLink()[i,j]) {
+                        notSame = true;
+                    }
+                }
+            }
+
+            //ピースリンクの情報が同じなら
+            if(!notSame) {
+                Debug.Log("same");
+                DecidePieceLink(pieceLink);
             }
         }
     }

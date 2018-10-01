@@ -550,10 +550,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //指定した秒数待つ(ゲームフラグでの管理用に作成)
     private IEnumerator MyWaitForSeconds (float waitTime) {
-        float time= 0;
+        float time = 0;
         while(true) {
             time += TimeForGame();
-            if(time>=waitTime) {
+            if(time >= waitTime) {
                 break;
             }
 
@@ -706,6 +706,24 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         if(timingBars.Count >= 2) {
             if(timingBars[1] != null) {
                 return timingBars[1].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
+            } else {
+                //Debug.Log("ピースリンクがうまく取得できてないよ");
+                int[,] tmp = { { -1,-1 },{ -1,-1 } };
+                return tmp;
+            }
+        } else {
+            //Debug.Log("ピースリンクが1個以下だよ");
+            int[,] tmp = { { -1,-1 },{ -1,-1 } };
+            return tmp;
+        }
+    }
+
+    //=============================================================
+    //一番新しく生成されたピースリンクを取得
+    public int[,] GetNewestPieceLink () {
+        if(timingBars.Count >= 1) {
+            if(timingBars[timingBars.Count - 1] != null) {
+                return timingBars[timingBars.Count - 1].transform.Find("PieceLink_UpScreen").GetComponent<PieceLink_UpScreen>().PieceLink;
             } else {
                 //Debug.Log("ピースリンクがうまく取得できてないよ");
                 int[,] tmp = { { -1,-1 },{ -1,-1 } };
