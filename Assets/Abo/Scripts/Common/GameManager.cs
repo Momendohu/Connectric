@@ -746,6 +746,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //シーン遷移(ゲームからゲームへ)
     public void JumpSceneGameToGame () {
         InitializeGameStatus();
+        InitializeGameRecordStatus();
 
         SceneManager.LoadScene("Game_copy2");
     }
@@ -762,6 +763,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //シーン遷移(ゲームから曲セレクトへ)
     public void JumpSceneGameToMusicSelect () {
         InitializeGameStatus();
+        InitializeGameRecordStatus();
 
         SceneManager.LoadScene("SelectSound");
     }
