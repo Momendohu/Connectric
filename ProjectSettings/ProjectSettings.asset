@@ -12,7 +12,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: TokyoBTeam
-  productName: Connectric
+  productName: "\u30B3\u30CD\u30C8\u30EA"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.22772492, g: 0.2647059, b: 0.23104046, a: 1}

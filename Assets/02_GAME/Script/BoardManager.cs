@@ -159,7 +159,7 @@ public class BoardManager : MonoBehaviour {
                 Boards[width,height] = Instantiate(board,new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
 
                 // ピースの生成
-                CreatePiece(width, height, obj_num);
+                CreatePiece(width,height,obj_num);
 
                 // デバッグ用
                 flag[width + height * 5] = Boardpieces[width,height].moveFlag;
@@ -485,30 +485,27 @@ public class BoardManager : MonoBehaviour {
         for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
                 // 左上の一致
-                if(Boardpieces[width,height].typeNum == Target[0,0] || 
-                    Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW || 
-                    Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
+                if(Boardpieces[width,height].typeNum == Target[0,0] ||
+                    Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW ||
+                    Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
                     //if(!Boardpieces[width, height].mouseFlag)
                     {
                         // 縦と判断
                         if(Target[1,0] == -1 && Target[1,1] == -1) {
                             if(height == (BOARD_HEIGHT_NUM - 1)) { continue; }
-                            if(Boardpieces[width,height + 1].typeNum == Target[0,1] || 
-                                Boardpieces[width, height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOW ||
-                                Boardpieces[width, height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
+                            if(Boardpieces[width,height + 1].typeNum == Target[0,1] ||
+                                Boardpieces[width,height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOW ||
+                                Boardpieces[width,height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
                                 //if(!Boardpieces[width, height + 1].mouseFlag) { continue; }
                                 linknum++;
                                 Boardpieces[width,height].linkflag = true;
                                 Boardpieces[width,height + 1].linkflag = true;
-                                
+
                                 // レインボム用リンク
-                                if(Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM)
-                                {
-                                    RainbomLink(width, height);
-                                }
-                                else if(Boardpieces[width, height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOM)
-                                {
-                                    RainbomLink(width, height + 1);
+                                if(Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
+                                    RainbomLink(width,height);
+                                } else if(Boardpieces[width,height + 1].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
+                                    RainbomLink(width,height + 1);
                                 }
 
                                 linkFlames.Add(CreateLinkFlame_t(width,height));
@@ -520,22 +517,19 @@ public class BoardManager : MonoBehaviour {
                         else if(Target[0,1] == -1 && Target[1,1] == -1) {
 
                             if(width == (BOARD_WIDTH_NUM - 1)) { continue; }
-                            if(Boardpieces[width + 1,height].typeNum == Target[1,0] || 
-                                Boardpieces[width + 1, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW ||
-                                Boardpieces[width + 1, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
+                            if(Boardpieces[width + 1,height].typeNum == Target[1,0] ||
+                                Boardpieces[width + 1,height].typeNum == (int)INSTRUMENT_TYPE.RAINBOW ||
+                                Boardpieces[width + 1,height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
                                 //if (!Boardpieces[width + 1, height].mouseFlag) { continue; }
                                 linknum++;
                                 Boardpieces[width,height].linkflag = true;
                                 Boardpieces[width + 1,height].linkflag = true;
 
                                 // レインボム用リンク
-                                if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM)
-                                {
-                                    RainbomLink(width, height);
-                                }
-                                else if(Boardpieces[width + 1, height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM)
-                                {
-                                    RainbomLink(width + 1, height);
+                                if(Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
+                                    RainbomLink(width,height);
+                                } else if(Boardpieces[width + 1,height].typeNum == (int)INSTRUMENT_TYPE.RAINBOM) {
+                                    RainbomLink(width + 1,height);
                                 }
 
                                 linkFlames.Add(CreateLinkFlame_y(width,height));
@@ -548,8 +542,7 @@ public class BoardManager : MonoBehaviour {
         }
 
         // レインボムの出現確率発生調整
-        if(linknum >= RAINBOM_HIT)
-        {
+        if(linknum >= RAINBOM_HIT) {
             rainbomFlag = true;
         }
 
@@ -611,11 +604,18 @@ public class BoardManager : MonoBehaviour {
                         // 削除
                         Destroy(Boardpieces[width,height].obj);
 
-                        // 乱数調整
-                        int obj_num = RandomPieceUpdate();
+                        int obj_num = 0;
+                        //カナデがスキルを発動しているかどうかで補充を変更
+                        if(game_manager.GetComponent<GameManager>().IsUsingSkill(1)) {
+                            obj_num = (int)INSTRUMENT_TYPE.RAINBOW;
+                        } else {
+                            // 乱数調整
+                            obj_num = RandomPieceUpdate();
+                        }
+
 
                         // ピースの生成
-                        CreatePiece(width, height, obj_num);
+                        CreatePiece(width,height,obj_num);
 
                         rainbowCounter++;
 
@@ -628,19 +628,18 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // ピースデータの初期化
     //-------------------------------------------------------
-    private void CreatePiece(int width, int height, int obj_num)
-    {
+    private void CreatePiece (int width,int height,int obj_num) {
         // ピース
-        Boardpieces[width, height].obj = Instantiate(piece[obj_num], new Vector3(vStartPos.x + between * width, vStartPos.y - between * height, 0.0f), Quaternion.identity);
-        Boardpieces[width, height].arrayWidthNum = width;
-        Boardpieces[width, height].arrayHeightNum = height;
-        Boardpieces[width, height].typeNum = obj_num;
-        Boardpieces[width, height].mouseFlag = false;
-        Boardpieces[width, height].moveFlag = false;
-        Boardpieces[width, height].linkflag = false;
-        Boardpieces[width, height].deletePrepareFrag = false;
+        Boardpieces[width,height].obj = Instantiate(piece[obj_num],new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
+        Boardpieces[width,height].arrayWidthNum = width;
+        Boardpieces[width,height].arrayHeightNum = height;
+        Boardpieces[width,height].typeNum = obj_num;
+        Boardpieces[width,height].mouseFlag = false;
+        Boardpieces[width,height].moveFlag = false;
+        Boardpieces[width,height].linkflag = false;
+        Boardpieces[width,height].deletePrepareFrag = false;
 
-        AddRate(Boardpieces[width, height].typeNum);
+        AddRate(Boardpieces[width,height].typeNum);
     }
 
     //-------------------------------------------------------
@@ -780,7 +779,7 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     private int RandomPieceInitialize2 () {
         int randomNum = 0;
-        bool[] checkNum = { (guitarNum >= 4),(drumNum >= 4),(vocalNum >= 4),(djNum >= 4)};
+        bool[] checkNum = { (guitarNum >= 4),(drumNum >= 4),(vocalNum >= 4),(djNum >= 4) };
         List<int> candidate = new List<int>();
 
         for(int i = 0;i < checkNum.Length;i++) {
@@ -805,36 +804,29 @@ public class BoardManager : MonoBehaviour {
     private int RandomPieceUpdate () {
 
         int randomNum = 0;
-        bool[] checkNum = { (guitarNum > 0), (drumNum > 0), (vocalNum > 0), (djNum > 0), (rainbowCounter < 10), (!rainbomFlag) };
+        bool[] checkNum = { (guitarNum > 0),(drumNum > 0),(vocalNum > 0),(djNum > 0),(rainbowCounter < 10),(!rainbomFlag) };
         List<int> candidate = new List<int>();
 
-        for (int i = 0; i < checkNum.Length; i++)
-        {
-            if (!checkNum[i])
-            {
+        for(int i = 0;i < checkNum.Length;i++) {
+            if(!checkNum[i]) {
                 candidate.Add(i);
             }
         }
 
-        if (candidate.Count > 0)
-        {
-            int rand = Random.Range(0, candidate.Count);
+        if(candidate.Count > 0) {
+            int rand = Random.Range(0,candidate.Count);
             randomNum = candidate[rand];
-        }
-        else
-        {
-            randomNum = Random.Range(0, (int)INSTRUMENT_TYPE.MAX - 3);
+        } else {
+            randomNum = Random.Range(0,(int)INSTRUMENT_TYPE.MAX - 3);
         }
 
         // レインボー生成タイミングの初期化
-        if(randomNum == (int)INSTRUMENT_TYPE.RAINBOW)
-        {
+        if(randomNum == (int)INSTRUMENT_TYPE.RAINBOW) {
             rainbowCounter = 0;
         }
 
         // レインボム生成を一つに制限
-        if(randomNum == (int)INSTRUMENT_TYPE.RAINBOM)
-        {
+        if(randomNum == (int)INSTRUMENT_TYPE.RAINBOM) {
             rainbomFlag = false;
         }
 
@@ -844,78 +836,61 @@ public class BoardManager : MonoBehaviour {
     //-------------------------------------------------------
     // レインボムリンク用
     //-------------------------------------------------------
-    private void RainbomLink(int width, int height)
-    {
+    private void RainbomLink (int width,int height) {
         // 四つの方向チェック
         //                         左サイド　　　        右サイド　　　               上サイド　　           下サイド
-        bool[] checkSlide = { (width - 1 >= 0),  (width + 1 < BOARD_WIDTH_NUM), (height - 1 >= 0), (height + 1 < BOARD_HEIGHT_NUM) };
+        bool[] checkSlide = { (width - 1 >= 0),(width + 1 < BOARD_WIDTH_NUM),(height - 1 >= 0),(height + 1 < BOARD_HEIGHT_NUM) };
 
         // 左上
-        if (checkSlide[0] && checkSlide[2])
-        {
-            if(Boardpieces[width - 1, height - 1].typeNum != (int)INSTRUMENT_TYPE.TIME)
-            {
-                Boardpieces[width - 1, height - 1].linkflag = true;
+        if(checkSlide[0] && checkSlide[2]) {
+            if(Boardpieces[width - 1,height - 1].typeNum != (int)INSTRUMENT_TYPE.TIME) {
+                Boardpieces[width - 1,height - 1].linkflag = true;
             }
-            
+
         }
         // 左
-        if(checkSlide[0])
-        {
-            if (Boardpieces[width - 1, height].typeNum != (int)INSTRUMENT_TYPE.TIME)
-            {
-                Boardpieces[width - 1, height].linkflag = true;
+        if(checkSlide[0]) {
+            if(Boardpieces[width - 1,height].typeNum != (int)INSTRUMENT_TYPE.TIME) {
+                Boardpieces[width - 1,height].linkflag = true;
             }
         }
         // 左下
-        if (checkSlide[0] && checkSlide[3])
-        {
-            if (Boardpieces[width - 1, height + 1].typeNum != (int)INSTRUMENT_TYPE.TIME)
-            {
-                Boardpieces[width - 1, height + 1].linkflag = true;
+        if(checkSlide[0] && checkSlide[3]) {
+            if(Boardpieces[width - 1,height + 1].typeNum != (int)INSTRUMENT_TYPE.TIME) {
+                Boardpieces[width - 1,height + 1].linkflag = true;
             }
         }
 
         // 右上
-        if (checkSlide[1] && checkSlide[2])
-        {
-            if (Boardpieces[width + 1, height - 1].typeNum != (int)INSTRUMENT_TYPE.TIME)
-            {
-                Boardpieces[width + 1, height - 1].linkflag = true;
+        if(checkSlide[1] && checkSlide[2]) {
+            if(Boardpieces[width + 1,height - 1].typeNum != (int)INSTRUMENT_TYPE.TIME) {
+                Boardpieces[width + 1,height - 1].linkflag = true;
             }
         }
         // 右
-        if (checkSlide[1])
-        {
-            if (Boardpieces[width + 1, height].typeNum != (int)INSTRUMENT_TYPE.TIME)
-            {
-                Boardpieces[width + 1, height].linkflag = true;
+        if(checkSlide[1]) {
+            if(Boardpieces[width + 1,height].typeNum != (int)INSTRUMENT_TYPE.TIME) {
+                Boardpieces[width + 1,height].linkflag = true;
             }
         }
         // 右下
-        if (checkSlide[1] && checkSlide[3])
-        {
-            if (Boardpieces[width + 1, height + 1].typeNum != (int)INSTRUMENT_TYPE.TIME)
-            {
-                Boardpieces[width + 1, height + 1].linkflag = true;
+        if(checkSlide[1] && checkSlide[3]) {
+            if(Boardpieces[width + 1,height + 1].typeNum != (int)INSTRUMENT_TYPE.TIME) {
+                Boardpieces[width + 1,height + 1].linkflag = true;
             }
         }
 
         // 上
-        if (checkSlide[2])
-        {
-            if (Boardpieces[width, height - 1].typeNum != (int)INSTRUMENT_TYPE.TIME)
-            {
-                Boardpieces[width, height - 1].linkflag = true;
+        if(checkSlide[2]) {
+            if(Boardpieces[width,height - 1].typeNum != (int)INSTRUMENT_TYPE.TIME) {
+                Boardpieces[width,height - 1].linkflag = true;
             }
         }
-        
+
         // 下
-        if (checkSlide[3])
-        {
-            if (Boardpieces[width, height + 1].typeNum != (int)INSTRUMENT_TYPE.TIME)
-            {
-                Boardpieces[width, height + 1].linkflag = true;
+        if(checkSlide[3]) {
+            if(Boardpieces[width,height + 1].typeNum != (int)INSTRUMENT_TYPE.TIME) {
+                Boardpieces[width,height + 1].linkflag = true;
             }
         }
     }

@@ -513,6 +513,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //特定のスキルが発動しているかどうか
+    public bool IsUsingSkill (int num) {
+        return IsSkillMode && (CharacterDatas[FocusCharacter].SkillId == num);
+    }
+
+    //=============================================================
     //スキルの処理(効果面)
     private IEnumerator SkillEffect (int num) {
         CreateCutIn();
@@ -522,7 +528,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[FocusCharacter].AttackPower *= 1.2f; //攻撃力を1.2倍に
             soundManager.SetBGMPitch(BGMName,1.1f); //速度(ピッチ)を1.1倍に
             //カウントダウンない
-            yield return MyWaitForSeconds(10); //10秒待つ
+            yield return MyWaitForSeconds(15); //15秒待つ
 
             //効果を元にもどす
             CharacterStatus[FocusCharacter].AttackPower /= 1.2f;
@@ -530,7 +536,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             break;
 
             case 1:
-            yield return MyWaitForSeconds(20); //10秒待つ
+            yield return MyWaitForSeconds(20); //20秒待つ
             break;
 
             case 2:
