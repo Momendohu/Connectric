@@ -12,7 +12,7 @@ public class BoardManager : MonoBehaviour {
     public const float between = 1.85f;
     public Vector3 vStartPos = new Vector3(-3.7f,1.2f,0.0f);
     public const float DEBUG_COLOR = 0.0f;
-    public const int RAINBOM_HIT = 3;
+    public const int RAINBOM_HIT = 6;
 
     // ピースタイプ
     public enum INSTRUMENT_TYPE {
@@ -804,7 +804,7 @@ public class BoardManager : MonoBehaviour {
     private int RandomPieceUpdate () {
 
         int randomNum = 0;
-        bool[] checkNum = { (guitarNum > 0),(drumNum > 0),(vocalNum > 0),(djNum > 0),(rainbowCounter < 10),(!rainbomFlag) };
+        bool[] checkNum = { (guitarNum > 0),(drumNum > 0),(vocalNum > 0),(djNum > 0),(rainbowCounter < 20),(!rainbomFlag) };
         List<int> candidate = new List<int>();
 
         for(int i = 0;i < checkNum.Length;i++) {
