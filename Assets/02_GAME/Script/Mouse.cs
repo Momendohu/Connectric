@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class Mouse : MonoBehaviour {
 
+    // 定数
     private const float RIMIT_TOP = 0.8f;
     private const float RIMIT_BOTTOM = -8.8f;
     private const float RIMIT_LEFT = -5.0f;
     private const float RIMIT_RIGHT = 5.0f;
+
 
     [SerializeField] private Vector3 cursol_world_pos;
     public Vector3 CursolWorldPos {
         get { return cursol_world_pos; }
         set { cursol_world_pos = value; }
     }
+
+    private Vector3 old_cursol_world_pos;
+
 
     [SerializeField] private bool tapFlag;
     [SerializeField] private bool oldTapFlag;
@@ -29,7 +34,9 @@ public class Mouse : MonoBehaviour {
         oldTapFlag = false;
         tapFlag = false;
         CaptureFlag = false;
-
+        old_cursol_world_pos = new Vector3(0.0f, 0.0f, 0.0f);
+        Vector3 vPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.0f);
+        cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
         // 実機で操作するか否か
         /*if (Application.isEditor)
         {
@@ -43,10 +50,12 @@ public class Mouse : MonoBehaviour {
         }*/
 
         // アンドロイドかどうか
-        if(Application.platform == RuntimePlatform.Android) {
+        if (Application.platform == RuntimePlatform.Android) {
             TouchInfo();
+            Debug.Log("タッチ");
         } else {
             MouseInfo();
+            Debug.Log("ノータッチ");
         }
 
 
@@ -94,6 +103,9 @@ public class Mouse : MonoBehaviour {
     //---------------------------------------------------------
     private void MouseInfo () {
 
+        // 過去の座標の取得
+        old_cursol_world_pos = cursol_world_pos;
+
         Vector3 vPos = new Vector3(Input.mousePosition.x,Input.mousePosition.y,10.0f);
         cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
 
@@ -101,6 +113,25 @@ public class Mouse : MonoBehaviour {
         is_TriggerTapFlag = !oldTapFlag && tapFlag; // トリガー
         is_ReleaseTapFlag = oldTapFlag && !tapFlag; // リリース 
         oldTapFlag = tapFlag;                       // 過去のクリック
+
+        if (tapFlag)
+        {
+
+            // 移動しすぎたら補正
+            float subX = cursol_world_pos.x - old_cursol_world_pos.x;
+            float subY = cursol_world_pos.y - old_cursol_world_pos.y;
+            float test = (subX * subX) + (subY * subY);
+            if (test >= 3.6f)
+            {
+                cursol_world_pos = old_cursol_world_pos;
+                cursol_world_pos += new Vector3(subX / 3, subY / 3, 0.0f);
+                //Debug.Log("補正！！！！！！！！！！！！！！！！１１");
+                //Debug.Log(cursol_world_pos);
+            }
+        }
+        
+
+        
         this.transform.position = new Vector3(cursol_world_pos.x,cursol_world_pos.y,cursol_world_pos.z);
     }
 
@@ -108,6 +139,9 @@ public class Mouse : MonoBehaviour {
     // タッチ座標やクリックの管理
     //---------------------------------------------------------
     private void TouchInfo () {
+
+        // 過去の座標の取得
+        old_cursol_world_pos = cursol_world_pos;
 
         Vector3 vPos = new Vector3(0.0f,0.0f,10.0f);
         cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
@@ -124,7 +158,18 @@ public class Mouse : MonoBehaviour {
             vPos = new Vector3(touch.position.x,touch.position.y,10.0f);
             cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
 
-            if(!oldTapFlag) {
+            // 移動しすぎたら補正
+            float subX = cursol_world_pos.x - old_cursol_world_pos.x;
+            float subY = cursol_world_pos.y - old_cursol_world_pos.y;
+            float test = (subX * subX) + (subY * subY);
+            if (test >= 3.6f)
+            {
+                cursol_world_pos = old_cursol_world_pos;
+                cursol_world_pos += new Vector3(subX / 3, subY / 3, 10.0f);
+            }
+
+
+            if (!oldTapFlag) {
                 if(touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
                     is_TriggerTapFlag = true;
                 }
