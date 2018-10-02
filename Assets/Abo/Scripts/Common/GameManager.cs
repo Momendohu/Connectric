@@ -567,7 +567,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                 break;
 
                 case 2:
-                yield return MyWaitForSeconds(1);
+                yield return MyWaitForSeconds(0.3f);
                 Attack(hit);
                 break;
 

@@ -8,6 +8,7 @@ public class PieceLink_UpScreen : PieceLinkUI {
     private GameObject linkV;
     private GameObject linkH;
     private GameObject linkO;
+    private GameObject ghost;
 
     //=============================================================
     private GameManager.PIECE_LINK_TYPE pieceLinkType = GameManager.PIECE_LINK_TYPE.V;
@@ -35,11 +36,22 @@ public class PieceLink_UpScreen : PieceLinkUI {
         linkV = transform.Find("V").gameObject;
         linkH = transform.Find("H").gameObject;
         linkO = transform.Find("O").gameObject;
+        ghost = transform.Find("Ghost").gameObject;
     }
 
     //=============================================================
     private void Awake () {
         Init();
+    }
+
+    //=============================================================
+    private void Update () {
+        //ゴーストノート(カナデスキル)使用時
+        if(gameManager.IsUsingSkill(2)) {
+            ghost.SetActive(true);
+        } else {
+            ghost.SetActive(false);
+        }
     }
 
     //=============================================================
@@ -90,6 +102,10 @@ public class PieceLink_UpScreen : PieceLinkUI {
             objs.Add(base.RefPieceLinkImage(linkO,"Background").GetComponent<Image>());
         }
 
+        //ゴースト
+        if(gameManager.IsUsingSkill(2)) {
+            objs.Add(ghost.GetComponent<Image>());
+        }
         return objs;
     }
 
