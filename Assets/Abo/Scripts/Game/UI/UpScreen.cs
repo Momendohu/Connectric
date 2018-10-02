@@ -101,7 +101,11 @@ public class UpScreen : MonoBehaviour {
         obj.transform.localScale = Vector3.one;
 
         //角度の調整
-        obj.GetComponent<RectTransform>().localEulerAngles = new Vector3(0,0,10);
+        if(gameManager.FocusCharacter != 2) {
+            obj.GetComponent<RectTransform>().localEulerAngles = new Vector3(0,0,10);
+        } else {
+            obj.GetComponent<RectTransform>().localEulerAngles = new Vector3(0,180,-10);
+        }
 
         //ダメージ差分に画像を切り替え
         obj.GetComponent<Image>().sprite = gameManager.CharacterImageDamage[gameManager.FocusCharacter];
@@ -115,7 +119,11 @@ public class UpScreen : MonoBehaviour {
             if(time >= 1) {
                 isPlayerDamaged = false;
 
-                obj.GetComponent<RectTransform>().localEulerAngles = Vector3.zero;
+                if(gameManager.FocusCharacter != 2) {
+                    obj.GetComponent<RectTransform>().localEulerAngles = Vector3.zero;
+                } else {
+                    obj.GetComponent<RectTransform>().localEulerAngles = new Vector3(0,180,0);
+                }
                 obj.GetComponent<Image>().sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
                 break;
             }
