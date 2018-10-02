@@ -945,6 +945,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         GameRecordStatus.SeparateCombo = 0;
         GameRecordStatus.SeparateComboSeparateNum = 10;
+
+        GameRecordStatus.DefeatEnemyNum = 0;
     }
 
     //==============================================================================================================================================
