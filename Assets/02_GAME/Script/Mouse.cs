@@ -52,10 +52,10 @@ public class Mouse : MonoBehaviour {
         // アンドロイドかどうか
         if (Application.platform == RuntimePlatform.Android) {
             TouchInfo();
-            Debug.Log("タッチ");
+            //Debug.Log("タッチ");//////////////////////////
         } else {
             MouseInfo();
-            Debug.Log("ノータッチ");
+            //Debug.Log("ノータッチ");////////////////////////
         }
 
 
@@ -104,7 +104,7 @@ public class Mouse : MonoBehaviour {
     private void MouseInfo () {
 
         // 過去の座標の取得
-        old_cursol_world_pos = cursol_world_pos;
+        //////////////////////////////////////old_cursol_world_pos = cursol_world_pos;
 
         Vector3 vPos = new Vector3(Input.mousePosition.x,Input.mousePosition.y,10.0f);
         cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
@@ -114,7 +114,7 @@ public class Mouse : MonoBehaviour {
         is_ReleaseTapFlag = oldTapFlag && !tapFlag; // リリース 
         oldTapFlag = tapFlag;                       // 過去のクリック
 
-        if (tapFlag)
+        /*if (tapFlag)/////////////////////////////////////////////////////
         {
 
             // 移動しすぎたら補正
@@ -128,7 +128,7 @@ public class Mouse : MonoBehaviour {
                 //Debug.Log("補正！！！！！！！！！！！！！！！！１１");
                 //Debug.Log(cursol_world_pos);
             }
-        }
+        }*////////////////////////////////////////////////////////////////////////
         
 
         
@@ -141,7 +141,7 @@ public class Mouse : MonoBehaviour {
     private void TouchInfo () {
 
         // 過去の座標の取得
-        old_cursol_world_pos = cursol_world_pos;
+        ////////////////////////////////old_cursol_world_pos = cursol_world_pos;
 
         Vector3 vPos = new Vector3(0.0f,0.0f,10.0f);
         cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
@@ -159,14 +159,14 @@ public class Mouse : MonoBehaviour {
             cursol_world_pos = Camera.main.ScreenToWorldPoint(vPos);
 
             // 移動しすぎたら補正
-            float subX = cursol_world_pos.x - old_cursol_world_pos.x;
+            /*float subX = cursol_world_pos.x - old_cursol_world_pos.x;////////////////////////
             float subY = cursol_world_pos.y - old_cursol_world_pos.y;
             float test = (subX * subX) + (subY * subY);
             if (test >= 3.6f)
             {
                 cursol_world_pos = old_cursol_world_pos;
                 cursol_world_pos += new Vector3(subX / 3, subY / 3, 10.0f);
-            }
+            }*/////////////////////////////////////////////////
 
 
             if (!oldTapFlag) {

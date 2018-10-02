@@ -353,7 +353,7 @@ public class BoardManager : MonoBehaviour {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
                 if(Boardpieces[width,height].mouseFlag) {
                     Boardpieces[width,height].obj.GetComponent<Transform>().position = mouse.GetComponent<Mouse>().CursolWorldPos;
-                    Debug.Log("objectのセット");
+                    //Debug.Log("objectのセット");
                     break;
                 }
             }

@@ -674,6 +674,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void CheckGameOver () {
         //キャラクターのHPが0以下だったらゲームオーバー
         if(CharacterStatus[FocusCharacter].HitPoint <= 0) {
+            soundManager.StopBGM(BGMName);
             isGameOver = true;
         }
     }
