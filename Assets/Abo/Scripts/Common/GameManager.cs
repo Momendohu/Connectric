@@ -407,6 +407,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private List<GameObject> timingBars = new List<GameObject>();
     private int notesWaveForTimingBar;
     private bool onceFlagGamePause; //ゲームポーズ時に一回だけ使いたい処理を挟むときのためのフラグ
+    private bool onceFlagGameover; //ゲームオーバー時に一回だけ使いたい処理を挟むときのためのフラグ
 
     private BoardManager boardManager; //ボードマネージャー
     private int beforeCombo; //前フレームのコンボ数(タイミングバー消滅感知から消すまでの流れで1Fかかる可能性を考慮)
@@ -440,6 +441,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
 
         //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+        //ゲームオーバー時に一回だけ挟む処理
+        if(isGameOver) {
+            if(!onceFlagGameover) {
+                StartCoroutine(GameOver());
+                onceFlagGameover = true;
+            }
+        }
 
         //ゲームオーバー、ゲームクリアなら処理をスキップ
         if(isGameOver || isGameClear) {
@@ -555,6 +564,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //ゲームオーバー時の処理
+    private IEnumerator GameOver () {
+
+        float time = 0;
+        while(true) {
+            time += Time.deltaTime;
+            if(time >= 1) {
+                break;
+            }
+
+            float volume = Mathf.Lerp(soundManager.BGMDatas[FocusBGM].Volume,0.1f,time);
+            soundManager.SetBGMVolume(BGMName,volume);
+            yield return null;
+        }
+    }
+
+    //=============================================================
     //スキルの処理(攻撃時)
     private IEnumerator SkillEffectForAttack (int num,int hit) {
         //スキルモードなら
@@ -625,6 +651,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                 break;
             }
 
+            if(IsGameClear || IsGameOver) {
+                break;
+            }
+
             yield return null;
         }
     }
@@ -674,7 +704,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void CheckGameOver () {
         //キャラクターのHPが0以下だったらゲームオーバー
         if(CharacterStatus[FocusCharacter].HitPoint <= 0) {
-            soundManager.StopBGM(BGMName);
             isGameOver = true;
         }
     }
@@ -857,8 +886,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void InitCharacterStatus () {
         for(int i = 0;i < CharacterStatus.Length;i++) {
             CharacterStatus[i].Level = 1;
-            //CharacterStatus[i].MaxHitPoint = 1;
-            CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            CharacterStatus[i].MaxHitPoint = 1;
+            //CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             CharacterStatus[i].MaxVoltage = 100;
@@ -892,6 +921,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         isPause = false; //ポーズフラグの初期化
         timingBars.Clear(); //タイミングバーの参照の初期化
         sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
+
+        //onceフラグ初期化
+        onceFlagGamePause = false;
+        onceFlagGameover = false;
+        onceFlagSkillActivate = false;
     }
 
     //=============================================================
