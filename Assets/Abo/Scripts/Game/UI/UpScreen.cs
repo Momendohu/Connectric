@@ -120,6 +120,7 @@ public class UpScreen : MonoBehaviour {
 
                 if(isEnemyDestroyed) {
                     yield return EnemyDestroy(obj,1f);
+                    gameManager.GameRecordStatus.DefeatEnemyNum++; //敵撃破数加算
                     gameManager.InitEnemyStatus();
                     isEnemyDestroyed = false;
                     enemyCharacter = CreateEnemy(false);
