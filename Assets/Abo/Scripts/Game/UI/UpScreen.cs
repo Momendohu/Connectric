@@ -96,8 +96,17 @@ public class UpScreen : MonoBehaviour {
             }
 
             //キャラクターなら(雑な実装)
-            if(isPlayerDamaged && obj == playerCharacter) {
-                yield return CharacterDamage(obj,1f);
+            if(obj == playerCharacter) {
+                //スキル時画像の切り替え
+                if(gameManager.IsSkillMode) {
+                    obj.GetComponent<Image>().sprite = gameManager.CharacterImageSmile[gameManager.FocusCharacter];
+                } else {
+                    obj.GetComponent<Image>().sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
+                }
+
+                if(isPlayerDamaged) {
+                    yield return CharacterDamage(obj,1f);
+                }
             }
 
             //エネミーなら(雑な実装)

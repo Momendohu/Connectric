@@ -31,6 +31,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public Sprite[] PieceLinkImage; //ピースのイメージ
     public Sprite[] CharacterImage; //キャラクターのイメージ
     public Sprite[] CharacterImageDamage; //キャラクターイメージ(ダメージ)
+    public Sprite[] CharacterImageSmile; //キャラクターイメージ(スキル)
 
     //=============================================================
     //キャラクターデータ(構造体)

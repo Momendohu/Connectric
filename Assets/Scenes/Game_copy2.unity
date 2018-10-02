@@ -1088,6 +1088,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114373156717754296, guid: b1b826b936d011945a40749b8738b027,
+        type: 2}
+      propertyPath: CharacterImageSmile.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4944380113847042, guid: b1b826b936d011945a40749b8738b027, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1120,6 +1125,24 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114373156717754296, guid: b1b826b936d011945a40749b8738b027,
+        type: 2}
+      propertyPath: CharacterImageSmile.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3a4c11ca984787b4788089d923ecaa44,
+        type: 3}
+    - target: {fileID: 114373156717754296, guid: b1b826b936d011945a40749b8738b027,
+        type: 2}
+      propertyPath: CharacterImageSmile.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9dc0413a4933c594194f6422f3368ccc,
+        type: 3}
+    - target: {fileID: 114373156717754296, guid: b1b826b936d011945a40749b8738b027,
+        type: 2}
+      propertyPath: CharacterImageSmile.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 97504b12aa7b15c4cb6f468e97f759cc,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b1b826b936d011945a40749b8738b027, type: 2}
   m_IsPrefabParent: 0
