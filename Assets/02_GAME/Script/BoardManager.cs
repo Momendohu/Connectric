@@ -50,7 +50,10 @@ public class BoardManager : MonoBehaviour {
     public static PANEL_DATA[,] Boardpieces = new PANEL_DATA[BOARD_WIDTH_NUM,BOARD_HEIGHT_NUM];
 
     private List<GameObject> linkFlames = new List<GameObject>();
+    private List<GameObject> onpuList = new List<GameObject>();
 
+    // 変数宣言
+    [SerializeField] private GameObject onpuPerfomance;
     [SerializeField] private GameObject board;
     [SerializeField] private GameObject linkFlame;
     [SerializeField] private GameObject[] piece = new GameObject[(int)INSTRUMENT_TYPE.MAX];
@@ -120,6 +123,16 @@ public class BoardManager : MonoBehaviour {
                         PieceDelete(width,height);
                     }
                 }
+            }
+        }
+
+        // ピースを消した後の音符演出の削除タイミング
+        for(int i = 0;i < onpuList.Count;i++) {
+            if(onpuList[i].GetComponent<Onpu_perfo>().GetTime() >= 1.0f) {
+                Debug.Log("音符デリート");
+                onpuList[i].GetComponent<Onpu_perfo>().DeleteOnpu();
+                onpuList.RemoveAt(i);
+                i--;
             }
         }
 
@@ -573,6 +586,10 @@ public class BoardManager : MonoBehaviour {
     // ピース削除
     //-------------------------------------------------------
     private void PieceDelete (int width,int height) {
+        // ピースを消す前に演出用の音符を作成
+        onpuList.Add(Instantiate(onpuPerfomance,Boardpieces[width,height].obj.GetComponent<Transform>().position,Quaternion.identity));
+        onpuList[(onpuList.Count - 1)].GetComponent<Onpu_perfo>().SetColor(Boardpieces[width,height].typeNum);
+        onpuList[(onpuList.Count - 1)].GetComponent<Onpu_perfo>().SetPos(Boardpieces[width,height].obj.GetComponent<Transform>().position);
 
         SubRate(Boardpieces[width,height].typeNum);
         Destroy(Boardpieces[width,height].obj);

@@ -52,8 +52,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vStartPos: {x: -3.7, y: 1.2, z: 0}
-  game_manager: {fileID: 0}
+  onpuPerfomance: {fileID: 1979378275004696, guid: 64e911230cb27a24883cbf48aa979f72,
+    type: 2}
   board: {fileID: 1315383620117082, guid: dc57e6542e8e44741a4381f5c5a62ace, type: 2}
+  linkFlame: {fileID: 0}
   piece:
   - {fileID: 1998649703565960, guid: c266c238e3c556c49b95c39ddea40273, type: 2}
   - {fileID: 1279610335876584, guid: 0013ed7aff3ec9942afda46b093e1195, type: 2}
