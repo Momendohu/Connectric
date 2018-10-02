@@ -38,15 +38,11 @@ public class UpScreen : MonoBehaviour {
 
         seekBar = transform.Find("SeekBar").gameObject;
         playerCharacter = transform.Find("PlayerCharacter").gameObject;
-        enemyCharacter = transform.Find("EnemyCharacter").gameObject;
+        enemyCharacter = CreateEnemy(true);
         comboNum = transform.Find("Combo").gameObject;
     }
 
     //=============================================================
-    private void Awake () {
-
-    }
-
     private void Start () {
         Init();
 
@@ -124,6 +120,12 @@ public class UpScreen : MonoBehaviour {
 
                 if(isEnemyDestroyed) {
                     yield return EnemyDestroy(obj,1f);
+                    gameManager.InitEnemyStatus();
+                    isEnemyDestroyed = false;
+                    enemyCharacter = CreateEnemy(false);
+
+                    //敵の新規生成
+                    StartCoroutine(CharacterAnim(enemyCharacter,gameManager.BGMBPM));
                     break;
                 }
             }
@@ -207,13 +209,24 @@ public class UpScreen : MonoBehaviour {
                 break;
             }
 
-            Debug.Log(time);
-
             obj.GetComponent<Image>().color = new Color(1,1,1,1 - time);
 
             yield return null;
         }
 
         Destroy(obj);
+    }
+
+    //=============================================================
+    //エネミーオブジェクトを生成する
+    private GameObject CreateEnemy (bool isFirst) {
+        GameObject obj = Instantiate(Resources.Load("Prefabs/UI/EnemyCharacter")) as GameObject;
+        Transform upscreen = GameObject.Find("Canvas/UpScreen").transform;
+        obj.transform.SetParent(upscreen,false);
+        obj.transform.SetSiblingIndex(upscreen.Find("Combo").GetSiblingIndex() - 1);
+
+        obj.GetComponent<Game_UpScreenEnemyCharacter>().IsFirstEnemy = isFirst;
+
+        return obj;
     }
 }

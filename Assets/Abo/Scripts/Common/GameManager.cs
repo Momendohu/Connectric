@@ -868,8 +868,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
-    //エネミーステータスの初期化
-    private void InitEnemyStatus () {
+    //エネミーステータスの初期化(public)
+    public void InitEnemyStatus () {
         for(int i = 0;i < EnemyStatus.Length;i++) {
             EnemyStatus[i].Level = 1;
             EnemyStatus[i].MaxHitPoint = 1;

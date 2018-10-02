@@ -40,7 +40,7 @@ public class ComboUnder : MonoBehaviour {
         mainText.gameObject.GetComponent<Text>().text = Combo + " COMBO";
         shadowText.gameObject.GetComponent<Text>().text = Combo + " COMBO";
 
-        StartCoroutine(Display(0.1f,1.2f,0.1f));
+        StartCoroutine(Display(0.1f,3f,0.1f));
     }
 
     //=============================================================
