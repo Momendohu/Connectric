@@ -28,6 +28,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
         new BGMData{ Name="bgm002",BPM=146f,Volume=0.7f},
         new BGMData{ Name="bgm003",BPM=128f,Volume=1f},
         new BGMData{ Name="bgm004",BPM=202f,Volume=0.7f},
+        new BGMData{ Name="Home",BPM=-1,Volume=0.1f}
     };
 
     //SEデータ(構造体)

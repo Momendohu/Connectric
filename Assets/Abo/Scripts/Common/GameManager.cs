@@ -228,6 +228,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             break;
 
             case "Home":
+            InitHome();
             break;
 
             case "SelectSound":
@@ -358,7 +359,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //==============================================================================================================================================
     //Homeシーン
     //==============================================================================================================================================
+    private void InitHome () {
+        soundManager.TriggerBGM(soundManager.BGMList[4].name,true);
+    }
+
+    //=============================================================
     public void JumpSceneHomeToSelectSound () {
+        soundManager.StopBGM(soundManager.BGMList[4].name); //ホーム画面のbgmを消す
         SceneManager.LoadScene("SelectSound");
     }
 
