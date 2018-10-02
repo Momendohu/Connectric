@@ -251,6 +251,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             InitGame();
             break;
 
+            case "Game_copy4":
+            InitGame();
+            break;
+
             case "Result":
             break;
 
@@ -296,6 +300,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             break;
 
             case "Game_copy3":
+            RoutineGame();
+            break;
+
+            case "Game_copy4":
             RoutineGame();
             break;
 
