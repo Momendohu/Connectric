@@ -114,7 +114,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     [System.NonSerialized]
-    public float BGMBPM = 128f; //tst001->171 bgm001->128 bgm002->146
+    public float BGMBPM = 128f; //tst001->171 bgm001->126 bgm002->146
     [System.NonSerialized]
     public string BGMName = "bgm001";
     [System.NonSerialized]
@@ -467,33 +467,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                         isBeatChange = true;
                         timingBars.RemoveAt(i);
 
-                        //コンボ数が0だったらダメージを受ける + 敵ボルテージ上昇 + コンボ数が0になる
+
                         if(beforeCombo == 0) {
-                            //Debug.Log(EnemyDatas[FocusEnemy].Name + "の攻撃! " + CharacterDatas[FocusCharacter].Name + "に" + EnemyStatus[FocusEnemy].AttackPower + "のダメージ!");
-                            ApplyToCharacterHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
-                            ApplyToEnemyVoltage(FocusEnemy);
-
-                            GameRecordStatus.Combo = 0;
-                            GameRecordStatus.SeparateCombo = 0;
-                        } else { //コンボ数が1以上なら敵にダメージを与える + ボルテージ上昇 + スコアが加算される + maxヒット、コンボの保存
-                            //Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
-                            ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
-                            ApplyToCharacterVoltage(FocusCharacter);
-                            ApplyToScore(CalculateGetScore(beforeCombo,GameRecordStatus.Combo));
-
-                            //ヒット数の表示 + コンボ数の加算
-                            CreateHitDisplayer(beforeCombo);
-                            GameRecordStatus.Combo += beforeCombo;
-
-                            //区切りコンボ数の計算、下部にコンボの表示
-                            GameRecordStatus.SeparateCombo += beforeCombo;
-                            if(GameRecordStatus.SeparateCombo >= GameRecordStatus.SeparateComboSeparateNum) {
-                                GameRecordStatus.SeparateCombo -= GameRecordStatus.SeparateComboSeparateNum;
-                                CreateComboUnder((GameRecordStatus.Combo - GameRecordStatus.SeparateCombo));
-                            }
-
-                            GameRecordStatus.MaxCombo = (GameRecordStatus.MaxCombo < GameRecordStatus.Combo) ? GameRecordStatus.Combo : GameRecordStatus.MaxCombo;
-                            GameRecordStatus.MaxHit = (GameRecordStatus.MaxHit < beforeCombo) ? beforeCombo : GameRecordStatus.MaxHit;
+                            Damage();
+                        } else {
+                            Attack(beforeCombo);
+                            StartCoroutine(SkillEffectForAttack(CharacterDatas[FocusCharacter].SkillId,beforeCombo)); //スキルに応じて処理
                         }
                     }
                 }
@@ -523,13 +502,85 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //ダメージ処理
+    private void Damage () {
+        //Debug.Log(EnemyDatas[FocusEnemy].Name + "の攻撃! " + CharacterDatas[FocusCharacter].Name + "に" + EnemyStatus[FocusEnemy].AttackPower + "のダメージ!");
+        //ダメージを受ける
+        ApplyToCharacterHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
+
+        //ボルテージの上昇
+        ApplyToEnemyVoltage(FocusEnemy);
+
+        //コンボが0に
+        GameRecordStatus.Combo = 0;
+        GameRecordStatus.SeparateCombo = 0;
+    }
+
+    //=============================================================
+    //攻撃
+    private void Attack (int hit) {
+        //SEを鳴らす
+        soundManager.TriggerSE("puzzledelete");
+
+        //ダメージを与える
+        //Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
+        ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
+
+        //ボルテージの上昇
+        ApplyToCharacterVoltage(FocusCharacter);
+
+        //スコアの計算
+        ApplyToScore(CalculateGetScore(hit,GameRecordStatus.Combo));
+
+        //ヒット数の表示 + コンボ数の加算
+        CreateHitDisplayer(hit);
+        GameRecordStatus.Combo += hit;
+
+        //区切りコンボ数の計算、下部にコンボの表示
+        GameRecordStatus.SeparateCombo += hit;
+        if(GameRecordStatus.SeparateCombo >= GameRecordStatus.SeparateComboSeparateNum) {
+            GameRecordStatus.SeparateCombo -= GameRecordStatus.SeparateComboSeparateNum;
+            CreateComboUnder((GameRecordStatus.Combo - GameRecordStatus.SeparateCombo));
+        }
+
+        GameRecordStatus.MaxCombo = (GameRecordStatus.MaxCombo < GameRecordStatus.Combo) ? GameRecordStatus.Combo : GameRecordStatus.MaxCombo;
+        GameRecordStatus.MaxHit = (GameRecordStatus.MaxHit < hit) ? hit : GameRecordStatus.MaxHit;
+    }
+
+    //=============================================================
     //特定のスキルが発動しているかどうか
     public bool IsUsingSkill (int num) {
         return IsSkillMode && (CharacterDatas[FocusCharacter].SkillId == num);
     }
 
     //=============================================================
-    //スキルの処理(効果面)
+    //スキルの処理(攻撃時)
+    private IEnumerator SkillEffectForAttack (int num,int hit) {
+        //スキルモードなら
+        if(IsSkillMode) {
+            switch(num) {
+                case 0:
+                break;
+
+                case 1:
+                break;
+
+                case 2:
+                yield return MyWaitForSeconds(1);
+                Attack(hit);
+                break;
+
+                default:
+                Debug.Log("謎のスキルだよ");
+                break;
+            }
+        }
+
+        yield return null;
+    }
+
+    //=============================================================
+    //スキルの処理
     private IEnumerator SkillEffect (int num) {
         CreateCutIn();
 
@@ -810,7 +861,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             CharacterStatus[i].MaxVoltage = 100;
             CharacterStatus[i].Voltage = 0;
-            CharacterStatus[i].Tension = 10;
+            CharacterStatus[i].Tension = 100;
         }
     }
 

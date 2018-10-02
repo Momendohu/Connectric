@@ -577,9 +577,6 @@ public class BoardManager : MonoBehaviour {
         SubRate(Boardpieces[width,height].typeNum);
         Destroy(Boardpieces[width,height].obj);
 
-        // パネル削除
-        sound.GetComponent<SoundManager>().TriggerSE("puzzledelete",0.2f);
-
         Boardpieces[width,height].obj = Instantiate(piece[(int)INSTRUMENT_TYPE.TIME],new Vector3(vStartPos.x + between * width,vStartPos.y - between * height,0.0f),Quaternion.identity);
         Boardpieces[width,height].arrayWidthNum = width;
         Boardpieces[width,height].arrayHeightNum = height;
