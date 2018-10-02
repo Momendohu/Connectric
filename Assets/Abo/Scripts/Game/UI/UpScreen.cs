@@ -11,6 +11,8 @@ public class UpScreen : MonoBehaviour {
     private float beforeFrameHitPointEnemy; //前フレームの敵の体力
     private bool isEnemyDamaged; //エネミーがダメージを受けたかどうか
 
+    private bool isEnemyDestroyed; //エネミーの消滅判定(終わるとき)
+
     //=============================================================
     private GameManager gameManager;
     private SoundManager soundManager;
@@ -76,6 +78,11 @@ public class UpScreen : MonoBehaviour {
         }
         beforeFrameHitPointEnemy = gameManager.EnemyStatus[gameManager.FocusEnemy].HitPoint;
 
+        //敵の消滅判定
+        if(gameManager.EnemyStatus[gameManager.FocusEnemy].HitPoint <= 0) {
+            isEnemyDestroyed = true;
+        }
+
         //シークバー動作
         seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.BGMName) / soundManager.GetBGMTimeLength(gameManager.BGMName);
 
@@ -110,8 +117,15 @@ public class UpScreen : MonoBehaviour {
             }
 
             //エネミーなら(雑な実装)
-            if(isEnemyDamaged && obj == enemyCharacter) {
-                yield return EnemyDamage(obj,1f);
+            if(obj == enemyCharacter) {
+                if(isEnemyDamaged) {
+                    yield return EnemyDamage(obj,1f);
+                }
+
+                if(isEnemyDestroyed) {
+                    yield return EnemyDestroy(obj,1f);
+                    break;
+                }
             }
 
             yield return null;
@@ -184,5 +198,22 @@ public class UpScreen : MonoBehaviour {
     }
 
     //=============================================================
-    //キャラクターがダメージを受ける
+    //エネミーが消滅する
+    private IEnumerator EnemyDestroy (GameObject obj,float waitTime) {
+        float time = 0;
+        while(true) {
+            time += gameManager.TimeForGame() / waitTime;
+            if(time >= 1) {
+                break;
+            }
+
+            Debug.Log(time);
+
+            obj.GetComponent<Image>().color = new Color(1,1,1,1 - time);
+
+            yield return null;
+        }
+
+        Destroy(obj);
+    }
 }

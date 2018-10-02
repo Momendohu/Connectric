@@ -872,8 +872,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void InitEnemyStatus () {
         for(int i = 0;i < EnemyStatus.Length;i++) {
             EnemyStatus[i].Level = 1;
-            EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
-            EnemyStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
+            EnemyStatus[i].MaxHitPoint = 1;
+            //EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            EnemyStatus[i].HitPoint = EnemyStatus[i].MaxHitPoint;
             EnemyStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             EnemyStatus[i].MaxVoltage = 100;
             EnemyStatus[i].Voltage = 0;
