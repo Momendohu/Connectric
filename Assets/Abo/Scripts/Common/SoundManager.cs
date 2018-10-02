@@ -107,7 +107,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     //===============================================================================
     //オーディオを鳴らす
     public void TriggerBGM (string name,bool isUseLoop) {
-        Debug.Log(name);
+        //Debug.Log(name);
         //SoundManagerにアタッチしてあるものと照合
         //指定したものがなければ再生しない
         int bgmListNum = CheckMatchNameInList(name,BGMList);

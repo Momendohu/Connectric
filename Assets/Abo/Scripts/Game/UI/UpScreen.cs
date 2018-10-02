@@ -174,6 +174,7 @@ public class UpScreen : MonoBehaviour {
                 } else {
                     obj.GetComponent<RectTransform>().localEulerAngles = new Vector3(0,180,0);
                 }
+
                 obj.GetComponent<Image>().sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
                 break;
             }
@@ -181,4 +182,7 @@ public class UpScreen : MonoBehaviour {
             yield return null;
         }
     }
+
+    //=============================================================
+    //キャラクターがダメージを受ける
 }

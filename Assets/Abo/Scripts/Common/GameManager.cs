@@ -461,20 +461,20 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                 notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
 
                 timingBars.Add(CreateTimingBar());
+            }
 
-                //登録してあるtimingbarのDestroyフラグがたったら除外
-                for(int i = timingBars.Count - 1;i >= 0;i--) {
-                    if(timingBars[i].GetComponent<TimingBar>().DestroyFlag) {
-                        isBeatChange = true;
-                        timingBars.RemoveAt(i);
+            //登録してあるtimingbarのDestroyフラグがたったら除外
+            for(int i = timingBars.Count - 1;i >= 0;i--) {
+                if(timingBars[i].GetComponent<TimingBar>().DestroyFlag) {
+                    isBeatChange = true;
+                    timingBars.RemoveAt(i);
 
 
-                        if(beforeCombo == 0) {
-                            Damage();
-                        } else {
-                            Attack(beforeCombo);
-                            StartCoroutine(SkillEffectForAttack(CharacterDatas[FocusCharacter].SkillId,beforeCombo)); //スキルに応じて処理
-                        }
+                    if(beforeCombo == 0) {
+                        Damage();
+                    } else {
+                        Attack(beforeCombo);
+                        StartCoroutine(SkillEffectForAttack(CharacterDatas[FocusCharacter].SkillId,beforeCombo)); //スキルに応じて処理
                     }
                 }
             }

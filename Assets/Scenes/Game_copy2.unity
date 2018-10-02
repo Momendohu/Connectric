@@ -526,12 +526,12 @@ Prefab:
     - target: {fileID: 224566032831035814, guid: 8f6354fede7be944d9556b6e3ef0451b,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 988
+      value: 900
       objectReference: {fileID: 0}
     - target: {fileID: 224566032831035814, guid: 8f6354fede7be944d9556b6e3ef0451b,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 224566032831035814, guid: 8f6354fede7be944d9556b6e3ef0451b,
         type: 2}
@@ -565,7 +565,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1476394016675796, guid: 8f6354fede7be944d9556b6e3ef0451b, type: 2}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114234934449448530, guid: 8f6354fede7be944d9556b6e3ef0451b,
+        type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 114234934449448530, guid: 8f6354fede7be944d9556b6e3ef0451b,
+        type: 2}
+      propertyPath: m_FontData.m_Alignment
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224733643307106348, guid: 8f6354fede7be944d9556b6e3ef0451b,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 480
+      objectReference: {fileID: 0}
+    - target: {fileID: 224733643307106348, guid: 8f6354fede7be944d9556b6e3ef0451b,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 880
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8f6354fede7be944d9556b6e3ef0451b, type: 2}
@@ -1088,11 +1108,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114373156717754296, guid: b1b826b936d011945a40749b8738b027,
-        type: 2}
-      propertyPath: CharacterImageSmile.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4944380113847042, guid: b1b826b936d011945a40749b8738b027, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1125,24 +1140,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114373156717754296, guid: b1b826b936d011945a40749b8738b027,
-        type: 2}
-      propertyPath: CharacterImageSmile.Array.data[0]
-      value: 
-      objectReference: {fileID: 21300000, guid: 3a4c11ca984787b4788089d923ecaa44,
-        type: 3}
-    - target: {fileID: 114373156717754296, guid: b1b826b936d011945a40749b8738b027,
-        type: 2}
-      propertyPath: CharacterImageSmile.Array.data[1]
-      value: 
-      objectReference: {fileID: 21300000, guid: 9dc0413a4933c594194f6422f3368ccc,
-        type: 3}
-    - target: {fileID: 114373156717754296, guid: b1b826b936d011945a40749b8738b027,
-        type: 2}
-      propertyPath: CharacterImageSmile.Array.data[2]
-      value: 
-      objectReference: {fileID: 21300000, guid: 97504b12aa7b15c4cb6f468e97f759cc,
-        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b1b826b936d011945a40749b8738b027, type: 2}
   m_IsPrefabParent: 0
@@ -1242,6 +1239,10 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916671679685604, guid: bf02c7e6dd9f10d4ba061bbf93bc697b, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bf02c7e6dd9f10d4ba061bbf93bc697b, type: 2}
