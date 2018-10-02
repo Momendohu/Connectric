@@ -540,11 +540,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         soundManager.TriggerSE("puzzledelete");
 
         //ダメージを与える
-        //Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower + "のダメージ!");
-        ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower);
+        //Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower+hit + "のダメージ!");
+        ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower*hit);
 
         //ボルテージの上昇
-        ApplyToCharacterVoltage(FocusCharacter);
+        ApplyToCharacterVoltage(FocusCharacter,hit);
 
         //スコアの計算
         ApplyToScore(CalculateGetScore(hit,GameRecordStatus.Combo));
@@ -690,8 +690,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //=============================================================
     //プレイヤーのスキルボルテージに数値を適用する
-    private void ApplyToCharacterVoltage (int id) {
-        CharacterStatus[id].Voltage += CharacterStatus[id].Tension;
+    private void ApplyToCharacterVoltage (int id,float hit) {
+        CharacterStatus[id].Voltage += CharacterStatus[id].Tension*hit;
     }
 
     //=============================================================
@@ -893,13 +893,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void InitCharacterStatus () {
         for(int i = 0;i < CharacterStatus.Length;i++) {
             CharacterStatus[i].Level = 1;
-            CharacterStatus[i].MaxHitPoint = 1;
-            //CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            //CharacterStatus[i].MaxHitPoint = 1;
+            CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             CharacterStatus[i].MaxVoltage = 100;
             CharacterStatus[i].Voltage = 0;
-            CharacterStatus[i].Tension = 100;
+            CharacterStatus[i].Tension = 10;
         }
     }
 
@@ -908,8 +908,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public void InitEnemyStatus () {
         for(int i = 0;i < EnemyStatus.Length;i++) {
             EnemyStatus[i].Level = 1;
-            EnemyStatus[i].MaxHitPoint = 1;
-            //EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
+            //EnemyStatus[i].MaxHitPoint = 1;
+            EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             EnemyStatus[i].HitPoint = EnemyStatus[i].MaxHitPoint;
             EnemyStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             EnemyStatus[i].MaxVoltage = 100;
