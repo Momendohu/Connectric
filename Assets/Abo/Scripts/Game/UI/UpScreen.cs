@@ -8,6 +8,9 @@ public class UpScreen : MonoBehaviour {
     private float beforeFrameHitPoint; //前フレームの体力(現フレームの体力と差分をとってアニメーション切り替えに使う)
     private bool isPlayerDamaged; //プレイヤーがダメージを受けたかどうか
 
+    private float beforeFrameHitPointEnemy; //前フレームの敵の体力
+    private bool isEnemyDamaged; //エネミーがダメージを受けたかどうか
+
     //=============================================================
     private GameManager gameManager;
     private SoundManager soundManager;
@@ -46,10 +49,10 @@ public class UpScreen : MonoBehaviour {
         Init();
 
         //プレイヤーがリズムに乗る
-        StartCoroutine(CharacterRhythm(playerCharacter,gameManager.BGMBPM));
+        StartCoroutine(CharacterAnim(playerCharacter,gameManager.BGMBPM));
 
         //エネミーがリズムに乗る
-        StartCoroutine(CharacterRhythm(enemyCharacter,gameManager.BGMBPM));
+        StartCoroutine(CharacterAnim(enemyCharacter,gameManager.BGMBPM));
 
         //フォーカスしているキャラクターに応じて画像を切り替える
         playerCharacter.GetComponent<Image>().sprite = gameManager.CharacterImage[gameManager.FocusCharacter];
@@ -61,10 +64,17 @@ public class UpScreen : MonoBehaviour {
     }
 
     private void Update () {
+        //プレイヤーがダメージを受けたかどうかを判定
         if(beforeFrameHitPoint > gameManager.CharacterStatus[gameManager.FocusCharacter].HitPoint) {
             isPlayerDamaged = true;
         }
         beforeFrameHitPoint = gameManager.CharacterStatus[gameManager.FocusCharacter].HitPoint;
+
+        //敵がダメージを受けたかどうかを判定
+        if(beforeFrameHitPointEnemy > gameManager.EnemyStatus[gameManager.FocusEnemy].HitPoint) {
+            isEnemyDamaged = true;
+        }
+        beforeFrameHitPointEnemy = gameManager.EnemyStatus[gameManager.FocusEnemy].HitPoint;
 
         //シークバー動作
         seekBar.GetComponent<Slider>().value = soundManager.GetBGMTime(gameManager.BGMName) / soundManager.GetBGMTimeLength(gameManager.BGMName);
@@ -74,8 +84,8 @@ public class UpScreen : MonoBehaviour {
     }
 
     //=============================================================
-    //キャラクターがリズムに乗る
-    private IEnumerator CharacterRhythm (GameObject obj,float tempo) {
+    //キャラクターがアニメーションする
+    private IEnumerator CharacterAnim (GameObject obj,float tempo) {
         float time = 0;
         while(true) {
             time = gameManager.GetBeatWaveTiming(soundManager.GetBGMTime(gameManager.BGMName),2,tempo);
@@ -88,6 +98,37 @@ public class UpScreen : MonoBehaviour {
             //キャラクターなら(雑な実装)
             if(isPlayerDamaged && obj == playerCharacter) {
                 yield return CharacterDamage(obj,1f);
+            }
+
+            //エネミーなら(雑な実装)
+            if(isEnemyDamaged && obj == enemyCharacter) {
+                yield return EnemyDamage(obj,1f);
+            }
+
+            yield return null;
+        }
+    }
+
+    //=============================================================
+    //エネミーがダメージを受ける
+    private IEnumerator EnemyDamage (GameObject obj,float waitTime) {
+        //スケールの初期化
+        obj.transform.localScale = Vector3.one;
+
+        //角度の調整
+        obj.GetComponent<RectTransform>().localEulerAngles = new Vector3(0,0,-10);
+
+        float time = 0;
+        while(true) {
+            time += gameManager.TimeForGame() / waitTime;
+
+            obj.GetComponent<Image>().color = new Color(1,1,1,CharacterDamageAnim.Evaluate(time));
+
+            if(time >= 1) {
+                isEnemyDamaged = false;
+
+                obj.GetComponent<RectTransform>().localEulerAngles = Vector3.zero;
+                break;
             }
 
             yield return null;
