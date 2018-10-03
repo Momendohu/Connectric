@@ -919,7 +919,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             CharacterStatus[i].HitPoint = CharacterStatus[i].MaxHitPoint;
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
-            CharacterStatus[i].MaxVoltage = 100;
+            CharacterStatus[i].MaxVoltage = 200;
             CharacterStatus[i].Voltage = 0;
             CharacterStatus[i].Tension = 10;
         }
@@ -934,7 +934,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             EnemyStatus[i].MaxHitPoint = CalculateHitPoint(CharacterStatus[i].Level);
             EnemyStatus[i].HitPoint = EnemyStatus[i].MaxHitPoint;
             EnemyStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
-            EnemyStatus[i].MaxVoltage = 100;
+            EnemyStatus[i].MaxVoltage = 200;
             EnemyStatus[i].Voltage = 0;
             EnemyStatus[i].Tension = 10;
         }
