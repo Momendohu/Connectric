@@ -549,7 +549,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         //ダメージを与える
         //Debug.Log(CharacterDatas[FocusCharacter].Name + "の攻撃! " + EnemyDatas[FocusEnemy].Name + "に" + CharacterStatus[FocusCharacter].AttackPower+hit + "のダメージ!");
-        ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower*hit);
+        ApplyToEnemyHitPoint(FocusEnemy,-CharacterStatus[FocusCharacter].AttackPower * hit);
 
         //ボルテージの上昇
         ApplyToCharacterVoltage(FocusCharacter,hit);
@@ -602,6 +602,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         if(IsSkillMode) {
             switch(num) {
                 case 0:
+                ApplyToCharacterHitPoint(FocusCharacter,10);
                 break;
 
                 case 1:
@@ -691,6 +692,16 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //プレイヤー体力値に数値を適用する
     private void ApplyToCharacterHitPoint (int id,float num) {
         CharacterStatus[id].HitPoint += num;
+
+        //上限判定
+        if(CharacterStatus[id].HitPoint >= CharacterStatus[id].MaxHitPoint) {
+            CharacterStatus[id].HitPoint = CharacterStatus[id].MaxHitPoint;
+        }
+
+        //下限判定
+        if(CharacterStatus[id].HitPoint <= 0) {
+            CharacterStatus[id].HitPoint = 0;
+        }
     }
 
     //=============================================================
@@ -702,7 +713,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //プレイヤーのスキルボルテージに数値を適用する
     private void ApplyToCharacterVoltage (int id,float hit) {
-        CharacterStatus[id].Voltage += CharacterStatus[id].Tension*hit;
+        CharacterStatus[id].Voltage += CharacterStatus[id].Tension * hit;
     }
 
     //=============================================================

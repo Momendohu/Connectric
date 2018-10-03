@@ -105,7 +105,9 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
         return 0;
     }
 
-    //===============================================================================
+    //=========================================================================================================================================================================
+    //BGM関係
+    //=========================================================================================================================================================================
     //オーディオを鳴らす
     public void TriggerBGM (string name,bool isUseLoop) {
         //Debug.Log(name);
@@ -180,84 +182,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
                 //再生
                 obj.GetComponent<AudioSource>().Play();
                 obj.GetComponent<AudioSource>().loop = isUseLoop;
-            }
-        } else {
-            Debug.Log("指定したAudioClipが無いよ");
-        }
-    }
-
-    //===============================================================================
-    //オーディオを鳴らす(独立して鳴らす)
-    public void TriggerSE (string name) {
-
-        //SoundManagerにアタッチしてあるものと照合
-        //指定したものがなければ再生しない
-        int seListNum = CheckMatchNameInList(name,SEList);
-        if(seListNum != -1) {
-
-            //すでに生成してあるオブジェクトと照合
-            //すでにあるならそれを再生
-            //ないならオブジェクト生成して再生
-            int seObjNum = CheckMatchNameInList(name,SEObject);
-            if(seObjNum != -1) {
-                AudioSource audioSource = SEObject[seObjNum].GetComponent<AudioSource>();
-                audioSource.volume = GetVolumeInSEData(name); //SEDataからボリュームを設定
-                audioSource.PlayOneShot(audioSource.clip);
-            } else {
-
-                //オーディオ再生用の子オブジェクトを作成
-                GameObject obj = Instantiate(Resources.Load("Prefabs/Other/SoundManagerAudio")) as GameObject;
-                obj.name = name;
-                SEObject.Add(obj);
-                obj.transform.SetParent(this.transform);
-
-                //AudioSourceにAudioClipをアタッチ
-                obj.GetComponent<AudioSource>().clip = SEList[seListNum];
-
-                //SEDataからボリュームを設定
-                obj.GetComponent<AudioSource>().volume = GetVolumeInSEData(name);
-
-                //再生
-                obj.GetComponent<AudioSource>().PlayOneShot(SEList[seListNum]);
-            }
-        } else {
-            Debug.Log("指定したAudioClipが無いよ");
-        }
-    }
-
-    //===============================================================================
-    //オーディオを鳴らす(独立して鳴らす)、ボリューム設定可能
-    public void TriggerSE (string name,float volume) {
-
-        //SoundManagerにアタッチしてあるものと照合
-        //指定したものがなければ再生しない
-        int seListNum = CheckMatchNameInList(name,SEList);
-        if(seListNum != -1) {
-
-            //すでに生成してあるオブジェクトと照合
-            //すでにあるならそれを再生
-            //ないならオブジェクト生成して再生
-            int seObjNum = CheckMatchNameInList(name,SEObject);
-            if(seObjNum != -1) {
-                AudioSource audioSource = SEObject[seObjNum].GetComponent<AudioSource>();
-                audioSource.volume = volume; //ボリュームの設定
-                audioSource.PlayOneShot(audioSource.clip);
-            } else {
-
-                //オーディオ再生用の子オブジェクトを作成
-                GameObject obj = Instantiate(Resources.Load("Prefabs/Other/SoundManagerAudio")) as GameObject;
-                obj.name = name;
-                SEObject.Add(obj);
-                obj.transform.SetParent(this.transform);
-
-                //AudioSourceにAudioClipをアタッチ
-                obj.GetComponent<AudioSource>().clip = SEList[seListNum];
-
-                //ボリュームの設定
-                obj.GetComponent<AudioSource>().volume = volume;
-
-                //再生
-                obj.GetComponent<AudioSource>().PlayOneShot(SEList[seListNum]);
             }
         } else {
             Debug.Log("指定したAudioClipが無いよ");
@@ -355,6 +279,103 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
         } else {
             Debug.Log("指定したBGMが無いよ:" + name);
             return -1;
+        }
+    }
+
+    //=========================================================================================================================================================================
+    //SE関係
+    //=========================================================================================================================================================================
+    //オーディオを鳴らす(独立して鳴らす)
+    public void TriggerSE (string name) {
+
+        //SoundManagerにアタッチしてあるものと照合
+        //指定したものがなければ再生しない
+        int seListNum = CheckMatchNameInList(name,SEList);
+        if(seListNum != -1) {
+
+            //すでに生成してあるオブジェクトと照合
+            //すでにあるならそれを再生
+            //ないならオブジェクト生成して再生
+            int seObjNum = CheckMatchNameInList(name,SEObject);
+            if(seObjNum != -1) {
+                AudioSource audioSource = SEObject[seObjNum].GetComponent<AudioSource>();
+                audioSource.volume = GetVolumeInSEData(name); //SEDataからボリュームを設定
+                audioSource.PlayOneShot(audioSource.clip);
+            } else {
+
+                //オーディオ再生用の子オブジェクトを作成
+                GameObject obj = Instantiate(Resources.Load("Prefabs/Other/SoundManagerAudio")) as GameObject;
+                obj.name = name;
+                SEObject.Add(obj);
+                obj.transform.SetParent(this.transform);
+
+                //AudioSourceにAudioClipをアタッチ
+                obj.GetComponent<AudioSource>().clip = SEList[seListNum];
+
+                //SEDataからボリュームを設定
+                obj.GetComponent<AudioSource>().volume = GetVolumeInSEData(name);
+
+                //再生
+                obj.GetComponent<AudioSource>().PlayOneShot(SEList[seListNum]);
+            }
+        } else {
+            Debug.Log("指定したAudioClipが無いよ");
+        }
+    }
+
+    //===============================================================================
+    //オーディオを鳴らす(独立して鳴らす)、ボリューム設定可能
+    public void TriggerSE (string name,float volume) {
+
+        //SoundManagerにアタッチしてあるものと照合
+        //指定したものがなければ再生しない
+        int seListNum = CheckMatchNameInList(name,SEList);
+        if(seListNum != -1) {
+
+            //すでに生成してあるオブジェクトと照合
+            //すでにあるならそれを再生
+            //ないならオブジェクト生成して再生
+            int seObjNum = CheckMatchNameInList(name,SEObject);
+            if(seObjNum != -1) {
+                AudioSource audioSource = SEObject[seObjNum].GetComponent<AudioSource>();
+                audioSource.volume = volume; //ボリュームの設定
+                audioSource.PlayOneShot(audioSource.clip);
+            } else {
+
+                //オーディオ再生用の子オブジェクトを作成
+                GameObject obj = Instantiate(Resources.Load("Prefabs/Other/SoundManagerAudio")) as GameObject;
+                obj.name = name;
+                SEObject.Add(obj);
+                obj.transform.SetParent(this.transform);
+
+                //AudioSourceにAudioClipをアタッチ
+                obj.GetComponent<AudioSource>().clip = SEList[seListNum];
+
+                //ボリュームの設定
+                obj.GetComponent<AudioSource>().volume = volume;
+
+                //再生
+                obj.GetComponent<AudioSource>().PlayOneShot(SEList[seListNum]);
+            }
+        } else {
+            Debug.Log("指定したAudioClipが無いよ");
+        }
+    }
+
+    //===============================================================================
+    //SEが再生されているかどうか
+    private bool IsPlayingSE (string name) {
+        //すでに生成してあるオブジェクトと照合
+        int seObjNum = CheckMatchNameInList(name,SEObject);
+        if(seObjNum != -1) {
+            if(SEObject[seObjNum].GetComponent<AudioSource>().isPlaying) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Debug.Log("指定したBGMが無いよ:" + name);
+            return false;
         }
     }
 }
