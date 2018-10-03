@@ -391,6 +391,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
+    //シーン遷移(曲セレクトからホーム)
+    public void JumpSceneSelectSoundToHome () {
+        SceneManager.LoadScene("Home");
+    }
+
+    //=============================================================
     //BGMを選択適用する
     public void ApplyToBGMData (int num) {
         if(num >= 0 && num <= soundManager.BGMNum - 1) {

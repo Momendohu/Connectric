@@ -1,7 +1,8 @@
 fileFormatVersion: 2
 guid: 834d700f6e967784c961293efabd4bd6
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: UIFrame_0
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -97,7 +98,21 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: UIFrame_0
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 613
+        width: 1960
+        height: 351
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 180, y: 0, z: 180, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
     outline: []
     physicsShape: []
   spritePackingTag: 

@@ -14,21 +14,24 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     private List<GameObject> SEObject = new List<GameObject>();
 
     //===============================================================================
+    [System.NonSerialized]
     public int BGMNum = 3; //bgmの数
 
     //BGMデータ(構造体)
     public struct BGMData {
-        public string Name;
-        public float BPM;
-        public float Volume;
+        public string Name; //データ上の名前
+        public string DisplayName; //表示する名前
+        public string ArtistName; //アーティスト名
+        public float BPM; //beat per minute
+        public float Volume; //ボリューム
     }
 
     public BGMData[] BGMDatas ={
-        new BGMData{ Name="bgm001",BPM=128f,Volume=0.7f},
-        new BGMData{ Name="bgm002",BPM=146f,Volume=0.7f},
-        new BGMData{ Name="bgm003",BPM=128f,Volume=1f},
-        new BGMData{ Name="bgm004",BPM=202f,Volume=0.7f},
-        new BGMData{ Name="Home",BPM=-1,Volume=0.1f}
+        new BGMData{ Name="bgm001",DisplayName="Broadcast",ArtistName="d-elf.com",BPM=128f,Volume=0.7f},
+        new BGMData{ Name="bgm002",DisplayName="Experimental Model",ArtistName="d-elf.com",BPM=146f,Volume=0.7f},
+        new BGMData{ Name="bgm003",DisplayName="Firmament",ArtistName="???",BPM=128f,Volume=1f},
+        new BGMData{ Name="bgm004",DisplayName="???",ArtistName="???",BPM=202f,Volume=0.7f},
+        new BGMData{ Name="Home",DisplayName="SystemBGM002",ArtistName="???",BPM=-1,Volume=0.1f}
     };
 
     //SEデータ(構造体)
