@@ -601,18 +601,18 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         //スキルモードなら
         if(IsSkillMode) {
             switch(num) {
-                case 0:
+                case 0: //回復
                 ApplyToCharacterHitPoint(FocusCharacter,10);
                 break;
 
                 case 1:
                 break;
 
-                case 2:
-                yield return MyWaitForSeconds(0.3f);
+                case 2: //多段ヒット
+                yield return MyWaitForSeconds(0.2f);
                 Attack(hit);
 
-                yield return MyWaitForSeconds(0.3f);
+                yield return MyWaitForSeconds(0.2f);
                 Attack(hit);
                 break;
 
@@ -643,7 +643,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             break;
 
             case 1:
-            yield return MyWaitForSeconds(20); //20秒待つ
+            yield return MyWaitForSeconds(15); //15秒待つ
             break;
 
             case 2:
@@ -921,7 +921,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             CharacterStatus[i].MaxVoltage = 200;
             CharacterStatus[i].Voltage = 0;
-            CharacterStatus[i].Tension = 10;
+            CharacterStatus[i].Tension = 200;
         }
     }
 
@@ -948,6 +948,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         isGameOver = false; //ゲームオーバーフラグの初期化
         isGameClear = false; //ゲームクリアフラグの初期化
         isPause = false; //ポーズフラグの初期化
+        isSkillMode = false;
         timingBars.Clear(); //タイミングバーの参照の初期化
         sceneJumpFlag = true; //明示的にシーン遷移フラグを立たせる
 
