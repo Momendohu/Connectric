@@ -20,9 +20,11 @@ public class Onpu_perfo : MonoBehaviour {
 	void Update () {
 
       float time = 1.0f * counter / TIME;
-      Debug.Log(time);
+      //Debug.Log(time);/////////////////////////////////////
       counter++;
-      this.transform.position = Vector3.Lerp(startPos, endPos, time);
+      //this.transform.position = Vector3.Lerp(startPos, endPos, time);
+      this.transform.position = Vector3.Slerp(startPos, endPos, time);//////////////////////////////////
+        transform.eulerAngles += new Vector3(0,Random.Range(3,20),0);/////////////////////////////////////
 
       if(piece_type == 4)
       {
@@ -54,7 +56,7 @@ public class Onpu_perfo : MonoBehaviour {
     // 色の設定
     public void SetColor(int type)
     {
-        if(type == 0)
+        /*if(type == 0)
         {
             this.GetComponent<SpriteRenderer>().color = Color.red;
         }
@@ -73,8 +75,21 @@ public class Onpu_perfo : MonoBehaviour {
         else
         {
             piece_type = 4;
+        }*/
+
+        if(type == 0) {
+            this.GetComponent<SpriteRenderer>().color = Color.red;
+            this.GetComponent<SpriteRenderer>().color = new Color(1,0,0,0.5f);
+        } else if(type == 1) {
+            this.GetComponent<SpriteRenderer>().color = new Color(0,1,1,0.5f);
+        } else if(type == 2) {
+            this.GetComponent<SpriteRenderer>().color = new Color(1,0.92f,0.016f,0.5f);
+        } else if(type == 3) {
+            this.GetComponent<SpriteRenderer>().color = new Color(0,1,0,0.5f);
+        } else {
+            piece_type = 4;
+            this.GetComponent<SpriteRenderer>().color = new Color(0,0,0,0.5f);
         }
-        
 
 
     }
