@@ -8,12 +8,14 @@ public class HomeButtons : MonoBehaviour {
     // オブジェクト
     private GameObject tabObj;
     private GameObject homeManager;
+    private AudioSource soundSE;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         tabObj = GameObject.Find("tab");
         homeManager = GameObject.Find("HomeManager");
-	}
+        soundSE = GameObject.Find("HomeSE").GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -25,7 +27,7 @@ public class HomeButtons : MonoBehaviour {
     {
         // タグ表示中は更新しない
         if (tabObj.GetComponent<Tab>().IsTabIndicateFlag) { return; }
-
+        soundSE.PlayOneShot(soundSE.clip);
         homeManager.GetComponent<HomeManager>().Selectmode = num;
     }
 }
