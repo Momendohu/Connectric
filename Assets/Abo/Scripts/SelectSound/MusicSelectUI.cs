@@ -60,14 +60,13 @@ public class MusicSelectUI : MonoBehaviour {
     //=============================================================
     //次のシーン(キャラクター選択)に遷移するボタン
     public void OnClickPlayButton () {
-        //gameManager.ApplyToBGMData(1);
         gameManager.JumpSceneSelectSoundToCharacterSelect();
     }
 
     //=============================================================
     //ホームに戻るボタン
     public void OnClickReturnButton () {
-        gameManager.JumpSceneSelectSoundToHome();
+        StartCoroutine(FadeToCharacterSelect());
     }
 
     //=============================================================
@@ -94,5 +93,21 @@ public class MusicSelectUI : MonoBehaviour {
         gameManager.FocusBGM = f;
 
         gameManager.ApplyToBGMData(f);
+    }
+
+    //=============================================================
+    //キャラクターセレクトシーンに行くための橋渡し
+    private IEnumerator FadeToCharacterSelect () {
+        float time = 0;
+        while(true) {
+            time += Time.deltaTime;
+            if(time >= 1) {
+                break;
+            }
+
+            yield return null;
+        }
+
+        gameManager.JumpSceneSelectSoundToHome();
     }
 }
