@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Onpu_perfo : MonoBehaviour {
-
-    // 
-    private const int TIME = 60; // 敵にたどり着くまでの時間
+    private const int TIME = 45; // 敵にたどり着くまでの時間
     private float counter = 0;
     private Vector3 startPos;
     private Vector3 endPos;     // 敵の座標の設定
@@ -20,11 +18,9 @@ public class Onpu_perfo : MonoBehaviour {
 	void Update () {
 
       float time = 1.0f * counter / TIME;
-      //Debug.Log(time);/////////////////////////////////////
       counter++;
-      //this.transform.position = Vector3.Lerp(startPos, endPos, time);
-      this.transform.position = Vector3.Slerp(startPos, endPos, time);//////////////////////////////////
-        transform.eulerAngles += new Vector3(0,Random.Range(3,20),0);/////////////////////////////////////
+      this.transform.position = Vector3.Slerp(startPos, endPos, time);
+        transform.eulerAngles += new Vector3(0,Random.Range(3,20),0);
 
       if(piece_type == 4)
       {
@@ -56,26 +52,6 @@ public class Onpu_perfo : MonoBehaviour {
     // 色の設定
     public void SetColor(int type)
     {
-        /*if(type == 0)
-        {
-            this.GetComponent<SpriteRenderer>().color = Color.red;
-        }
-        else if(type == 1)
-        {
-            this.GetComponent<SpriteRenderer>().color = Color.cyan;
-        }
-        else if(type == 2)
-        {
-            this.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
-        else if(type == 3)
-        {
-            this.GetComponent<SpriteRenderer>().color = Color.green;
-        }
-        else
-        {
-            piece_type = 4;
-        }*/
 
         if(type == 0) {
             this.GetComponent<SpriteRenderer>().color = Color.red;
