@@ -6,8 +6,7 @@ using UnityEngine;
 public class Tab : MonoBehaviour {
 
     // 定数
-    //private const float INDICATE_SPEED = 0.05f;
-    private const float INDICATE_SPEED = 0.2f;
+    private const float INDICATE_SPEED = 0.05f;
 
     //------------------------------------------------------
     // タブの表示
@@ -30,18 +29,11 @@ public class Tab : MonoBehaviour {
 
         if (!isTabIndicateFlag) { return; }
 
-        /*if (this.GetComponent<Transform>().localScale.x <= 0.8f)
+        if (this.GetComponent<Transform>().localScale.x <= 0.8f)
         {
             this.GetComponent<Transform>().localScale += new Vector3(INDICATE_SPEED, INDICATE_SPEED, INDICATE_SPEED);
-        }*/
-
-        if (this.GetComponent<Transform>().localScale.x < 0.8f)
-        {
-            this.GetComponent<Transform>().localScale += new Vector3(INDICATE_SPEED, INDICATE_SPEED, INDICATE_SPEED);
-        } else {
-            this.GetComponent<Transform>().localScale = new Vector3(0.8f,0.8f,0.8f);
         }
-    }
+	}
 
 
     //========================================================

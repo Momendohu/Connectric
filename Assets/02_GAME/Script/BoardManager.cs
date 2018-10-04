@@ -129,7 +129,7 @@ public class BoardManager : MonoBehaviour {
         // ピースを消した後の音符演出の削除タイミング
         for(int i = 0;i < onpuList.Count;i++) {
             if(onpuList[i].GetComponent<Onpu_perfo>().GetTime() >= 1.0f) {
-                //Debug.Log("音符デリート");//////////////////////////////////////////////////
+                Debug.Log("音符デリート");
                 onpuList[i].GetComponent<Onpu_perfo>().DeleteOnpu();
                 onpuList.RemoveAt(i);
                 i--;
