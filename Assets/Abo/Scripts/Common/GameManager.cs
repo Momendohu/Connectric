@@ -541,6 +541,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //ダメージ処理
     private void Damage () {
+        //SEを鳴らす
+        soundManager.TriggerSE("EnemyAttack01");
+
         //Debug.Log(EnemyDatas[FocusEnemy].Name + "の攻撃! " + CharacterDatas[FocusCharacter].Name + "に" + EnemyStatus[FocusEnemy].AttackPower + "のダメージ!");
         //ダメージを受ける
         ApplyToCharacterHitPoint(FocusCharacter,-EnemyStatus[FocusEnemy].AttackPower);
