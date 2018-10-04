@@ -28,7 +28,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 
     public BGMData[] BGMDatas ={
         new BGMData{ Name="bgm001",DisplayName="Broadcast",ArtistName="d-elf.com",BPM=128f,Volume=0.7f},
-        new BGMData{ Name="bgm002",DisplayName="Experimental Model",ArtistName="d-elf.com",BPM=146f,Volume=0.7f},
+        new BGMData{ Name="bgm002",DisplayName="Experimental Model",ArtistName="d-elf.com",BPM=146f,Volume=0.5f},
         new BGMData{ Name="bgm003",DisplayName="Firmament",ArtistName="むつき醒",BPM=128f,Volume=1f},
         new BGMData{ Name="bgm004",DisplayName="???",ArtistName="???",BPM=202f,Volume=0.7f},
         new BGMData{ Name="Home",DisplayName="SystemBGM002",ArtistName="???",BPM=-1,Volume=0.5f}
@@ -139,6 +139,9 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
                 BGMObject.Add(obj);
                 obj.transform.SetParent(this.transform);
 
+                //消えないように
+                DontDestroyOnLoad(obj);
+
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = BGMList[bgmListNum];
 
@@ -177,6 +180,9 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
                 obj.name = name;
                 BGMObject.Add(obj);
                 obj.transform.SetParent(this.transform);
+
+                //消えないように
+                DontDestroyOnLoad(obj);
 
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = BGMList[bgmListNum];
@@ -314,6 +320,9 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
                 SEObject.Add(obj);
                 obj.transform.SetParent(this.transform);
 
+                //消えないように
+                DontDestroyOnLoad(obj);
+
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = SEList[seListNum];
 
@@ -352,6 +361,9 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
                 obj.name = name;
                 SEObject.Add(obj);
                 obj.transform.SetParent(this.transform);
+
+                //消えないように
+                DontDestroyOnLoad(obj);
 
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = SEList[seListNum];

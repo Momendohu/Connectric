@@ -10,7 +10,6 @@ public static class SceneLoadUtil {
     //シーンのローディング
     public static IEnumerator Load (string name,bool isWaitJumpScene) {
         DisplayLoadProgress();
-        Debug.Log("aaa");
 
         async = SceneManager.LoadSceneAsync(name);
         async.allowSceneActivation = false;

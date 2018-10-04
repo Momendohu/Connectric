@@ -17,6 +17,8 @@ public class MusicSelectUI : MonoBehaviour {
 
     private Image musicImage;
 
+    private bool onceFirstBGM; //シーン起動時1回bgmを起動するためのフラグ(startでbgmがならなかったから使用)(startの段階でsoundmanagerが2つある可能性?)
+
     //=============================================================
     public Sprite[] MusicImages;
 
@@ -45,11 +47,12 @@ public class MusicSelectUI : MonoBehaviour {
         Init();
     }
 
-    private void Start () {
-
-    }
-
     private void Update () {
+        if(!onceFirstBGM) {
+            soundManager.TriggerBGM(soundManager.BGMDatas[gameManager.FocusBGM].Name,true);
+            onceFirstBGM = true;
+        }
+
         //各bgmデータを画面に適用
         info_musicTitle.transform.Find("Text").GetComponent<Text>().text = soundManager.BGMDatas[gameManager.FocusBGM].DisplayName;
         info_musicArtist.transform.Find("Text").GetComponent<Text>().text = soundManager.BGMDatas[gameManager.FocusBGM].ArtistName;
@@ -66,6 +69,9 @@ public class MusicSelectUI : MonoBehaviour {
     //=============================================================
     //ホームに戻るボタン
     public void OnClickReturnButton () {
+        //bgmを止める
+        soundManager.StopBGM(soundManager.BGMDatas[gameManager.FocusBGM].Name);
+
         soundManager.TriggerSE("Cancel01");
         StartCoroutine(FadeToCharacterSelect());
     }
@@ -73,6 +79,9 @@ public class MusicSelectUI : MonoBehaviour {
     //=============================================================
     //右ボタン
     public void OnClickRight () {
+        //bgmを止める
+        soundManager.StopBGM(soundManager.BGMDatas[gameManager.FocusBGM].Name);
+
         int f = gameManager.FocusBGM + 1;
         if(f > soundManager.BGMNum - 1) {
             f = 0;
@@ -81,11 +90,17 @@ public class MusicSelectUI : MonoBehaviour {
         gameManager.FocusBGM = f;
 
         gameManager.ApplyToBGMData(f);
+
+        //bgmを再生
+        soundManager.TriggerBGM(soundManager.BGMDatas[gameManager.FocusBGM].Name,true);
     }
 
     //=============================================================
     //左ボタン
     public void OnClickLeft () {
+        //bgmを止める
+        soundManager.StopBGM(soundManager.BGMDatas[gameManager.FocusBGM].Name);
+
         int f = gameManager.FocusBGM - 1;
         if(f < 0) {
             f = soundManager.BGMNum - 1;
@@ -94,6 +109,9 @@ public class MusicSelectUI : MonoBehaviour {
         gameManager.FocusBGM = f;
 
         gameManager.ApplyToBGMData(f);
+
+        //bgmを再生
+        soundManager.TriggerBGM(soundManager.BGMDatas[gameManager.FocusBGM].Name,true);
     }
 
     //=============================================================

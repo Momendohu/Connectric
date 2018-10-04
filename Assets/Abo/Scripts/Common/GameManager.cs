@@ -207,14 +207,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     //=============================================================
-    //BGMの再生初期化
-    private void InitMusicPlay () {
-        for(int i = 0;i < soundManager.BGMNum;i++) {
-            soundManager.StopBGM(soundManager.BGMDatas[i].Name);
-        }
-    }
-
-    //=============================================================
     private void Awake () {
         if(!Init()) return;
 
@@ -381,7 +373,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //SelectSoundシーン
     //==============================================================================================================================================
     private void InitSelectSound () {
-        InitMusicPlay();
     }
 
     //=============================================================
@@ -413,7 +404,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //CharacterSelectシーン
     //==============================================================================================================================================
     private void InitCharacterSelect () {
-        InitMusicPlay();
     }
 
     //=============================================================
