@@ -262,4 +262,10 @@ public class CharacterSelectUI : MonoBehaviour {
 
         return obj;
     }
+
+    //=============================================================
+    //戻るボタンを押したときの動作
+    public void OnClickReturnButton () {
+        gameManager.JumpSceneCharacterSelectToSelectSound();
+    }
 }

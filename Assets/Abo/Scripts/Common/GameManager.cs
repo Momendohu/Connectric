@@ -422,6 +422,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         SceneManager.LoadScene("Game_copy2");
     }
 
+    //=============================================================
+    //シーン遷移(キャラクターセレクトから曲セレクト)
+    public void JumpSceneCharacterSelectToSelectSound () {
+        SceneManager.LoadScene("SelectSound");
+    }
+
     //==============================================================================================================================================
     //Gameシーン
     //==============================================================================================================================================
@@ -927,7 +933,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             CharacterStatus[i].AttackPower = CalculateAttackPoint(CharacterStatus[i].Level);
             CharacterStatus[i].MaxVoltage = 200;
             CharacterStatus[i].Voltage = 0;
-            CharacterStatus[i].Tension = 200;
+            CharacterStatus[i].Tension = 10;
         }
     }
 
