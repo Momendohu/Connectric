@@ -409,6 +409,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //シーン遷移(キャラクターセレクトからゲーム)
     public void JumpSceneCharacterSelectToGame () {
+        InitializeGameStatus();
+        InitializeGameRecordStatus();
         StartCoroutine(SceneLoadUtil.Load("Game_copy2",0,false));
     }
 
