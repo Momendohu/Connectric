@@ -12,6 +12,14 @@ public class MusicSelectUI : MonoBehaviour {
     private GameObject info_musicArtist;
     private GameObject info_record;
 
+    private GameObject leftButton;
+    private GameObject rightButton;
+
+    private Image musicImage;
+
+    //=============================================================
+    public Sprite[] MusicImages;
+
     //=============================================================
     private void Init () {
         CRef();
@@ -25,6 +33,11 @@ public class MusicSelectUI : MonoBehaviour {
         info_musicTitle = GameObject.Find("Canvas/Information/MusicTitle");
         info_musicArtist = GameObject.Find("Canvas/Information/MusicArtists");
         info_record = GameObject.Find("Canvas/Information/Record");
+
+        leftButton = GameObject.Find("Canvas/LeftButton");
+        rightButton = GameObject.Find("Canvas/RightButton");
+
+        musicImage = GameObject.Find("Canvas/Music/Image").GetComponent<Image>();
     }
 
     //=============================================================
@@ -40,6 +53,8 @@ public class MusicSelectUI : MonoBehaviour {
         //各bgmデータを画面に適用
         info_musicTitle.transform.Find("Text").GetComponent<Text>().text = soundManager.BGMDatas[gameManager.FocusBGM].DisplayName;
         info_musicArtist.transform.Find("Text").GetComponent<Text>().text = soundManager.BGMDatas[gameManager.FocusBGM].ArtistName;
+
+        musicImage.sprite = MusicImages[gameManager.FocusBGM];
     }
 
     //=============================================================
@@ -53,5 +68,31 @@ public class MusicSelectUI : MonoBehaviour {
     //ホームに戻るボタン
     public void OnClickReturnButton () {
         gameManager.JumpSceneSelectSoundToHome();
+    }
+
+    //=============================================================
+    //右ボタン
+    public void OnClickRight () {
+        int f = gameManager.FocusBGM + 1;
+        if(f > soundManager.BGMNum - 1) {
+            f = 0;
+        }
+
+        gameManager.FocusBGM = f;
+
+        gameManager.ApplyToBGMData(f);
+    }
+
+    //=============================================================
+    //左ボタン
+    public void OnClickLeft () {
+        int f = gameManager.FocusBGM - 1;
+        if(f < 0) {
+            f = soundManager.BGMNum - 1;
+        }
+
+        gameManager.FocusBGM = f;
+
+        gameManager.ApplyToBGMData(f);
     }
 }

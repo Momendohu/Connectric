@@ -871,6 +871,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114350754211303646, guid: 7459bddf788a28b45807b475105a9b01,
+        type: 2}
+      propertyPath: CharacterImages.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4828917050732660, guid: 7459bddf788a28b45807b475105a9b01, type: 2}
       propertyPath: m_LocalPosition.x
       value: 116.706245
@@ -903,6 +908,24 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114350754211303646, guid: 7459bddf788a28b45807b475105a9b01,
+        type: 2}
+      propertyPath: CharacterImages.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: d00a0875c70836446a74bfb95603b889,
+        type: 3}
+    - target: {fileID: 114350754211303646, guid: 7459bddf788a28b45807b475105a9b01,
+        type: 2}
+      propertyPath: CharacterImages.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: dfa5f71f785c2744b9c5f5010f1a89af,
+        type: 3}
+    - target: {fileID: 114350754211303646, guid: 7459bddf788a28b45807b475105a9b01,
+        type: 2}
+      propertyPath: CharacterImages.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 1434bc93b67ddbe4ca9e77ccb5f20572,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7459bddf788a28b45807b475105a9b01, type: 2}
   m_IsPrefabParent: 0
@@ -1060,6 +1083,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 974382411}
+--- !u!114 &1065070168 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114350754211303646, guid: 7459bddf788a28b45807b475105a9b01,
+    type: 2}
+  m_PrefabInternal: {fileID: 892397168}
+  m_Script: {fileID: 11500000, guid: 688071e8916994d4c879a1c50e7db24f, type: 3}
 --- !u!1 &1086839831
 GameObject:
   m_ObjectHideFlags: 0
@@ -1071,7 +1100,6 @@ GameObject:
   - component: {fileID: 1086839836}
   - component: {fileID: 1086839835}
   - component: {fileID: 1086839834}
-  - component: {fileID: 1086839833}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1098,17 +1126,6 @@ RectTransform:
   m_AnchoredPosition: {x: 266.8, y: -736.54}
   m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1086839833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1086839831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 688071e8916994d4c879a1c50e7db24f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1086839834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1148,7 +1165,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1086839833}
+      - m_Target: {fileID: 1065070168}
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -1367,17 +1384,17 @@ RectTransform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1344058861}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 309850493}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 155, y: -410.1}
-  m_SizeDelta: {x: 600, y: 857.14}
+  m_SizeDelta: {x: 513, y: 912}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1344058863
 MonoBehaviour:
@@ -1399,7 +1416,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: fcad8fb2feb47b748ae4dcb0b0d2e7be, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d00a0875c70836446a74bfb95603b889, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
