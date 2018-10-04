@@ -25,6 +25,7 @@ public class HomeManager : MonoBehaviour {
     //--------------------------------------------
     // ゲームマネージャー
     private GameObject gameManagerObj;
+    
 
     // Use this for initialization
     void Start () {

@@ -8,6 +8,9 @@ public class Tab : MonoBehaviour {
     // 定数
     private const float INDICATE_SPEED = 0.05f;
 
+
+    private AudioSource soundSE;
+
     //------------------------------------------------------
     // タブの表示
     //------------------------------------------------------
@@ -22,7 +25,8 @@ public class Tab : MonoBehaviour {
     void Start () {
         isTabIndicateFlag = false;
         this.GetComponent<Transform>().localScale = new Vector3(0.0f, 0.0f, 0.0f);
-	}
+        soundSE = GameObject.Find("HomeSE1").GetComponent<AudioSource>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -42,5 +46,6 @@ public class Tab : MonoBehaviour {
     public void OnClick()
     {
         Start();
+        soundSE.PlayOneShot(soundSE.clip);
     }
 }
