@@ -352,7 +352,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //シーン遷移(タイトルからホームへ)
     private void JumpSceneTitleToHome () {
         if(isTitleAppeared) {
-            StartCoroutine(SceneLoadUtil.Load("Home",0.5f,false));
+            StartCoroutine(SceneLoadUtil.Load("Home",1.0f,false));
         }
     }
 
@@ -366,7 +366,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     public void JumpSceneHomeToSelectSound () {
         soundManager.StopBGM(soundManager.BGMList[4].name); //ホーム画面のbgmを消す
-        StartCoroutine(SceneLoadUtil.Load("SelectSound",0,false));
+        StartCoroutine(SceneLoadUtil.Load("SelectSound",1.0f,false));
     }
 
     //==============================================================================================================================================

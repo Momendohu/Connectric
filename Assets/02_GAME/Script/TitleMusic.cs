@@ -17,7 +17,7 @@ public class TitleMusic : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(!touch_seFlag/* && gameManager.GetComponent<GameManager>().IsTitleAppeared*/)
+        if(!touch_seFlag && gameManager.GetComponent<GameManager>().IsTitleAppeared)
         {
             if (Input.GetMouseButton(0) || Input.touchCount > 0)
             {
