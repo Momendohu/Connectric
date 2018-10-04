@@ -36,7 +36,7 @@ public static class SceneLoadUtil {
     //=============================================================
     //ロードを表示する
     public static void DisplayLoadProgress () {
-        GameObject obj = Object.Instantiate(Resources.Load("Prefabs/Loading/Loading")) as GameObject;
+        GameObject obj = Object.Instantiate(Resources.Load("Prefabs/Loading/LoadingUI")) as GameObject;
         obj.transform.SetParent(GameObject.Find("Canvas").transform,false);
         obj.transform.SetAsLastSibling();
     }
