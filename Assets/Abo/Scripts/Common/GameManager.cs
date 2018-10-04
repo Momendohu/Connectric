@@ -352,7 +352,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //シーン遷移(タイトルからホームへ)
     private void JumpSceneTitleToHome () {
         if(isTitleAppeared) {
-            StartCoroutine(SceneLoadUtil.Load("Home",false));
+            StartCoroutine(SceneLoadUtil.Load("Home",0.5f,false));
         }
     }
 
@@ -366,7 +366,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     public void JumpSceneHomeToSelectSound () {
         soundManager.StopBGM(soundManager.BGMList[4].name); //ホーム画面のbgmを消す
-        StartCoroutine(SceneLoadUtil.Load("SelectSound",false));
+        StartCoroutine(SceneLoadUtil.Load("SelectSound",0,false));
     }
 
     //==============================================================================================================================================
@@ -378,13 +378,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //シーン遷移(曲セレクトからキャラクターセレクト)
     public void JumpSceneSelectSoundToCharacterSelect () {
-        StartCoroutine(SceneLoadUtil.Load("CharacterSelect",false));
+        StartCoroutine(SceneLoadUtil.Load("CharacterSelect",0,false));
     }
 
     //=============================================================
     //シーン遷移(曲セレクトからホーム)
     public void JumpSceneSelectSoundToHome () {
-        StartCoroutine(SceneLoadUtil.Load("Home",false));
+        StartCoroutine(SceneLoadUtil.Load("Home",0,false));
     }
 
     //=============================================================
@@ -409,13 +409,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //シーン遷移(キャラクターセレクトからゲーム)
     public void JumpSceneCharacterSelectToGame () {
-        StartCoroutine(SceneLoadUtil.Load("Game_copy2",false));
+        StartCoroutine(SceneLoadUtil.Load("Game_copy2",0,false));
     }
 
     //=============================================================
     //シーン遷移(キャラクターセレクトから曲セレクト)
     public void JumpSceneCharacterSelectToSelectSound () {
-        StartCoroutine(SceneLoadUtil.Load("SelectSound",false));
+        StartCoroutine(SceneLoadUtil.Load("SelectSound",0,false));
     }
 
     //==============================================================================================================================================
@@ -881,7 +881,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         InitializeGameStatus();
         InitializeGameRecordStatus();
 
-        StartCoroutine(SceneLoadUtil.Load("Game_copy2",false));
+        StartCoroutine(SceneLoadUtil.Load("Game_copy2",0,false));
     }
 
     //=============================================================
@@ -889,7 +889,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public void JumpSceneGameToResult () {
         InitializeGameStatus();
 
-        StartCoroutine(SceneLoadUtil.Load("Result",false));
+        StartCoroutine(SceneLoadUtil.Load("Result",0,false));
     }
 
     //=============================================================
@@ -898,7 +898,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         InitializeGameStatus();
         InitializeGameRecordStatus();
 
-        StartCoroutine(SceneLoadUtil.Load("SelectSound",false));
+        StartCoroutine(SceneLoadUtil.Load("SelectSound",0,false));
     }
 
     //==============================================================================================================================================
@@ -907,7 +907,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //シーン遷移(リザルトから曲セレクトへ)
     public void JumpSceneResultToMusicSelect () {
         InitializeGameRecordStatus();
-        StartCoroutine(SceneLoadUtil.Load("SelectSound",false));
+        StartCoroutine(SceneLoadUtil.Load("SelectSound",0,false));
     }
 
     //==============================================================================================================================================

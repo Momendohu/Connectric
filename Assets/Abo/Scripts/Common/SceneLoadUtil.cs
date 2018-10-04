@@ -8,8 +8,10 @@ public static class SceneLoadUtil {
 
     //=============================================================
     //シーンのローディング
-    public static IEnumerator Load (string name,bool isWaitJumpScene) {
+    public static IEnumerator Load (string name,float waitTime,bool isWaitJumpScene) {
         DisplayLoadProgress();
+
+        yield return new WaitForSeconds(waitTime);
 
         async = SceneManager.LoadSceneAsync(name);
         async.allowSceneActivation = false;
