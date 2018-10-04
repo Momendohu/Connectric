@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CharacterSelectUI : MonoBehaviour {
     //=============================================================
     private GameManager gameManager;
+    private SoundManager soundManager;
     private Camera _camera; //カメラ
 
     private GameObject leftButton; //左のボタン
@@ -36,6 +37,7 @@ public class CharacterSelectUI : MonoBehaviour {
     //=============================================================
     private void CRef () {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
 
         _camera = GameObject.Find("Camera").GetComponent<Camera>();
 
@@ -266,6 +268,7 @@ public class CharacterSelectUI : MonoBehaviour {
     //=============================================================
     //戻るボタンを押したときの動作
     public void OnClickReturnButton () {
+        soundManager.TriggerSE("Cancel01");
         gameManager.JumpSceneCharacterSelectToSelectSound();
     }
 }

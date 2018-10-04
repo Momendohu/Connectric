@@ -66,6 +66,7 @@ public class MusicSelectUI : MonoBehaviour {
     //=============================================================
     //ホームに戻るボタン
     public void OnClickReturnButton () {
+        soundManager.TriggerSE("Cancel01");
         StartCoroutine(FadeToCharacterSelect());
     }
 

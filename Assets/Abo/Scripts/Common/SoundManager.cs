@@ -43,7 +43,8 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
     public SEData[] SEDatas = {
         new SEData{ Name="puzzledelete",Volume=0.3f},
         new SEData{ Name="puzzlemove",Volume=0.3f},
-        new SEData{ Name="EnemyAttack01",Volume=0.3f}
+        new SEData{ Name="EnemyAttack01",Volume=0.3f},
+        new SEData{ Name="Cancel01",Volume=0.4f}
     };
 
     //===============================================================================
