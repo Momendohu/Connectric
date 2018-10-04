@@ -444,9 +444,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         soundManager.TriggerBGM(BGMName,false);
         //タイミングバー用のウェーブ指定
         notesWaveForTimingBar = GetBeatWaveNum(soundManager.GetBGMTime(BGMName),BeatInterbal,BGMBPM);
-
-        InitializeGameRecordStatus();
-        InitializeGameStatus();
     }
 
     //=============================================================
@@ -948,6 +945,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //ゲームプレイ系のステータス初期化
     private void InitializeGameStatus () {
+        //Debug.Log("initializeGameStatus");
+
         InitCharacterStatus(); //キャラクターステータスの初期化
         InitEnemyStatus(); //エネミーステータスの初期化
         isGameOver = false; //ゲームオーバーフラグの初期化
@@ -966,6 +965,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     //=============================================================
     //ゲームレコード系のステータス初期化
     private void InitializeGameRecordStatus () {
+        //Debug.Log("InitializeGameRecordStatus");
+
         GameRecordStatus.Combo = 0;
         GameRecordStatus.MaxCombo = 0;
         GameRecordStatus.MaxHit = 0;

@@ -139,9 +139,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
                 BGMObject.Add(obj);
                 obj.transform.SetParent(this.transform);
 
-                //消えないように
-                DontDestroyOnLoad(obj);
-
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = BGMList[bgmListNum];
 
@@ -180,9 +177,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
                 obj.name = name;
                 BGMObject.Add(obj);
                 obj.transform.SetParent(this.transform);
-
-                //消えないように
-                DontDestroyOnLoad(obj);
 
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = BGMList[bgmListNum];
@@ -320,9 +314,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
                 SEObject.Add(obj);
                 obj.transform.SetParent(this.transform);
 
-                //消えないように
-                DontDestroyOnLoad(obj);
-
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = SEList[seListNum];
 
@@ -361,9 +352,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
                 obj.name = name;
                 SEObject.Add(obj);
                 obj.transform.SetParent(this.transform);
-
-                //消えないように
-                DontDestroyOnLoad(obj);
 
                 //AudioSourceにAudioClipをアタッチ
                 obj.GetComponent<AudioSource>().clip = SEList[seListNum];
