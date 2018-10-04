@@ -20,6 +20,8 @@ public class CharacterSelectUI : MonoBehaviour {
     private Text skillDescription; //スキル説明
     private Image instrumentTypeIcon; //楽器タイプ
 
+    private AudioSource selectSE;
+
     //=============================================================
     private bool isTouched; //画面がタッチされているかどうか
     private Vector3 beforeFrameTouchPosition; //前フレームのタッチポジション
@@ -52,6 +54,8 @@ public class CharacterSelectUI : MonoBehaviour {
         nameAndLV = transform.Find("Image/Text").GetComponent<Text>();
         skillDescription = transform.Find("Image/Image2/Text").GetComponent<Text>();
         instrumentTypeIcon = transform.Find("Image/Type/Icon").GetComponent<Image>();
+
+        selectSE = GameObject.Find("SelectSE").GetComponent<AudioSource>();
     }
 
     //=============================================================
@@ -91,6 +95,7 @@ public class CharacterSelectUI : MonoBehaviour {
             //左に移動させるかどうかの判定
             if(!characterShiftFlagL) {
                 if(characterImageC.GetComponent<RectTransform>().position.x <= -_camera.orthographicSize / 4) {
+                    selectSE.PlayOneShot(selectSE.clip);
                     characterShiftFlagL = true;
                 }
             }
@@ -126,6 +131,7 @@ public class CharacterSelectUI : MonoBehaviour {
             //右に移動させるかどうかの判定
             if(!characterShiftFlagR) {
                 if(characterImageC.GetComponent<RectTransform>().position.x >= _camera.orthographicSize / 4) {
+                    selectSE.PlayOneShot(selectSE.clip);
                     characterShiftFlagR = true;
                 }
             }
@@ -244,10 +250,12 @@ public class CharacterSelectUI : MonoBehaviour {
     public void OnClick (int shiftDirection) {
         switch(shiftDirection) {
             case (int)ShiftDirection.LEFT:
+            selectSE.PlayOneShot(selectSE.clip);
             characterShiftFlagL = true;
             break;
 
             case (int)ShiftDirection.RIGHT:
+            selectSE.PlayOneShot(selectSE.clip);
             characterShiftFlagR = true;
             break;
         }

@@ -19,6 +19,7 @@ public class MusicSelectUI : MonoBehaviour {
 
     private bool onceFirstBGM; //シーン起動時1回bgmを起動するためのフラグ(startでbgmがならなかったから使用)(startの段階でsoundmanagerが2つある可能性?)
 
+    private AudioSource selectSE;
     //=============================================================
     public Sprite[] MusicImages;
 
@@ -40,6 +41,9 @@ public class MusicSelectUI : MonoBehaviour {
         rightButton = GameObject.Find("Canvas/RightButton");
 
         musicImage = GameObject.Find("Canvas/Music/Image").GetComponent<Image>();
+
+
+        selectSE = GameObject.Find("SelectSE").GetComponent<AudioSource>();
     }
 
     //=============================================================
@@ -79,6 +83,9 @@ public class MusicSelectUI : MonoBehaviour {
     //=============================================================
     //右ボタン
     public void OnClickRight () {
+
+        selectSE.PlayOneShot(selectSE.clip);
+
         //bgmを止める
         soundManager.StopBGM(soundManager.BGMDatas[gameManager.FocusBGM].Name);
 
@@ -98,6 +105,9 @@ public class MusicSelectUI : MonoBehaviour {
     //=============================================================
     //左ボタン
     public void OnClickLeft () {
+
+        selectSE.PlayOneShot(selectSE.clip);
+
         //bgmを止める
         soundManager.StopBGM(soundManager.BGMDatas[gameManager.FocusBGM].Name);
 
