@@ -33,7 +33,7 @@ public class Tab : MonoBehaviour {
 
         if (!isTabIndicateFlag) { return; }
 
-        if (this.GetComponent<Transform>().localScale.x <= 0.8f)
+        if (this.GetComponent<Transform>().localScale.x < 0.8f)
         {
             this.GetComponent<Transform>().localScale += new Vector3(INDICATE_SPEED, INDICATE_SPEED, INDICATE_SPEED);
         } else {
