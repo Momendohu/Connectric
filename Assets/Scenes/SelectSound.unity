@@ -1284,7 +1284,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.1
-  m_Text: "\u30CF\u30A4\u30B9\u30B3\u30A2\n9999999999\n\u6700\u5927\u30B3\u30F3\u30DC\n9999\n\u6700\u5927\u30D2\u30C3\u30C8\n999"
+  m_Text: "\u30CF\u30A4\u30B9\u30B3\u30A2\n267800\n\u6700\u5927\u30B3\u30F3\u30DC\n131\n\u6700\u5927\u30D2\u30C3\u30C8\n12"
 --- !u!222 &960957693
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3011,7 +3011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
