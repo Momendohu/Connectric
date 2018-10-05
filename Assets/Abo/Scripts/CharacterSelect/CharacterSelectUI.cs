@@ -197,7 +197,8 @@ public class CharacterSelectUI : MonoBehaviour {
         //キャラクターデータの適用
         GameManager.CharacterData characterData = gameManager.CharacterDatas[gameManager.FocusCharacter];
         nameAndLV.text = characterData.Name + " LV " + gameManager.CharacterStatus[gameManager.FocusCharacter].Level;
-        skillDescription.text = "スキル - " + gameManager.SkillDatas[gameManager.CharacterDatas[gameManager.FocusCharacter].SkillId].Name;
+        skillDescription.text = "スキル - " + gameManager.SkillDatas[gameManager.CharacterDatas[gameManager.FocusCharacter].SkillId].Name
+            + "\n" + gameManager.SkillDatas[gameManager.CharacterDatas[gameManager.FocusCharacter].SkillId].Description;
         instrumentTypeIcon.sprite = gameManager.PieceLinkImage[(int)characterData.InstrumentType];
 
         //イメージを適用

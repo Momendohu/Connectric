@@ -93,9 +93,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //スキルデータ
     public SkillData[] SkillDatas = {
-        new SkillData{ Id=0,Name="ピッチシフト",Description="敵に与えるダメージを1.5倍にして、曲の速さを1.1倍にする(デメリット)"},
-        new SkillData{ Id=1,Name="アバンドーネ",Description="レインボーピースを大量発生させる"},
-        new SkillData{ Id=2,Name="ゴーストノート",Description="攻撃を2重ヒットさせる"}
+        new SkillData{ Id=0,Name="ピッチシフト",Description="曲を速くする代わりに様々な効果を付属"},
+        new SkillData{ Id=1,Name="アバンドーネ",Description="レインボーピースを大量発生"},
+        new SkillData{ Id=2,Name="ゴーストノート",Description="攻撃が3重ヒットになる"}
     };
 
     //キャラクターデータ
@@ -606,7 +606,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         if(IsSkillMode) {
             switch(num) {
                 case 0: //回復
-                ApplyToCharacterHitPoint(FocusCharacter,10);
+                ApplyToCharacterHitPoint(FocusCharacter,CharacterStatus[FocusCharacter].MaxHitPoint / 10);
                 break;
 
                 case 1:
