@@ -12,7 +12,7 @@ public class BoardManager : MonoBehaviour {
     public const float between = 1.85f;
     public Vector3 vStartPos = new Vector3(-3.7f,1.2f,0.0f);
     public const float DEBUG_COLOR = 0.0f;
-    public const int RAINBOM_HIT = 6;
+    public const int RAINBOM_HIT = 5;
 
     // ピースタイプ
     public enum INSTRUMENT_TYPE {
@@ -74,6 +74,9 @@ public class BoardManager : MonoBehaviour {
     private int rainbowCounter = 0;
     private bool rainbomFlag = false;
 
+    // スキル
+    private bool hibikaSkilFrag = false;
+
 
     //---------------------------------------------------
     // コンボ数の取得
@@ -112,6 +115,13 @@ public class BoardManager : MonoBehaviour {
         // 削除準備
         if(game_manager.GetComponent<GameManager>().IsBeatChange) {
             PieceDeletePrepare();
+
+            // レインボムの出現確率発生調整
+            if (combo >= RAINBOM_HIT)
+            {
+                rainbomFlag = true;
+                Debug.Log("koreja!!!!11");
+            }
         }
 
         // 小さくする＆ピースを消す(演出)
@@ -129,7 +139,7 @@ public class BoardManager : MonoBehaviour {
         // ピースを消した後の音符演出の削除タイミング
         for(int i = 0;i < onpuList.Count;i++) {
             if(onpuList[i].GetComponent<Onpu_perfo>().GetTime() >= 1.0f) {
-                //Debug.Log("音符デリート");
+                Debug.Log("音符デリート");
                 onpuList[i].GetComponent<Onpu_perfo>().DeleteOnpu();
                 onpuList.RemoveAt(i);
                 i--;
@@ -150,9 +160,15 @@ public class BoardManager : MonoBehaviour {
             }
 
             // ＊＊＊＊ヒビカのスキル発動条件＊＊＊＊
-            if (game_manager.GetComponent<GameManager>().FocusCharacter == 2)
+            if (!hibikaSkilFrag && game_manager.GetComponent<GameManager>().FocusCharacter == 2)
             {
-
+                rainbomFlag = true;
+                hibikaSkilFrag = true;
+                Debug.Log("ヒビカ");
+            }
+            else if(hibikaSkilFrag && game_manager.GetComponent<GameManager>().FocusCharacter != 2)
+            {
+                hibikaSkilFrag = false;
             }
         }
 
@@ -569,11 +585,6 @@ public class BoardManager : MonoBehaviour {
             }
         }
 
-        // レインボムの出現確率発生調整
-        if(linknum >= RAINBOM_HIT) {
-            rainbomFlag = true;
-        }
-
         return linknum;
     }
 
@@ -627,17 +638,23 @@ public class BoardManager : MonoBehaviour {
         for(int height = 0;height < BOARD_HEIGHT_NUM;height++) {
             for(int width = 0;width < BOARD_WIDTH_NUM;width++) {
 
-                if(Boardpieces[width,height].typeNum == (int)INSTRUMENT_TYPE.TIME) {
-                    if(Boardpieces[width,height].obj.GetComponent<PieceTime>().FinAnim) {
+                int obj_num = 0;
+
+                // タイムピースなら
+                if (Boardpieces[width, height].typeNum == (int)INSTRUMENT_TYPE.TIME)
+                {
+
+                    // ０になったら
+                    if (Boardpieces[width, height].obj.GetComponent<PieceTime>().FinAnim)
+                    {
 
                         // 削除
-                        Destroy(Boardpieces[width,height].obj);
-
-                        int obj_num = 0;
+                        Destroy(Boardpieces[width, height].obj);
 
                         //セイラがスキルを発動しているかどうかで補充を変更
-                        if(game_manager.GetComponent<GameManager>().IsUsingSkill(1)) {
-                            if(Random.Range(0, 2) == 0)
+                        if (game_manager.GetComponent<GameManager>().IsUsingSkill(1))
+                        {
+                            if (Random.Range(0, 2) == 0)
                             {
                                 obj_num = (int)INSTRUMENT_TYPE.RAINBOW;
                             }
@@ -646,16 +663,29 @@ public class BoardManager : MonoBehaviour {
                                 // 乱数調整
                                 obj_num = RandomPieceUpdate();
                             }
-                            
-                        } else {
+
+                        }
+                        else
+                        {
                             // 乱数調整
                             obj_num = RandomPieceUpdate();
                         }
 
+                        // ピースの生成
+                        CreatePiece(width, height, obj_num);
+                        rainbowCounter++;
+
+                    }
+                    else if (rainbomFlag)
+                    {
+                        // 削除
+                        Destroy(Boardpieces[width, height].obj);
+                        obj_num = (int)INSTRUMENT_TYPE.RAINBOM;
+                        rainbomFlag = false;
+                        Debug.Log("レインボム");
 
                         // ピースの生成
-                        CreatePiece(width,height,obj_num);
-
+                        CreatePiece(width, height, obj_num);
                         rainbowCounter++;
 
                     }

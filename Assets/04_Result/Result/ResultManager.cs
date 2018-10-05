@@ -35,10 +35,10 @@ public class ResultManager : MonoBehaviour {
         enemy_defeat = GameObject.Find("ENEMY_defeat");
 
         // テキストの書き込み
-        totalscore.GetComponent<Text>().text = "トータルスコア       " + gamemanager.GameRecordStatus.Score;
-        hi_combo.GetComponent<Text>().text = "最大コンボ          <color=#ff0000>" + gamemanager.GameRecordStatus.MaxCombo + "  COMBO</color>";
-        hi_hit.GetComponent<Text>().text = "最大ヒット           <color=#ff5500>" + gamemanager.GameRecordStatus.MaxHit + "  HIT </color>";
-        enemy_defeat.GetComponent<Text>().text = "敵の撃破数        <color=#ffff00>" + gamemanager.GameRecordStatus.DefeatEnemyNum + "</color>";
+        totalscore.GetComponent<Text>().text   = "トータルスコア     " + gamemanager.GameRecordStatus.Score;
+        hi_combo.GetComponent<Text>().text     = "最大コンボ        <color=#ff0000>" + gamemanager.GameRecordStatus.MaxCombo + "  COMBO</color>";
+        hi_hit.GetComponent<Text>().text       = "最大ヒット        <color=#ff5500>" + gamemanager.GameRecordStatus.MaxHit + "  HIT </color>";
+        enemy_defeat.GetComponent<Text>().text = "敵の撃破数      <color=#ffff00>" + gamemanager.GameRecordStatus.DefeatEnemyNum + "</color>";
 
     }
 

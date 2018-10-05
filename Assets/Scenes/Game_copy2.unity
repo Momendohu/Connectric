@@ -663,6 +663,11 @@ Prefab:
       propertyPath: m_Radius
       value: 0.01
       objectReference: {fileID: 0}
+    - target: {fileID: 50229077226615342, guid: d5ad32c70ce3ead4797ff083f67af76c,
+        type: 2}
+      propertyPath: m_SleepingMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d5ad32c70ce3ead4797ff083f67af76c, type: 2}
   m_IsPrefabParent: 0
