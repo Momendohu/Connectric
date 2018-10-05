@@ -136,13 +136,27 @@ public class BoardManager : MonoBehaviour {
             }
         }
 
-        // ＊＊＊＊カナデのスキル発動条件＊＊＊＊
+       // 各キャラクターのスキル発動
         if(game_manager.GetComponent<GameManager>().IsSkillMode) {
-            if(game_manager.GetComponent<GameManager>().FocusCharacter == 0) {
+            // ＊＊＊＊カナデのスキル発動条件＊＊＊＊
+            if (game_manager.GetComponent<GameManager>().FocusCharacter == 0) {
                 SkillActiveTime();
             }
 
+            // ＊＊＊＊セイラのスキル発動条件＊＊＊＊
+            if (game_manager.GetComponent<GameManager>().FocusCharacter == 1)
+            {
+
+            }
+
+            // ＊＊＊＊ヒビカのスキル発動条件＊＊＊＊
+            if (game_manager.GetComponent<GameManager>().FocusCharacter == 2)
+            {
+
+            }
         }
+
+
 
         Replenishment();        // 補充
         LinkDo();
@@ -620,9 +634,19 @@ public class BoardManager : MonoBehaviour {
                         Destroy(Boardpieces[width,height].obj);
 
                         int obj_num = 0;
-                        //カナデがスキルを発動しているかどうかで補充を変更
+
+                        //セイラがスキルを発動しているかどうかで補充を変更
                         if(game_manager.GetComponent<GameManager>().IsUsingSkill(1)) {
-                            obj_num = (int)INSTRUMENT_TYPE.RAINBOW;
+                            if(Random.Range(0, 2) == 0)
+                            {
+                                obj_num = (int)INSTRUMENT_TYPE.RAINBOW;
+                            }
+                            else
+                            {
+                                // 乱数調整
+                                obj_num = RandomPieceUpdate();
+                            }
+                            
                         } else {
                             // 乱数調整
                             obj_num = RandomPieceUpdate();
