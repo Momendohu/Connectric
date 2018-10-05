@@ -229,8 +229,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 380, y: -50}
-  m_SizeDelta: {x: 150, y: 150}
+  m_AnchoredPosition: {x: 360, y: -50}
+  m_SizeDelta: {x: 160, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &37269555
 MonoBehaviour:
@@ -1794,6 +1794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1900821956}
   - component: {fileID: 1900821957}
+  - component: {fileID: 1900821958}
   m_Layer: 5
   m_Name: CharacterSelectUI
   m_TagString: Untagged
@@ -1834,6 +1835,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ccd219cf4df3942a959c86be44ce95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1900821958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1900821955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6673e04929ee1e24f93af5c85c456f2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1935766342
