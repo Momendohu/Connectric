@@ -93,7 +93,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     //スキルデータ
     public SkillData[] SkillDatas = {
-        new SkillData{ Id=0,Name="ピッチシフト",Description="曲を速くする代わりに様々な効果を付属"},
+        new SkillData{ Id=0,Name="ピッチシフト",Description="曲を速くする代わりに様々な効果を付与"},
         new SkillData{ Id=1,Name="アバンドーネ",Description="レインボーピースを大量発生"},
         new SkillData{ Id=2,Name="ゴーストノート",Description="攻撃が3重ヒットになる"}
     };
